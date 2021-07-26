@@ -6,6 +6,7 @@ import com.kwpugh.gobber2.items.armor.ItemCustomArmorDragon;
 import com.kwpugh.gobber2.items.armor.ItemCustomArmorEnd;
 import com.kwpugh.gobber2.items.armor.ItemCustomArmorGobber;
 import com.kwpugh.gobber2.items.armor.ItemCustomArmorNether;
+import com.kwpugh.gobber2.items.fuels.ItemCustomFuel;
 import com.kwpugh.gobber2.items.medallions.ItemCustomMedallionBreathing;
 import com.kwpugh.gobber2.items.medallions.ItemCustomMedallionConduit;
 import com.kwpugh.gobber2.items.medallions.ItemCustomMedallionDolphin;
@@ -89,6 +90,11 @@ public class ItemInit
 {
 	public static final Tier GOBBER_TOOL_MATERIAL = new GobberToolMaterial();
 	public static final ArmorMaterial GOBBER_ARMOR_MATERIAL = new GobberArmorMaterial();
+	public static final Tier NETHER_GOBBER_TOOL_MATERIAL = new NetherGobberToolMaterial();
+	public static final ArmorMaterial NETHER_GOBBER_ARMOR_MATERIAL = new NetherGobberArmorMaterial();
+	public static final Tier END_GOBBER_TOOL_MATERIAL = new EndGobberToolMaterial();
+	public static final ArmorMaterial END_GOBBER_ARMOR_MATERIAL = new EndGobberArmorMaterial();
+	public static final ArmorMaterial DRAGON_ARMOR_MATERIAL = new DragonArmorMaterial();
 
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Gobber2.modid);
 
@@ -123,9 +129,9 @@ public class ItemInit
 	public static final RegistryObject<Item> GOBBER2_ROD_NETHER = ITEMS.register("gobber2_rod_nether", () -> new Item(new Item.Properties().tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_ROD_END = ITEMS.register("gobber2_rod_end", () -> new Item(new Item.Properties().tab(Gobber2.gobber2)));
 
-//	public static final RegistryObject<Item> GOBBER2_FOO = ITEMS.register("gobber2_foo", () -> new ItemCustomFuel(new Item.Properties().tab(Gobber2.gobber2), 64000));
-//	public static final RegistryObject<Item> GOBBER2_FOO_NETHER = ITEMS.register("gobber2_foo_nether", () -> new ItemCustomFuel(new Item.Properties().tab(Gobber2.gobber2), 96000));
-//	public static final RegistryObject<Item> GOBBER2_FOO_END = ITEMS.register("gobber2_foo_end", () -> new ItemCustomFuel(new Item.Properties().tab(Gobber2.gobber2), 128000));
+	public static final RegistryObject<Item> GOBBER2_FOO = ITEMS.register("gobber2_foo", () -> new ItemCustomFuel(new Item.Properties().tab(Gobber2.gobber2), 64000));
+	public static final RegistryObject<Item> GOBBER2_FOO_NETHER = ITEMS.register("gobber2_foo_nether", () -> new ItemCustomFuel(new Item.Properties().tab(Gobber2.gobber2), 96000));
+	public static final RegistryObject<Item> GOBBER2_FOO_END = ITEMS.register("gobber2_foo_end", () -> new ItemCustomFuel(new Item.Properties().tab(Gobber2.gobber2), 128000));
 
 	public static final RegistryObject<Item> GOBBER2_SWORD = ITEMS.register("gobber2_sword", () -> new ItemCustomSword(GOBBER_TOOL_MATERIAL, 9, -2.0f, new Item.Properties().tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_BOW = ITEMS.register("gobber2_bow", () -> new ItemCustomBow((new Item.Properties()).stacksTo(1).tab(Gobber2.gobber2).durability(3800)));
@@ -143,50 +149,50 @@ public class ItemInit
 	public static final RegistryObject<Item> GOBBER2_LEGGINGS = ITEMS.register("gobber2_leggings", () -> new ItemCustomArmorGobber(GOBBER_ARMOR_MATERIAL, EquipmentSlot.LEGS, new Item.Properties().tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_BOOTS = ITEMS.register("gobber2_boots", () -> new ItemCustomArmorGobber(GOBBER_ARMOR_MATERIAL, EquipmentSlot.FEET, new Item.Properties().tab(Gobber2.gobber2)));
 
-	public static final RegistryObject<Item> GOBBER2_SWORD_NETHER = ITEMS.register("gobber2_sword_nether", () -> new ItemCustomSwordNether(ToolMaterialList.GOBBER2_NETHER, 11, -1.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_SWORD_NETHER = ITEMS.register("gobber2_sword_nether", () -> new ItemCustomSwordNether(NETHER_GOBBER_TOOL_MATERIAL, 11, -1.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_BOW_NETHER = ITEMS.register("gobber2_bow_nether", () -> new ItemCustomBowNether((new Item.Properties()).fireResistant().stacksTo(1).tab(Gobber2.gobber2).durability(5200)));
-	public static final RegistryObject<Item> GOBBER2_PICKAXE_NETHER = ITEMS.register("gobber2_pickaxe_nether", () -> new ItemCustomPickaxeNether(ToolMaterialList.GOBBER2_NETHER, 5, -2.3f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_SHOVEL_NETHER = ITEMS.register("gobber2_shovel_nether", () -> new ItemCustomShovelNether(ToolMaterialList.GOBBER2_NETHER, 6.0f, -2.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_AXE_NETHER = ITEMS.register("gobber2_axe_nether", () -> new ItemCustomAxeNether(ToolMaterialList.GOBBER2_NETHER, 10.0f, -2.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_TREE_AXE_NETHER = ITEMS.register("gobber2_tree_axe_nether", () -> new TreeAxeBase(ToolMaterialList.GOBBER2_NETHER, 10.0f, -2.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_HOE_NETHER = ITEMS.register("gobber2_hoe_nether", () -> new HoeItem(ToolMaterialList.GOBBER2_NETHER, 0, 2.2f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_HAMMER_NETHER = ITEMS.register("gobber2_hammer_nether", () -> new ItemCustomHammerNether(ToolMaterialList.GOBBER2_NETHER, 8, -2.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_EXCAVATOR_NETHER = ITEMS.register("gobber2_excavator_nether", () -> new ItemCustomExcavatorNether(ToolMaterialList.GOBBER2_NETHER, 6.0f, -2.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_PAXEL_NETHER = ITEMS.register("gobber2_paxel_nether", () -> new ItemCustomPaxelNether(10, -2.8f, ToolMaterialList.GOBBER2_NETHER, null, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_PICKAXE_NETHER = ITEMS.register("gobber2_pickaxe_nether", () -> new ItemCustomPickaxeNether(NETHER_GOBBER_TOOL_MATERIAL, 5, -2.3f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_SHOVEL_NETHER = ITEMS.register("gobber2_shovel_nether", () -> new ItemCustomShovelNether(NETHER_GOBBER_TOOL_MATERIAL, 6.0f, -2.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_AXE_NETHER = ITEMS.register("gobber2_axe_nether", () -> new ItemCustomAxeNether(NETHER_GOBBER_TOOL_MATERIAL, 10.0f, -2.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_TREE_AXE_NETHER = ITEMS.register("gobber2_tree_axe_nether", () -> new TreeAxeBase(NETHER_GOBBER_TOOL_MATERIAL, 10.0f, -2.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_HOE_NETHER = ITEMS.register("gobber2_hoe_nether", () -> new HoeItem(NETHER_GOBBER_TOOL_MATERIAL, 0, 2.2f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_HAMMER_NETHER = ITEMS.register("gobber2_hammer_nether", () -> new ItemCustomHammerNether(NETHER_GOBBER_TOOL_MATERIAL, 8, -2.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_EXCAVATOR_NETHER = ITEMS.register("gobber2_excavator_nether", () -> new ItemCustomExcavatorNether(NETHER_GOBBER_TOOL_MATERIAL, 6.0f, -2.8f, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_PAXEL_NETHER = ITEMS.register("gobber2_paxel_nether", () -> new ItemCustomPaxelNether(10, -2.8f, NETHER_GOBBER_TOOL_MATERIAL, null, new Item.Properties().fireResistant().stacksTo(1).tab(Gobber2.gobber2)));
 
-	public static final RegistryObject<Item> GOBBER2_HELMET_NETHER = ITEMS.register("gobber2_helmet_nether", () -> new ItemCustomArmorNether(ArmorMaterialList.GOBBER2_NETHER, EquipmentSlot.HEAD, new Item.Properties().fireResistant().tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_CHESTPLATE_NETHER = ITEMS.register("gobber2_chestplate_nether", () -> new ItemCustomArmorNether(ArmorMaterialList.GOBBER2_NETHER, EquipmentSlot.CHEST, new Item.Properties().fireResistant().tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_LEGGINGS_NETHER = ITEMS.register("gobber2_leggings_nether", () -> new ItemCustomArmorNether(ArmorMaterialList.GOBBER2_NETHER, EquipmentSlot.LEGS, new Item.Properties().fireResistant().tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_BOOTS_NETHER = ITEMS.register("gobber2_boots_nether", () -> new ItemCustomArmorNether(ArmorMaterialList.GOBBER2_NETHER, EquipmentSlot.FEET, new Item.Properties().fireResistant().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_HELMET_NETHER = ITEMS.register("gobber2_helmet_nether", () -> new ItemCustomArmorNether(NETHER_GOBBER_ARMOR_MATERIAL, EquipmentSlot.HEAD, new Item.Properties().fireResistant().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_CHESTPLATE_NETHER = ITEMS.register("gobber2_chestplate_nether", () -> new ItemCustomArmorNether(NETHER_GOBBER_ARMOR_MATERIAL, EquipmentSlot.CHEST, new Item.Properties().fireResistant().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_LEGGINGS_NETHER = ITEMS.register("gobber2_leggings_nether", () -> new ItemCustomArmorNether(NETHER_GOBBER_ARMOR_MATERIAL, EquipmentSlot.LEGS, new Item.Properties().fireResistant().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_BOOTS_NETHER = ITEMS.register("gobber2_boots_nether", () -> new ItemCustomArmorNether(NETHER_GOBBER_ARMOR_MATERIAL, EquipmentSlot.FEET, new Item.Properties().fireResistant().tab(Gobber2.gobber2)));
 
-	public static final RegistryObject<Item> GOBBER2_SWORD_END = ITEMS.register("gobber2_sword_end", () -> new ItemCustomSwordEnd(ToolMaterialList.GOBBER2_END, 14, -1.6f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_SWORD_SNIPER = ITEMS.register("gobber2_sword_sniper", () -> new ItemCustomSwordSniper(ToolMaterialList.GOBBER2_END, 14, -1.6f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_SWORD_TRAVELER = ITEMS.register("gobber2_sword_traveler", () -> new ItemCustomSwordTraveler(ToolMaterialList.GOBBER2_END, 14, -1.6f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_SWORD_END = ITEMS.register("gobber2_sword_end", () -> new ItemCustomSwordEnd(END_GOBBER_TOOL_MATERIAL, 14, -1.6f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_SWORD_SNIPER = ITEMS.register("gobber2_sword_sniper", () -> new ItemCustomSwordSniper(END_GOBBER_TOOL_MATERIAL, 14, -1.6f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_SWORD_TRAVELER = ITEMS.register("gobber2_sword_traveler", () -> new ItemCustomSwordTraveler(END_GOBBER_TOOL_MATERIAL, 14, -1.6f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_BOW_END = ITEMS.register("gobber2_bow_end", () -> new ItemCustomBowEnd((new Item.Properties()).stacksTo(1).durability(8000).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_PICKAXE_END = ITEMS.register("gobber2_pickaxe_end", () -> new ItemCustomPickaxeEnd(ToolMaterialList.GOBBER2_END, 6, -2.2f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_SHOVEL_END = ITEMS.register("gobber2_shovel_end", () -> new ItemCustomShovelEnd(ToolMaterialList.GOBBER2_END, 8.0f, -2.6f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_AXE_END = ITEMS.register("gobber2_axe_end", () -> new ItemCustomAxeEnd(ToolMaterialList.GOBBER2_END, 14.0f, -2.7f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_TREE_AXE_END = ITEMS.register("gobber2_tree_axe_end", () -> new ItemCustomTreeAxeEnd(ToolMaterialList.GOBBER2_END, 14.0f, -2.7f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_HOE_END = ITEMS.register("gobber2_hoe_end", () -> new ItemCustomHoeEnd(ToolMaterialList.GOBBER2_END, 0, 2.2f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_HAMMER_END = ITEMS.register("gobber2_hammer_end", () -> new ItemCustomHammerEnd(ToolMaterialList.GOBBER2_END, 10, -2.7f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_EXCAVATOR_END = ITEMS.register("gobber2_excavator_end", () -> new ItemCustomExcavatorEnd(ToolMaterialList.GOBBER2_END, 8.0f, -2.6f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_PAXEL_END = ITEMS.register("gobber2_paxel_end", () -> new ItemCustomPaxelEnd(13, -2.7f, ToolMaterialList.GOBBER2_END, null, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_PAXEL_STARS = ITEMS.register("gobber2_paxel_stars", () -> new ItemCustomPaxelStars(13, -2.7f, ToolMaterialList.GOBBER2_END, null, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_PICKAXE_END = ITEMS.register("gobber2_pickaxe_end", () -> new ItemCustomPickaxeEnd(END_GOBBER_TOOL_MATERIAL, 6, -2.2f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_SHOVEL_END = ITEMS.register("gobber2_shovel_end", () -> new ItemCustomShovelEnd(END_GOBBER_TOOL_MATERIAL, 8.0f, -2.6f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_AXE_END = ITEMS.register("gobber2_axe_end", () -> new ItemCustomAxeEnd(END_GOBBER_TOOL_MATERIAL, 14.0f, -2.7f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_TREE_AXE_END = ITEMS.register("gobber2_tree_axe_end", () -> new ItemCustomTreeAxeEnd(END_GOBBER_TOOL_MATERIAL, 14.0f, -2.7f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_HOE_END = ITEMS.register("gobber2_hoe_end", () -> new ItemCustomHoeEnd(END_GOBBER_TOOL_MATERIAL, 0, 2.2f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_HAMMER_END = ITEMS.register("gobber2_hammer_end", () -> new ItemCustomHammerEnd(END_GOBBER_TOOL_MATERIAL, 10, -2.7f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_EXCAVATOR_END = ITEMS.register("gobber2_excavator_end", () -> new ItemCustomExcavatorEnd(END_GOBBER_TOOL_MATERIAL, 8.0f, -2.6f, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_PAXEL_END = ITEMS.register("gobber2_paxel_end", () -> new ItemCustomPaxelEnd(13, -2.7f, END_GOBBER_TOOL_MATERIAL, null, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_PAXEL_STARS = ITEMS.register("gobber2_paxel_stars", () -> new ItemCustomPaxelStars(13, -2.7f, END_GOBBER_TOOL_MATERIAL, null, new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
 
 	public static final RegistryObject<Item> GOBBER2_LINKS_END = ITEMS.register("gobber2_links_end", () -> new Item(new Item.Properties().tab(Gobber2.gobber2)));
 
-	public static final RegistryObject<Item> GOBBER2_HELMET_END = ITEMS.register("gobber2_helmet_end", () -> new ItemCustomArmorEnd(ArmorMaterialList.GOBBER2_END, EquipmentSlot.HEAD, new Item.Properties().tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_CHESTPLATE_END = ITEMS.register("gobber2_chestplate_end", () -> new ItemCustomArmorEnd(ArmorMaterialList.GOBBER2_END, EquipmentSlot.CHEST, new Item.Properties().tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_LEGGINGS_END = ITEMS.register("gobber2_leggings_end", () -> new ItemCustomArmorEnd(ArmorMaterialList.GOBBER2_END, EquipmentSlot.LEGS, new Item.Properties().tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_BOOTS_END = ITEMS.register("gobber2_boots_end", () -> new ItemCustomArmorEnd(ArmorMaterialList.GOBBER2_END, EquipmentSlot.FEET, new Item.Properties().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_HELMET_END = ITEMS.register("gobber2_helmet_end", () -> new ItemCustomArmorEnd(END_GOBBER_ARMOR_MATERIAL, EquipmentSlot.HEAD, new Item.Properties().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_CHESTPLATE_END = ITEMS.register("gobber2_chestplate_end", () -> new ItemCustomArmorEnd(END_GOBBER_ARMOR_MATERIAL, EquipmentSlot.CHEST, new Item.Properties().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_LEGGINGS_END = ITEMS.register("gobber2_leggings_end", () -> new ItemCustomArmorEnd(END_GOBBER_ARMOR_MATERIAL, EquipmentSlot.LEGS, new Item.Properties().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_BOOTS_END = ITEMS.register("gobber2_boots_end", () -> new ItemCustomArmorEnd(END_GOBBER_ARMOR_MATERIAL, EquipmentSlot.FEET, new Item.Properties().tab(Gobber2.gobber2)));
 
 	public static final RegistryObject<Item> DRAGON_STAR = ITEMS.register("dragon_star", () -> new Item(new Item.Properties().tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> DRAGON_ELYTRA = ITEMS.register("dragon_elytra", () -> new DragonElytra(new Item.Properties().tab(Gobber2.gobber2)));
 
-	public static final RegistryObject<Item> GOBBER2_HELMET_DRAGON = ITEMS.register("gobber2_helmet_dragon", () -> new ItemCustomArmorDragon(ArmorMaterialList.GOBBER2_DRAGON, EquipmentSlot.HEAD, new Item.Properties().tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_CHESTPLATE_DRAGON = ITEMS.register("gobber2_chestplate_dragon", () -> new ItemCustomArmorDragon(ArmorMaterialList.GOBBER2_DRAGON, EquipmentSlot.CHEST, new Item.Properties().tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_LEGGINGS_DRAGON = ITEMS.register("gobber2_leggings_dragon", () -> new ItemCustomArmorDragon(ArmorMaterialList.GOBBER2_DRAGON, EquipmentSlot.LEGS, new Item.Properties().tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_BOOTS_DRAGON = ITEMS.register("gobber2_boots_dragon", () -> new ItemCustomArmorDragon(ArmorMaterialList.GOBBER2_DRAGON, EquipmentSlot.FEET, new Item.Properties().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_HELMET_DRAGON = ITEMS.register("gobber2_helmet_dragon", () -> new ItemCustomArmorDragon(DRAGON_ARMOR_MATERIAL, EquipmentSlot.HEAD, new Item.Properties().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_CHESTPLATE_DRAGON = ITEMS.register("gobber2_chestplate_dragon", () -> new ItemCustomArmorDragon(DRAGON_ARMOR_MATERIAL, EquipmentSlot.CHEST, new Item.Properties().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_LEGGINGS_DRAGON = ITEMS.register("gobber2_leggings_dragon", () -> new ItemCustomArmorDragon(DRAGON_ARMOR_MATERIAL, EquipmentSlot.LEGS, new Item.Properties().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_BOOTS_DRAGON = ITEMS.register("gobber2_boots_dragon", () -> new ItemCustomArmorDragon(DRAGON_ARMOR_MATERIAL, EquipmentSlot.FEET, new Item.Properties().tab(Gobber2.gobber2)));
 
 	public static final RegistryObject<Item> GOBBER2_RING = ITEMS.register("gobber2_ring", () -> new Item(new Item.Properties().tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_RING_ATTRACTION = ITEMS.register("gobber2_ring_attraction", () -> new ItemCustomRingAttraction(new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));

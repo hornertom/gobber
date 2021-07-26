@@ -93,10 +93,37 @@ public class GobberConfigBuilder
     public static ForgeConfigSpec.IntValue GOBBER_TOOLS_MINING_LEVEL;
     public static ForgeConfigSpec.IntValue GOBBER_TOOLS_ENCHANTABILITY;
 
+    public static ForgeConfigSpec.IntValue NETHER_GOBBER_TOOLS_DURABILITY;
+    public static ForgeConfigSpec.DoubleValue NETHER_GOBBER_TOOLS_MINING_SPEED;
+    public static ForgeConfigSpec.DoubleValue NETHER_GOBBER_TOOLS_ATTACK_DAMAGE;
+    public static ForgeConfigSpec.IntValue NETHER_GOBBER_TOOLS_MINING_LEVEL;
+    public static ForgeConfigSpec.IntValue NETHER_GOBBER_TOOLS_ENCHANTABILITY;
+
+    public static ForgeConfigSpec.IntValue END_GOBBER_TOOLS_DURABILITY;
+    public static ForgeConfigSpec.DoubleValue END_GOBBER_TOOLS_MINING_SPEED;
+    public static ForgeConfigSpec.DoubleValue END_GOBBER_TOOLS_ATTACK_DAMAGE;
+    public static ForgeConfigSpec.IntValue END_GOBBER_TOOLS_MINING_LEVEL;
+    public static ForgeConfigSpec.IntValue END_GOBBER_TOOLS_ENCHANTABILITY;
+
     public static ForgeConfigSpec.IntValue GOBBER_ARMOR_DURABILITY_MULTIPLIER;
     public static ForgeConfigSpec.IntValue GOBBER_ARMOR_ENCHANTABILITY;
     public static ForgeConfigSpec.DoubleValue GOBBER_ARMOR_TOUGHNESS;
     public static ForgeConfigSpec.DoubleValue GOBBER_ARMOR_KNOCKBACK;
+
+    public static ForgeConfigSpec.IntValue NETHER_GOBBER_ARMOR_DURABILITY_MULTIPLIER;
+    public static ForgeConfigSpec.IntValue NETHER_GOBBER_ARMOR_ENCHANTABILITY;
+    public static ForgeConfigSpec.DoubleValue NETHER_GOBBER_ARMOR_TOUGHNESS;
+    public static ForgeConfigSpec.DoubleValue NETHER_GOBBER_ARMOR_KNOCKBACK;
+
+    public static ForgeConfigSpec.IntValue END_GOBBER_ARMOR_DURABILITY_MULTIPLIER;
+    public static ForgeConfigSpec.IntValue END_GOBBER_ARMOR_ENCHANTABILITY;
+    public static ForgeConfigSpec.DoubleValue END_GOBBER_ARMOR_TOUGHNESS;
+    public static ForgeConfigSpec.DoubleValue END_GOBBER_ARMOR_KNOCKBACK;
+
+    public static ForgeConfigSpec.IntValue DRAGON_ARMOR_DURABILITY_MULTIPLIER;
+    public static ForgeConfigSpec.IntValue DRAGON_ARMOR_ENCHANTABILITY;
+    public static ForgeConfigSpec.DoubleValue DRAGON_ARMOR_TOUGHNESS;
+    public static ForgeConfigSpec.DoubleValue DRAGON_ARMOR_KNOCKBACK;
 
     public static ForgeConfigSpec.BooleanValue ENABLE_GOBBER_ARMOR_HEALTH_PERKS;
     public static ForgeConfigSpec.BooleanValue ENABLE_GOBBER_NETHER_ARMOR_HEALTH_PERKS;
@@ -109,13 +136,65 @@ public class GobberConfigBuilder
 
     public static void init(ForgeConfigSpec.Builder SERVER_BUILDER)
     {
+        SERVER_BUILDER.comment("Dragon Armor Material Values").push("dragon_armor_material");
+
+        DRAGON_ARMOR_DURABILITY_MULTIPLIER = SERVER_BUILDER.comment("Dragon armor durability multiplier [1-200, default: 100]").defineInRange("dragonArmorDurabilityMultiplier", 100, 1, 200);
+        DRAGON_ARMOR_ENCHANTABILITY = SERVER_BUILDER.comment("Dragon armor enchantability [1-50, default: 30]").defineInRange("dragonArmorEnchantability", 30, 1, 50);
+        DRAGON_ARMOR_TOUGHNESS = SERVER_BUILDER.comment("Dragon armor toughness [0-5, default: 3.0]").defineInRange("dragonArmorToughness", 3.0, 0, 5.0);
+        DRAGON_ARMOR_KNOCKBACK = SERVER_BUILDER.comment("Dragon armor knockback [0-5, default: 0.3]").defineInRange("dragonArmorKnockback", 0.3, 0, 5.0);
+
+        SERVER_BUILDER.pop();
+
+
+        SERVER_BUILDER.comment("End Gobber Tool Material Values").push("end_gobber_tool_material");
+
+        END_GOBBER_TOOLS_DURABILITY = SERVER_BUILDER.comment("End Gobber tool durability [1-9000, default: 8000]").defineInRange("endGobberToolsDurability", 8000, 0, 9000);
+        END_GOBBER_TOOLS_MINING_SPEED = SERVER_BUILDER.comment("End Gobber tool mining speed [1-25, default: 14.0]").defineInRange("endGobberToolsSpeed", 14.0, 1, 25.0);
+        END_GOBBER_TOOLS_ATTACK_DAMAGE = SERVER_BUILDER.comment("End Gobber tool attack damage [1-100, default: 1.0]").defineInRange("endGobberToolsDamage", 1.0, 1, 100.0);
+        END_GOBBER_TOOLS_MINING_LEVEL = SERVER_BUILDER.comment("End Gobber tool mining level [1-6, default: 5]").defineInRange("endGobberToolsMiningLevel", 5, 1, 6);
+        END_GOBBER_TOOLS_ENCHANTABILITY = SERVER_BUILDER.comment("End Gobber tool enchantability [0-50, default: 30]").defineInRange("endGobberToolsEnchantability", 30, 1, 50);
+
+        SERVER_BUILDER.pop();
+
+
+        SERVER_BUILDER.comment("End Gobber Armor Material Values").push("end_gobber_armor_material");
+
+        END_GOBBER_ARMOR_DURABILITY_MULTIPLIER = SERVER_BUILDER.comment("End Gobber armor durability multiplier [1-200, default: 100]").defineInRange("endGobberArmorDurabilityMultiplier", 100, 1, 200);
+        END_GOBBER_ARMOR_ENCHANTABILITY = SERVER_BUILDER.comment("End Gobber armor enchantability [1-50, default: 30]").defineInRange("endGobberArmorEnchantability", 30, 1, 50);
+        END_GOBBER_ARMOR_TOUGHNESS = SERVER_BUILDER.comment("End Gobber armor toughness [0-5, default: 3.0]").defineInRange("endGobberArmorToughness", 3.0, 0, 5.0);
+        END_GOBBER_ARMOR_KNOCKBACK = SERVER_BUILDER.comment("End Gobber armor knockback [0-5, default: 0.2]").defineInRange("endGobberArmorKnockback", 0.2, 0, 5.0);
+
+        SERVER_BUILDER.pop();
+
+
+        SERVER_BUILDER.comment("Nether Gobber Tool Material Values").push("nether_gobber_tool_material");
+
+        NETHER_GOBBER_TOOLS_DURABILITY = SERVER_BUILDER.comment("Nether Gobber tool durability [1-9000, default: 5200]").defineInRange("netherGobberToolsDurability", 5200, 0, 9000);
+        NETHER_GOBBER_TOOLS_MINING_SPEED = SERVER_BUILDER.comment("Nether Gobber tool mining speed [1-25, default: 12.0]").defineInRange("netherGobberToolsSpeed", 12.0, 1, 25.0);
+        NETHER_GOBBER_TOOLS_ATTACK_DAMAGE = SERVER_BUILDER.comment("Nether Gobber tool attack damage [1-100, default: 1.0]").defineInRange("netherGobberToolsDamage", 1.0, 1, 100.0);
+        NETHER_GOBBER_TOOLS_MINING_LEVEL = SERVER_BUILDER.comment("Nether Gobber tool mining level [1-6, default: 5]").defineInRange("netherGobberToolsMiningLevel", 5, 1, 6);
+        NETHER_GOBBER_TOOLS_ENCHANTABILITY = SERVER_BUILDER.comment("Nether Gobber tool enchantability [0-50, default: 25]").defineInRange("netherGobberToolsEnchantability", 25, 1, 50);
+
+        SERVER_BUILDER.pop();
+
+
+        SERVER_BUILDER.comment("Nether Gobber Armor Material Values").push("nether_gobber_armor_material");
+
+        NETHER_GOBBER_ARMOR_DURABILITY_MULTIPLIER = SERVER_BUILDER.comment("Nether Gobber armor durability multiplier [1-200, default: 83]").defineInRange("netherGobberArmorDurabilityMultiplier", 83, 1, 200);
+        NETHER_GOBBER_ARMOR_ENCHANTABILITY = SERVER_BUILDER.comment("Nether Gobber armor enchantability [1-50, default: 30]").defineInRange("netherGobberArmorEnchantability", 30, 1, 50);
+        NETHER_GOBBER_ARMOR_TOUGHNESS = SERVER_BUILDER.comment("Nether Gobber armor toughness [0-5, default: 2.75]").defineInRange("netherGobberArmorToughness", 2.75, 0, 5.0);
+        NETHER_GOBBER_ARMOR_KNOCKBACK = SERVER_BUILDER.comment("Nether Gobber armor knockback [0-5, default: 0.1]").defineInRange("netherGobberArmorKnockback", 0.1, 0, 5.0);
+
+        SERVER_BUILDER.pop();
+
+
         SERVER_BUILDER.comment("Gobber Tool Material Values").push("gobber_tool_material");
 
         GOBBER_TOOLS_DURABILITY = SERVER_BUILDER.comment("Gobber tool durability [1-9000, default: 3800]").defineInRange("gobberToolsDurability", 3800, 0, 9000);
         GOBBER_TOOLS_MINING_SPEED = SERVER_BUILDER.comment("Gobber tool mining speed [1-25, default: 9.0]").defineInRange("gobberToolsSpeed", 9.0, 1, 25.0);
         GOBBER_TOOLS_ATTACK_DAMAGE = SERVER_BUILDER.comment("Gobber tool attack damage [1-100, default: 1.0]").defineInRange("gobberToolsDamage", 1.0, 1, 100.0);
         GOBBER_TOOLS_MINING_LEVEL = SERVER_BUILDER.comment("Gobber tool mining level [1-6, default: 4]").defineInRange("gobberToolsMiningLevel", 4, 1, 6);
-        GOBBER_TOOLS_ENCHANTABILITY = SERVER_BUILDER.comment("Gobber tool enchantability [0-5, default: 20]").defineInRange("gobberToolsEnchantability", 20, 1, 50);
+        GOBBER_TOOLS_ENCHANTABILITY = SERVER_BUILDER.comment("Gobber tool enchantability [0-50, default: 20]").defineInRange("gobberToolsEnchantability", 20, 1, 50);
 
         SERVER_BUILDER.pop();
 

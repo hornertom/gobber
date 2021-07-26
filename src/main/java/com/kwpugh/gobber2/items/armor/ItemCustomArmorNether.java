@@ -65,8 +65,7 @@ public class ItemCustomArmorNether extends ArmorItem
 	    if(head.getItem() == ItemInit.GOBBER2_HELMET_NETHER.get())
 		{
 			PlayerSpecialAbilities.giveYellowHearts(world, player, stack, 4, 0.33F);
-			PlayerSpecialAbilities.giveRegenEffect(world, player, stack, hunger, (float) saturation);	
-			//PlayerSpecialAbilities.giveRegenEffect(world, player, stack, 1, 0.05F);			
+			PlayerSpecialAbilities.giveRegenEffect(world, player, stack, hunger, (float) saturation);
 		}
 	    
 	    //Chestplate

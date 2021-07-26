@@ -137,8 +137,7 @@ public class ItemCustomArmorDragon extends ArmorItem
 			if(head.getItem() == ItemInit.GOBBER2_HELMET_DRAGON.get())
 			{
 				PlayerSpecialAbilities.giveYellowHearts(world, player, stack, 20, 0.66F);	
-				PlayerSpecialAbilities.giveRegenEffect(world, player, stack, hunger, (float) saturation);	
-				//PlayerSpecialAbilities.giveRegenEffect(world, player, stack, 1, 0.15F);			
+				PlayerSpecialAbilities.giveRegenEffect(world, player, stack, hunger, (float) saturation);
 			}
 			else
 			{
