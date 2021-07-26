@@ -8,23 +8,25 @@ import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import com.kwpugh.gobber2.init.ItemInit;
 import com.kwpugh.gobber2.util.PlayerSpecialAbilities;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class ItemCustomArmorDragon extends ArmorItem
 {
-	public ItemCustomArmorDragon(IArmorMaterial materialIn, EquipmentSlotType slots, Properties builder)
+	public ItemCustomArmorDragon(ArmorMaterial materialIn, EquipmentSlot slots, Properties builder)
 	{
 		super(materialIn, slots, builder);
 	}	
@@ -34,15 +36,15 @@ public class ItemCustomArmorDragon extends ArmorItem
 	double saturation = GobberConfigBuilder.GOBBER_DRAGON_ARMOR_SATURATION.get();
 	
 	@Override
-	public void onArmorTick(final ItemStack stack, final World world, final PlayerEntity player)
+	public void onArmorTick(final ItemStack stack, final Level world, final Player player)
 	{
 		//Full Set Bonus
 		if(!player.getPersistentData().contains("wearingFullDragonArmor"))player.getPersistentData().putBoolean("wearingFullDragonArmor", false);
 			
-		ItemStack head = player.getItemStackFromSlot(EquipmentSlotType.HEAD);
-		ItemStack chest = player.getItemStackFromSlot(EquipmentSlotType.CHEST);
-		ItemStack legs = player.getItemStackFromSlot(EquipmentSlotType.LEGS);
-		ItemStack feet = player.getItemStackFromSlot(EquipmentSlotType.FEET);	
+		ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
+		ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+		ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+		ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);	
 	
 		setDamage(head, 0);
 		setDamage(chest, 0);
@@ -58,12 +60,12 @@ public class ItemCustomArmorDragon extends ArmorItem
 	  
 		if(!iswearingFullDragonArmor && wasWearingDragonArmorLastTick && !player.isCreative())
 		{
-			player.abilities.allowFlying = false;
-			player.abilities.isFlying = false;
+			player.getAbilities().mayfly = false;
+			player.getAbilities().flying = false;
 		}
-		else if((iswearingFullDragonArmor) && (world.getDimensionKey().equals(World.OVERWORLD) || world.getDimensionKey().equals(World.THE_NETHER) || world.getDimensionKey().equals(World.THE_END)))
+		else if((iswearingFullDragonArmor) && (world.dimension().equals(Level.OVERWORLD) || world.dimension().equals(Level.NETHER) || world.dimension().equals(Level.END)))
 		{
-			player.abilities.allowFlying = true;
+			player.getAbilities().mayfly = true;
 		}
 		player.getPersistentData().putBoolean("wearingFullDragonArmor", iswearingFullDragonArmor);
 	
@@ -73,59 +75,59 @@ public class ItemCustomArmorDragon extends ArmorItem
 			if(iswearingFullDragonArmor)
 			{
 				//Additional full set bonuses			
-				if(player.getActivePotionEffect(Effects.BLINDNESS) != null)
+				if(player.getEffect(MobEffects.BLINDNESS) != null)
 				{
-					player.removePotionEffect(Effects.BLINDNESS);
+					player.removeEffect(MobEffects.BLINDNESS);
 				}
 		
-				if(player.getActivePotionEffect(Effects.SLOWNESS) != null)
+				if(player.getEffect(MobEffects.MOVEMENT_SLOWDOWN) != null)
 				{
-					player.removePotionEffect(Effects.SLOWNESS);
+					player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 				}
 				
-				if(player.getActivePotionEffect(Effects.MINING_FATIGUE) != null)
+				if(player.getEffect(MobEffects.DIG_SLOWDOWN) != null)
 				{
-					player.removePotionEffect(Effects.MINING_FATIGUE);
+					player.removeEffect(MobEffects.DIG_SLOWDOWN);
 				}
 				
-				if(player.getActivePotionEffect(Effects.INSTANT_DAMAGE) != null)
+				if(player.getEffect(MobEffects.HARM) != null)
 				{
-					player.removePotionEffect(Effects.INSTANT_DAMAGE);
+					player.removeEffect(MobEffects.HARM);
 				}
 				
-				if(player.getActivePotionEffect(Effects.NAUSEA) != null)
+				if(player.getEffect(MobEffects.CONFUSION) != null)
 				{
-					player.removePotionEffect(Effects.NAUSEA);
+					player.removeEffect(MobEffects.CONFUSION);
 				}
 				
-				if(player.getActivePotionEffect(Effects.HUNGER) != null)
+				if(player.getEffect(MobEffects.HUNGER) != null)
 				{
-					player.removePotionEffect(Effects.HUNGER);
+					player.removeEffect(MobEffects.HUNGER);
 				}
 				
-				if(player.getActivePotionEffect(Effects.POISON) != null)
+				if(player.getEffect(MobEffects.POISON) != null)
 				{
-					player.removePotionEffect(Effects.POISON);
+					player.removeEffect(MobEffects.POISON);
 				}
 				
-				if(player.getActivePotionEffect(Effects.WITHER) != null)
+				if(player.getEffect(MobEffects.WITHER) != null)
 				{
-					player.removePotionEffect(Effects.WITHER);
+					player.removeEffect(MobEffects.WITHER);
 				}
 				
-				if(player.getActivePotionEffect(Effects.LEVITATION) != null)
+				if(player.getEffect(MobEffects.LEVITATION) != null)
 				{
-					player.removePotionEffect(Effects.LEVITATION);
+					player.removeEffect(MobEffects.LEVITATION);
 				}
 				
-				if(player.getActivePotionEffect(Effects.UNLUCK) != null)
+				if(player.getEffect(MobEffects.UNLUCK) != null)
 				{
-					player.removePotionEffect(Effects.UNLUCK);
+					player.removeEffect(MobEffects.UNLUCK);
 				}
 				
-				if(player.getActivePotionEffect(Effects.WEAKNESS) != null)
+				if(player.getEffect(MobEffects.WEAKNESS) != null)
 				{
-					player.removePotionEffect(Effects.WEAKNESS);
+					player.removeEffect(MobEffects.WEAKNESS);
 				}
 			} 
 		
@@ -178,26 +180,26 @@ public class ItemCustomArmorDragon extends ArmorItem
 	}
 
 	@Override
-	public void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn)
+	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
 		stack.getOrCreateTag().putBoolean("Unbreakable", true);
 	}
 	
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
 	{
 		return repair.getItem() == ItemInit.GOBBER2_ARMOR_REPAIR.get();
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_armor_dragon.line1").mergeStyle(TextFormatting.LIGHT_PURPLE)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_armor_dragon.line1").withStyle(ChatFormatting.LIGHT_PURPLE)));
 		
 		if(enablePerks)
 		{
-			tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_armor_dragon.line2").mergeStyle(TextFormatting.GOLD)));	
+			tooltip.add((new TranslatableComponent("item.gobber2.gobber2_armor_dragon.line2").withStyle(ChatFormatting.GOLD)));	
 		}
 	}
 }

@@ -4,24 +4,26 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomStaffStars extends Item
 {
@@ -31,25 +33,25 @@ public class ItemCustomStaffStars extends Item
 	}
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext iuc)
+    public InteractionResult useOn(UseOnContext iuc)
     {    	
     	BlockPos torchPos;
-    	BlockPos pos = iuc.getPos();
-    	World world = iuc.getWorld();
-    	BlockState state = iuc.getWorld().getBlockState(pos);
-    	Block block = iuc.getWorld().getBlockState(pos).getBlock();
+    	BlockPos pos = iuc.getClickedPos();
+    	Level world = iuc.getLevel();
+    	BlockState state = iuc.getLevel().getBlockState(pos);
+    	Block block = iuc.getLevel().getBlockState(pos).getBlock();
     	
-		if(iuc.getWorld().getBlockState(pos).getBlock() == Blocks.TORCH
-				|| iuc.getWorld().getBlockState(pos).getBlock() == Blocks.WALL_TORCH)
+		if(iuc.getLevel().getBlockState(pos).getBlock() == Blocks.TORCH
+				|| iuc.getLevel().getBlockState(pos).getBlock() == Blocks.WALL_TORCH)
 		{
-			return ActionResultType.FAIL;
+			return InteractionResult.FAIL;
 		}
     	
     	Boolean isWallTorch = false;
-    	switch(iuc.getFace())
+    	switch(iuc.getClickedFace())
     	{
     	case DOWN:
-    		return ActionResultType.FAIL;
+    		return InteractionResult.FAIL;
     	case UP:
     		torchPos = new BlockPos(pos.getX(), pos.getY() +1, pos.getZ());
     		break;
@@ -70,36 +72,36 @@ public class ItemCustomStaffStars extends Item
     		isWallTorch = true;
     		break;
     	default:
-    		return ActionResultType.FAIL;
+    		return InteractionResult.FAIL;
     	}
     	
-    	if(iuc.getWorld().getBlockState(torchPos).isAir() || iuc.getWorld().getBlockState(torchPos).getFluidState().isSource())
+    	if(iuc.getLevel().getBlockState(torchPos).isAir() || iuc.getLevel().getBlockState(torchPos).getFluidState().isSource())
     	{	
-    		if(state.isNormalCube(world, pos))
+    		if(state.isRedstoneConductor(world, pos))
     		{
     			if (isWallTorch)
         		{
-        			iuc.getWorld().setBlockState(torchPos, Blocks.WALL_TORCH.getDefaultState().with(HorizontalBlock.HORIZONTAL_FACING, iuc.getFace()));
-        			iuc.getWorld().playSound(null, iuc.getPlayer().getPosition(), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.NEUTRAL, 8.0F, (float) (0.7F + (Math.random()*0.3D)));
+        			iuc.getLevel().setBlockAndUpdate(torchPos, Blocks.WALL_TORCH.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, iuc.getClickedFace()));
+        			iuc.getLevel().playSound(null, iuc.getPlayer().blockPosition(), SoundEvents.WOOD_PLACE, SoundSource.NEUTRAL, 8.0F, (float) (0.7F + (Math.random()*0.3D)));
         		}
         		else
         		{
-        			iuc.getWorld().setBlockState(torchPos, Blocks.TORCH.getDefaultState());
-        			iuc.getWorld().playSound(null, iuc.getPlayer().getPosition(), SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.NEUTRAL, 8.0F, (float) (0.7F + (Math.random()*0.3D)));
+        			iuc.getLevel().setBlockAndUpdate(torchPos, Blocks.TORCH.defaultBlockState());
+        			iuc.getLevel().playSound(null, iuc.getPlayer().blockPosition(), SoundEvents.WOOD_PLACE, SoundSource.NEUTRAL, 8.0F, (float) (0.7F + (Math.random()*0.3D)));
         		}			
     		}
     
-    		return ActionResultType.SUCCESS;
+    		return InteractionResult.SUCCESS;
     	}
-    	return ActionResultType.FAIL;
+    	return InteractionResult.FAIL;
     }
     
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_stars.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_stars.line2").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_stars.line3").mergeStyle(TextFormatting.YELLOW)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_stars.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_stars.line2").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_stars.line3").withStyle(ChatFormatting.YELLOW)));
 	}
 }

@@ -1,41 +1,41 @@
 package com.kwpugh.gobber2.items.tools.shovel;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public class ItemCustomShovelEnd extends ShovelItem
 {
-	public ItemCustomShovelEnd (IItemTier tier, float attackDamageIn, float attackSpeedIn, Item.Properties builder)
+	public ItemCustomShovelEnd (Tier tier, float attackDamageIn, float attackSpeedIn, Item.Properties builder)
 	{
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 	}
     
 	@Override
-    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker)
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
     {
-		stack.setDamage(0);  //no damage
+		stack.setDamageValue(0);  //no damage
         
         return true;
     }
 
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving)
+    public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving)
     {
-        if (!worldIn.isRemote && (double)state.getBlockHardness(worldIn, pos) != 0.0D)
+        if (!worldIn.isClientSide && (double)state.getDestroySpeed(worldIn, pos) != 0.0D)
         {
-            stack.setDamage(0);
+            stack.setDamageValue(0);
         }
         return true;
     }
     
 	@Override
-	public void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn)
+	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
 		stack.getOrCreateTag().putBoolean("Unbreakable", true);
 	}

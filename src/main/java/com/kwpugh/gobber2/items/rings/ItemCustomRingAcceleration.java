@@ -6,19 +6,21 @@ import javax.annotation.Nullable;
 
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomRingAcceleration extends Item
 {
@@ -30,30 +32,30 @@ public class ItemCustomRingAcceleration extends Item
 	public static double velocityAcceleration = GobberConfigBuilder.RING_ACCELERATION_VELOCITY.get();
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
 	{		
-		ActionResult<ItemStack> result = super.onItemRightClick(world, player, hand);
-		ItemStack itemstack = result.getResult();
+		InteractionResultHolder<ItemStack> result = super.use(world, player, hand);
+		ItemStack itemstack = result.getObject();
 		
-		ItemStack equippedMain = player.getHeldItemMainhand();
+		ItemStack equippedMain = player.getMainHandItem();
 		
 		 if(equippedMain == itemstack)  //Only works while in the main hand
 		 {   			
 			 // Right-click while in air gives acceleration in direction looking
 			if(!player.isOnGround())
 			{
-				Vector3d look = player.getLookVec().normalize();
+				Vec3 look = player.getLookAngle().normalize();
 				double lookX = look.x;
 				double lookY = look.y;
 				double lookZ = look.z;
 				
 				if(velocityAcceleration < .30)
 				{
-					player.addVelocity(lookX * velocityAcceleration, lookY * velocityAcceleration, lookZ * velocityAcceleration);
+					player.push(lookX * velocityAcceleration, lookY * velocityAcceleration, lookZ * velocityAcceleration);
 				}
 				else
 				{
-					player.sendStatusMessage(new TranslationTextComponent("item.gobber2.gobber2_ring_acceleration.line3"), true);
+					player.displayClientMessage(new TranslatableComponent("item.gobber2.gobber2_ring_acceleration.line3"), true);
 				}				
 			}
 		 }	
@@ -61,10 +63,10 @@ public class ItemCustomRingAcceleration extends Item
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_acceleration.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_acceleration.line2").mergeStyle(TextFormatting.YELLOW)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_acceleration.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_acceleration.line2").withStyle(ChatFormatting.YELLOW)));
 	}  
 }

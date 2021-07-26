@@ -9,26 +9,26 @@ package com.kwpugh.gobber2.util;
 
 import java.util.List;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.EnchantedBookItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.ItemStack;
 
 public class ExpUtils
 {
-	public static int getPlayerXP(PlayerEntity player) 
+	public static int getPlayerXP(Player player) 
 	{
-		return (int)(ExpUtils.getExperienceForLevel(player.experienceLevel) + (player.experience * player.xpBarCap()));
+		return (int)(ExpUtils.getExperienceForLevel(player.experienceLevel) + (player.experienceProgress * player.getXpNeededForNextLevel()));
 	}
 
-	public static void addPlayerXP(PlayerEntity player, int amount) 
+	public static void addPlayerXP(Player player, int amount) 
 	{
 		int experience = getPlayerXP(player) + amount;
-		player.experienceTotal = experience;
+		player.totalExperience = experience;
 		player.experienceLevel = ExpUtils.getLevelForExperience(experience);
 		int expForLevel = ExpUtils.getExperienceForLevel(player.experienceLevel);
-		player.experience = (experience - expForLevel) / (float)player.xpBarCap();
+		player.experienceProgress = (experience - expForLevel) / (float)player.getXpNeededForNextLevel();
 	}
 
 	public static int xpBarCap(int level) 
@@ -77,6 +77,6 @@ public class ExpUtils
 	public static void addAllBooks(Enchantment enchantment, List<ItemStack> items) 
 	{
 		for (int i = enchantment.getMinLevel(); i <= enchantment.getMaxLevel(); i++)
-			items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(enchantment, i)));
+			items.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, i)));
 	}
 }

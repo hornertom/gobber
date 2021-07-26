@@ -9,29 +9,31 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.kwpugh.gobber2.items.toolbaseclasses.ExcavatorUtil;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomExcavatorEnd extends ShovelItem
 {
 	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.GRASS_BLOCK, 
-			Blocks.GRASS_PATH, 
+			Blocks.DIRT_PATH,
 			Blocks.DIRT, 
 			Blocks.COARSE_DIRT, 
 			Blocks.RED_SAND, 
@@ -41,22 +43,22 @@ public class ItemCustomExcavatorEnd extends ShovelItem
 			Blocks.SOUL_SAND, 
 			Blocks.CLAY);
 	
-	public static final Set<Material> EFFECTIVE_MATERIALS = ImmutableSet.of(Material.EARTH);
+	public static final Set<Material> EFFECTIVE_MATERIALS = ImmutableSet.of(Material.DIRT);
 
-	public ItemCustomExcavatorEnd(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder)
+	public ItemCustomExcavatorEnd(Tier tier, float attackDamageIn, float attackSpeedIn, Properties builder)
 	{
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 	}
 
 	@Override   //Used to override taking damage
-	public boolean onBlockDestroyed(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity entityLiving)
+	public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entityLiving)
 	{
-		if (!world.isRemote && state.getBlockHardness(world, pos) != 0.0F)
+		if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F)
 		{
-			ExcavatorUtil.attemptBreakNeighbors(world, pos, (PlayerEntity) entityLiving, EFFECTIVE_ON, EFFECTIVE_MATERIALS);
+			ExcavatorUtil.attemptBreakNeighbors(world, pos, (Player) entityLiving, EFFECTIVE_ON, EFFECTIVE_MATERIALS);
     	  
-			stack.damageItem(0, entityLiving, (p_220038_0_) -> {
-            p_220038_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+			stack.hurtAndBreak(0, entityLiving, (p_220038_0_) -> {
+            p_220038_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
          });
 		}
 
@@ -64,15 +66,15 @@ public class ItemCustomExcavatorEnd extends ShovelItem
 	}
 
 	@Override
-    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker)
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
     {
-		stack.setDamage(0);  //no damage
+		stack.setDamageValue(0);  //no damage
         
         return true;
     }
 	
 	@Override
-	public void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn)
+	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
 		stack.getOrCreateTag().putBoolean("Unbreakable", true);
 	}
@@ -84,9 +86,9 @@ public class ItemCustomExcavatorEnd extends ShovelItem
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_excavator.line1").mergeStyle(TextFormatting.GREEN)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_excavator.line1").withStyle(ChatFormatting.GREEN)));
 	}
 }

@@ -2,30 +2,32 @@ package com.kwpugh.gobber2.items.tools.sword;
 
 import com.kwpugh.gobber2.init.ItemInit;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomSword extends SwordItem
 {
-	public ItemCustomSword(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builder) 
+	public ItemCustomSword(Tier tier, int attackDamageIn, float attackSpeedIn, Properties builder) 
 	{
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 	}
 
 	@Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn)
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn)
     {
-        if (!worldIn.isRemote)
+        if (!worldIn.isClientSide)
         {
         	//TBD
         }
-        return new ActionResult<ItemStack>(ActionResultType.PASS, playerIn.getHeldItem(handIn));
+        return new InteractionResultHolder<ItemStack>(InteractionResult.PASS, playerIn.getItemInHand(handIn));
     }
 	
 	@Override
@@ -35,7 +37,7 @@ public class ItemCustomSword extends SwordItem
 	}
     
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
 	{
 		return repair.getItem() == ItemInit.GOBBER2_INGOT.get();
 	}

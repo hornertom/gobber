@@ -2,14 +2,14 @@ package com.kwpugh.gobber2.items.tools.shovel;
 
 import com.kwpugh.gobber2.init.ItemInit;
 
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShovelItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShovelItem;
 
 public class ItemCustomShovel extends ShovelItem
 {
-	public ItemCustomShovel (IItemTier tier, float attackDamageIn, float attackSpeedIn, Item.Properties builder)
+	public ItemCustomShovel (Tier tier, float attackDamageIn, float attackSpeedIn, Item.Properties builder)
 	{
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 	}
@@ -21,7 +21,7 @@ public class ItemCustomShovel extends ShovelItem
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
 	{
 		return repair.getItem() == ItemInit.GOBBER2_INGOT.get();
 	}

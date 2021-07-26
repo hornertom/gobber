@@ -4,20 +4,22 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomMedallionStepping extends Item
 {
@@ -29,60 +31,60 @@ public class ItemCustomMedallionStepping extends Item
 	float currentStepHeight;
 	
 	@Override
-	public void inventoryTick(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected)
+	public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected)
 	{		
-		if(entity instanceof PlayerEntity)
+		if(entity instanceof Player)
 		{
-			PlayerEntity player = (PlayerEntity) entity;
-			player.stepHeight = currentStepHeight;
+			Player player = (Player) entity;
+			player.maxUpStep = currentStepHeight;
 		}
 	}
 	
 	@Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
     {
 		if(!(player.isCrouching()))
 		{
-			player.sendStatusMessage((new TranslationTextComponent("item.gobber2.gobber2_medallion_stepping.line1", player.stepHeight).mergeStyle(TextFormatting.GREEN)), true);
+			player.displayClientMessage((new TranslatableComponent("item.gobber2.gobber2_medallion_stepping.line1", player.maxUpStep).withStyle(ChatFormatting.GREEN)), true);
 		}
 		
         if(player.isCrouching())
         {       	
-        	if(player.stepHeight < 1.0F)
+        	if(player.maxUpStep < 1.0F)
 		    {
-		    	player.stepHeight = 1.0F;
-		    	player.sendStatusMessage((new TranslationTextComponent("item.gobber2.gobber2_medallion_stepping.line2", player.stepHeight).mergeStyle(TextFormatting.GREEN)), true);
+		    	player.maxUpStep = 1.0F;
+		    	player.displayClientMessage((new TranslatableComponent("item.gobber2.gobber2_medallion_stepping.line2", player.maxUpStep).withStyle(ChatFormatting.GREEN)), true);
 		    }
-		    else if(player.stepHeight == 1.0F)
+		    else if(player.maxUpStep == 1.0F)
 			{
-		    	player.stepHeight = 2.1F;
-		    	player.sendStatusMessage((new TranslationTextComponent("item.gobber2.gobber2_medallion_stepping.line2", player.stepHeight).mergeStyle(TextFormatting.GREEN)), true);
+		    	player.maxUpStep = 2.1F;
+		    	player.displayClientMessage((new TranslatableComponent("item.gobber2.gobber2_medallion_stepping.line2", player.maxUpStep).withStyle(ChatFormatting.GREEN)), true);
 			}
-			else if(player.stepHeight == 2.1F)
+			else if(player.maxUpStep == 2.1F)
 			{
-				player.stepHeight = 3.1F;
-				player.sendStatusMessage((new TranslationTextComponent("item.gobber2.gobber2_medallion_stepping.line2", player.stepHeight).mergeStyle(TextFormatting.GREEN)), true);
+				player.maxUpStep = 3.1F;
+				player.displayClientMessage((new TranslatableComponent("item.gobber2.gobber2_medallion_stepping.line2", player.maxUpStep).withStyle(ChatFormatting.GREEN)), true);
 			}
-			else if(player.stepHeight == 3.1F)
+			else if(player.maxUpStep == 3.1F)
 			{
-				player.stepHeight = 0.6F;
-				player.sendStatusMessage((new TranslationTextComponent("item.gobber2.gobber2_medallion_stepping.line3").mergeStyle(TextFormatting.GREEN)), true);
-				player.sendStatusMessage((new TranslationTextComponent("item.gobber2.gobber2_medallion_stepping.line4").mergeStyle(TextFormatting.GREEN)), true);
+				player.maxUpStep = 0.6F;
+				player.displayClientMessage((new TranslatableComponent("item.gobber2.gobber2_medallion_stepping.line3").withStyle(ChatFormatting.GREEN)), true);
+				player.displayClientMessage((new TranslatableComponent("item.gobber2.gobber2_medallion_stepping.line4").withStyle(ChatFormatting.GREEN)), true);
 			}		    
 		    
-        	currentStepHeight = player.stepHeight;
+        	currentStepHeight = player.maxUpStep;
 
-            return new ActionResult<ItemStack>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+            return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, player.getItemInHand(hand));
         }
-        return super.onItemRightClick(world, player, hand);
+        return super.use(world, player, hand);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_medallion_stepping.line5").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_medallion_stepping.line6").mergeStyle(TextFormatting.YELLOW)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_medallion_stepping.line7").mergeStyle(TextFormatting.LIGHT_PURPLE)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_medallion_stepping.line5").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_medallion_stepping.line6").withStyle(ChatFormatting.YELLOW)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_medallion_stepping.line7").withStyle(ChatFormatting.LIGHT_PURPLE)));
 	} 
 }

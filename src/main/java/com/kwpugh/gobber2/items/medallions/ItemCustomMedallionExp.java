@@ -2,6 +2,26 @@ package com.kwpugh.gobber2.items.medallions;
 
 import java.util.List;
 
+import com.kwpugh.gobber2.Gobber2;
+import com.kwpugh.gobber2.util.ExpUtils;
+import java.util.Random;
+import javax.annotation.Nullable;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 /*
  * This code is credited to bl4ckscor3
  * 
@@ -9,28 +29,6 @@ import java.util.List;
  * 
  */
 
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
-import com.kwpugh.gobber2.Gobber2;
-import com.kwpugh.gobber2.util.ExpUtils;
-
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemCustomMedallionExp extends Item
 {
@@ -39,40 +37,35 @@ public class ItemCustomMedallionExp extends Item
 
 	public ItemCustomMedallionExp()
 	{
-		super(new Item.Properties().maxDamage(MAX_STORAGE).group(Gobber2.gobber2));
+		super(new Item.Properties().durability(MAX_STORAGE).tab(Gobber2.gobber2));
 	}
 
-	
 
-	
-	
-	
-	
 	// Test code
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
 	{
-		ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getItemInHand(hand);
 		
 		// Store the players xp
-		if(player.isSneaking() && getXPStored(stack) != MAX_STORAGE)
+		if(player.isShiftKeyDown() && getXPStored(stack) != MAX_STORAGE)
 		{
 			int playerXP = ExpUtils.getPlayerXP(player);
 
 			if(playerXP == 0)
-				return new ActionResult<>(ActionResultType.PASS, stack);
+				return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
 			int actuallyStored = addXP(stack, playerXP); //try to store all of the player's levels
 
 			ExpUtils.addPlayerXP(player, -actuallyStored);
 
-			if(!world.isRemote)
-				world.playSound(null, player.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.1F, (random.nextFloat() - random.nextFloat()) * 0.35F + 0.9F);
+			if(!world.isClientSide)
+				world.playSound(null, player.blockPosition(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.1F, (random.nextFloat() - random.nextFloat()) * 0.35F + 0.9F);
 
-			return new ActionResult<>(ActionResultType.SUCCESS, stack);
+			return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 		}
 		// Give stored xp to player
-		else if(!player.isSneaking() && getXPStored(stack) != 0)
+		else if(!player.isShiftKeyDown() && getXPStored(stack) != 0)
 		{
 			if(getXPStored(stack) >1401)
 			{
@@ -86,17 +79,17 @@ public class ItemCustomMedallionExp extends Item
 			}
 			
 
-			if(!world.isRemote)
+			if(!world.isClientSide)
 			{
 				float pitchMultiplier = player.experienceLevel > 30 ? 1.0F : player.experienceLevel / 30.0F;
 
-				world.playSound(null, player.getPosition(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, pitchMultiplier * 0.75F, 1.0F);
+				world.playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, pitchMultiplier * 0.75F, 1.0F);
 			}
 
-			return new ActionResult<>(ActionResultType.SUCCESS, stack);
+			return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 		}
 
-		return new ActionResult<>(ActionResultType.PASS, stack);
+		return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 	}
 	
 	
@@ -153,13 +146,13 @@ public class ItemCustomMedallionExp extends Item
 //	}
 
 	@Override
-	public void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn)
+	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
-		stack.setDamage(MAX_STORAGE);
+		stack.setDamageValue(MAX_STORAGE);
 	}
 	
 	@Override
-	public boolean hasEffect(ItemStack stack)
+	public boolean isFoil(ItemStack stack)
 	{
 		return getXPStored(stack) > 0;
 	}
@@ -177,7 +170,7 @@ public class ItemCustomMedallionExp extends Item
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
 	{
 		return false;
 	}
@@ -217,7 +210,7 @@ public class ItemCustomMedallionExp extends Item
 	 */
 	public void setStoredXP(ItemStack stack, int amount)
 	{
-		stack.setDamage(MAX_STORAGE - amount);
+		stack.setDamageValue(MAX_STORAGE - amount);
 	}
 
 	/**
@@ -227,16 +220,16 @@ public class ItemCustomMedallionExp extends Item
 	 */
 	public int getXPStored(ItemStack stack)
 	{
-		return MAX_STORAGE - stack.getDamage(); //if the damage is 0, the book is full on xp
+		return MAX_STORAGE - stack.getDamageValue(); //if the damage is 0, the book is full on xp
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_medallion_exp.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_medallion_exp.line3").mergeStyle(TextFormatting.BLUE)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_medallion_exp.line2", getXPStored(stack)).mergeStyle(TextFormatting.LIGHT_PURPLE)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_attraction.line3").mergeStyle(TextFormatting.YELLOW)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_medallion_exp.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_medallion_exp.line3").withStyle(ChatFormatting.BLUE)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_medallion_exp.line2", getXPStored(stack)).withStyle(ChatFormatting.LIGHT_PURPLE)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_attraction.line3").withStyle(ChatFormatting.YELLOW)));
 	} 
 }

@@ -27,7 +27,6 @@ public class GobberConfigBuilder
 
     public static ForgeConfigSpec.IntValue RING_BLINK_COOLDOWN;
     public static ForgeConfigSpec.IntValue RING_MINER_COOLDOWN;
-    public static ForgeConfigSpec.IntValue RING_LUMBERJACK_COOLDOWN;
     public static ForgeConfigSpec.IntValue RING_ABOVE_COOLDOWN;
     public static ForgeConfigSpec.IntValue RING_EXPLORER_COOLDOWN;
     public static ForgeConfigSpec.IntValue SNIPER_SWORD_COOLDOWN;
@@ -185,7 +184,6 @@ public class GobberConfigBuilder
         SERVER_BUILDER.comment("Item Cooldown Settings").push("item_cooldown_settings");
 
         RING_BLINK_COOLDOWN = SERVER_BUILDER.comment("Number of ticks duration for the Ring of Blink cooldown [0-3600, default: 60]").defineInRange("ringBlinkCooldown", 60, 0, 3600);
-        RING_LUMBERJACK_COOLDOWN = SERVER_BUILDER.comment("Number of ticks duration for the Ring of the Lumberjack cooldown [0-3600, default: 80]").defineInRange("ringLumberjackCooldown", 80, 0, 3600);
         RING_MINER_COOLDOWN = SERVER_BUILDER.comment("Number of ticks duration for the Ring of the Miner cooldown [0-3600, default: 80]").defineInRange("ringMinerCooldown", 80, 0, 3600);
         RING_ABOVE_COOLDOWN = SERVER_BUILDER.comment("Number of ticks duration for the Ring of Above cooldown [0-3600, default: 80]").defineInRange("ringAboveCooldown", 80, 0, 3600);
         RING_EXPLORER_COOLDOWN = SERVER_BUILDER.comment("Number of ticks duration for the Ring of the Explorer cooldown [0-3600, default: 480]").defineInRange("ringExplorerCooldown", 480, 0, 3600);

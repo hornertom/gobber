@@ -7,31 +7,33 @@ import javax.annotation.Nullable;
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import com.kwpugh.gobber2.util.GrowingUtil;
 
-import net.minecraft.block.BambooBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CactusBlock;
-import net.minecraft.block.CocoaBlock;
-import net.minecraft.block.CropsBlock;
-import net.minecraft.block.MelonBlock;
-import net.minecraft.block.NetherWartBlock;
-import net.minecraft.block.PumpkinBlock;
-import net.minecraft.block.SugarCaneBlock;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.BambooBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.CactusBlock;
+import net.minecraft.world.level.block.CocoaBlock;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.MelonBlock;
+import net.minecraft.world.level.block.NetherWartBlock;
+import net.minecraft.world.level.block.PumpkinBlock;
+import net.minecraft.world.level.block.SugarCaneBlock;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomStaffFarmer extends Item
 {
@@ -44,39 +46,39 @@ public class ItemCustomStaffFarmer extends Item
 		super(properties);
 	}
 
-	public void inventoryTick(ItemStack stack, World world, Entity entity, int par4, boolean par5)
+	public void inventoryTick(ItemStack stack, Level world, Entity entity, int par4, boolean par5)
     {      
-    	if(!(entity instanceof PlayerEntity) || world.isRemote)
+    	if(!(entity instanceof Player) || world.isClientSide)
         {
             return;
         }
 
-    	PlayerEntity player = (PlayerEntity)entity;
-        ItemStack equippedMain = player.getHeldItemMainhand();
+    	Player player = (Player)entity;
+        ItemStack equippedMain = player.getMainHandItem();
         
         if(stack == equippedMain)
         {
-        	if (!world.isRemote)
+        	if (!world.isClientSide)
         	{  
         		GrowingUtil.growCrops(world, player, baseTickDelay, radius);
         	}
         }
     }
 
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
 	{
-		ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getItemInHand(hand);
 		boolean maxAge;
 		
-		if (!world.isRemote)
+		if (!world.isClientSide)
 		{
-			BlockPos playerPos = new BlockPos(player.getPositionVec());
+			BlockPos playerPos = new BlockPos(player.position());
     		
-			for (BlockPos targetPos : BlockPos.getAllInBoxMutable(playerPos.add(-radius, -2, -radius), playerPos.add(radius, 3, radius)))
+			for (BlockPos targetPos : BlockPos.betweenClosed(playerPos.offset(-radius, -2, -radius), playerPos.offset(radius, 3, radius)))
     		{
 				Block block = world.getBlockState(targetPos).getBlock();
 				BlockState state = world.getBlockState(targetPos);
-				BlockState defaultState = block.getDefaultState();
+				BlockState defaultState = block.defaultBlockState();
 				
 				//These plants are simply broken with drops
 				if(block instanceof CocoaBlock ||
@@ -91,9 +93,9 @@ public class ItemCustomStaffFarmer extends Item
 				}
 				
 				//Crops are harvested, if at max age, and re-planted
-				if(block instanceof CropsBlock)
+				if(block instanceof CropBlock)
 				{
-					maxAge = state.get(((CropsBlock) block).getAgeProperty()) >= ((CropsBlock) block).getMaxAge();
+					maxAge = state.getValue(((CropBlock) block).getAgeProperty()) >= ((CropBlock) block).getMaxAge();
 					
 					if(maxAge)
 					{
@@ -101,23 +103,23 @@ public class ItemCustomStaffFarmer extends Item
 						
 						if(staffFarmerReplant)
 						{
-							world.setBlockState(targetPos, defaultState);	
+							world.setBlockAndUpdate(targetPos, defaultState);	
 						}
 					}
 				}
     		}    	
 			
 		}
-		return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+		return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, stack);
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_farmer.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_farmer.line3").mergeStyle(TextFormatting.YELLOW)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_farmer.line4").mergeStyle(TextFormatting.YELLOW)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_farmer.line2", radius).mergeStyle(TextFormatting.LIGHT_PURPLE)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_farmer.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_farmer.line3").withStyle(ChatFormatting.YELLOW)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_farmer.line4").withStyle(ChatFormatting.YELLOW)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_farmer.line2", radius).withStyle(ChatFormatting.LIGHT_PURPLE)));
 	}
 }

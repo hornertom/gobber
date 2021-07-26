@@ -2,15 +2,15 @@ package com.kwpugh.gobber2.world.feature;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.template.BlockMatchRuleTest;
-import net.minecraft.world.gen.feature.template.RuleTest;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
-public class CustomOreFeature implements IFeatureConfig
+public class CustomOreFeature implements FeatureConfiguration
 {
-   public static final Codec<CustomOreFeature> field_236566_a_ = RecordCodecBuilder.create((p_236568_0_) -> {
+   public static final Codec<CustomOreFeature> CODEC = RecordCodecBuilder.create((p_236568_0_) -> {
       return p_236568_0_.group(RuleTest.CODEC.fieldOf("target").forGetter((p_236570_0_) -> {
          return p_236570_0_.target;
       }), BlockState.CODEC.fieldOf("state").forGetter((p_236569_0_) -> {
@@ -32,6 +32,6 @@ public class CustomOreFeature implements IFeatureConfig
 
    public static final class FillerBlockType 
    {
-      public static final RuleTest end_stone = new BlockMatchRuleTest(Blocks.END_STONE);
+      public static final RuleTest end_stone = new BlockMatchTest(Blocks.END_STONE);
    }
 }

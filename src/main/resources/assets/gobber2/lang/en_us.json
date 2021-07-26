@@ -137,7 +137,6 @@
 	"item.gobber2.gobber2_leggings_dragon": "Dragon Leggings",
 	"item.gobber2.gobber2_boots_dragon": "Dragon Boots",
 
-
 	"item.gobber2.gobber2_armor_repair": "Armor Repair Plate",
 	"item.gobber2.gobber2_links_end": "End Armor Links",
 
@@ -364,20 +363,6 @@
 	"item.gobber2.gobber2_gooey_bread_nether": "Nether Gooey Bread",
 	"item.gobber2.gobber2_gooey_beef_nether": "Nether Gooey Beef",
 	"item.gobber2.gobber2_gooey_beefstew_nether": "Nether Gooey Beefstew",
-
-	"item.gobber2.gobber2_seed": "Gobber Seed",
-	"item.gobber2.gobber2_seed.line1": "Plant on farmland. Used to grow Gobber Plants, which drop Globettes",
-	"item.gobber2.gobber2_seed_nether": "Nether Gobber Seed",
-	"item.gobber2.gobber2_seed_nether.line1": "Plant on farmland. Used to grow Nether Gobber Plants, which drop Nether Globettes",
-	"item.gobber2.gobber2_seed_end": "End Gobber Seed",
-	"item.gobber2.gobber2_seed_end.line1": "Plant on farmland. Used to grow End Gobber Plants, which drop End Globettes",
-
-	"block.gobber2.gobber2_plant": "Gobber Plant",
-	"block.gobber2.gobber2_plant_nether": "Nether Gobber Plant",
-	"block.gobber2.gobber2_plant_end": "End Gobber Plant",
-	"item.gobber2.gobber2_plant": "Gobber Plant",
-	"item.gobber2.gobber2_plant_nether": "Nether Gobber Plant",
-	"item.gobber2.gobber2_plant_end": "End Gobber Plant",
 
 	"item.gobber2.gobber2_glass.line1": "A very sturdy glass block",
 	"item.gobber2.gobber2_glass.line2": "Drops the block when broken",

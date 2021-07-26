@@ -4,21 +4,23 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.monster.BlazeEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Blaze;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomRingBlaze extends Item
 {
@@ -28,34 +30,34 @@ public class ItemCustomRingBlaze extends Item
 		super(properties);
 	}
 
-	public void inventoryTick(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected)
+	public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected)
 	{		
-		if(entity instanceof PlayerEntity && !world.isRemote)
+		if(entity instanceof Player && !world.isClientSide)
 		{
-			PlayerEntity player = (PlayerEntity)entity;
+			Player player = (Player)entity;
 			
-			ItemStack equipped = player.getHeldItemMainhand();
+			ItemStack equipped = player.getMainHandItem();
 
-			if(!world.isRemote)
+			if(!world.isClientSide)
 			{
 				if(stack == equipped)
 				{
-					double x = player.getPosX();
-					double y = player.getPosY();
-					double z = player.getPosZ();
+					double x = player.getX();
+					double y = player.getY();
+					double z = player.getZ();
 
 					double d0 = 10.0D;
 					double d1 = 5.0D;
 					
-					MobEntity hostileMob = scanForHostileMobs(world, x, y, z, d0, d1);
+					Mob hostileMob = scanForHostileMobs(world, x, y, z, d0, d1);
 		
 					if(hostileMob != null)
 					{			
-						if (!world.isRemote)
+						if (!world.isClientSide)
 						{	
-							hostileMob.spawnExplosionParticle();
-							hostileMob.remove();
-							hostileMob.entityDropItem(Items.BLAZE_ROD, 3);
+							hostileMob.spawnAnim();
+							hostileMob.remove(Entity.RemovalReason.KILLED);
+							hostileMob.spawnAtLocation(Items.BLAZE_ROD, 3);
 						}
 					}	
 				}
@@ -63,21 +65,21 @@ public class ItemCustomRingBlaze extends Item
 		}
 	}
 		   
-	private MobEntity scanForHostileMobs(World world, double xpos, double ypos, double zpos, double d0, double d1)
+	private Mob scanForHostileMobs(Level world, double xpos, double ypos, double zpos, double d0, double d1)
 	{
-		List<MobEntity> list = world.<MobEntity>getEntitiesWithinAABB(MobEntity.class, new AxisAlignedBB
+		List<Mob> list = world.<Mob>getEntitiesOfClass(Mob.class, new AABB
 				((double) xpos - d0,
 				 (double) ypos - d1,
 				 (double) zpos - d0,
 				 (double) xpos + d0, ypos + d1,
 				 (double) zpos + d0));
 	
-		MobEntity closestMob = null;
+		Mob closestMob = null;
 	
-		for (MobEntity entitymob : list)
+		for (Mob entitymob : list)
 		{
 			// Only select these types of mobs for killing effect
-			if (entitymob instanceof BlazeEntity)
+			if (entitymob instanceof Blaze)
 			{
 				closestMob = entitymob;
 				return closestMob;
@@ -87,10 +89,10 @@ public class ItemCustomRingBlaze extends Item
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_blaze.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_blaze.line2").mergeStyle(TextFormatting.YELLOW)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_blaze.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_blaze.line2").withStyle(ChatFormatting.YELLOW)));
 	}   
 }

@@ -2,26 +2,28 @@ package com.kwpugh.gobber2.items.rings;
 
 import java.util.List;
 import javax.annotation.Nullable;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomRingTeleport extends Item
 {
@@ -33,47 +35,47 @@ public class ItemCustomRingTeleport extends Item
 	}
     
 	//Set the location in the ring
-	public ActionResultType onItemUse(ItemUseContext context)
+	public InteractionResult useOn(UseOnContext context)
 	{
-		 World world = context.getWorld();
-		 BlockPos pos = context.getPos();
-		 PlayerEntity player = context.getPlayer();
-		 Direction direction = context.getFace();
-		 ItemStack stackRing = context.getPlayer().getHeldItemMainhand();	 
+		 Level world = context.getLevel();
+		 BlockPos pos = context.getClickedPos();
+		 Player player = context.getPlayer();
+		 Direction direction = context.getClickedFace();
+		 ItemStack stackRing = context.getPlayer().getMainHandItem();	 
 		 
 		 if(getPosition(stackRing) == null && player.isCrouching())
 		 {
-			 setPosition(stackRing, world, pos.offset(direction), player);
-			 player.sendMessage(new TranslationTextComponent("item.gobber2.ring_teleport.line1").mergeStyle(TextFormatting.YELLOW), null);
+			 setPosition(stackRing, world, pos.relative(direction), player);
+			 player.sendMessage(new TranslatableComponent("item.gobber2.ring_teleport.line1").withStyle(ChatFormatting.YELLOW), null);
 			 
-			 return ActionResultType.SUCCESS;
+			 return InteractionResult.SUCCESS;
 		 }
 		 
 		 if(getPosition(stackRing) != null)
 		 {
-			 player.sendMessage(new TranslationTextComponent("item.gobber2.ring_teleport.line2").mergeStyle(TextFormatting.YELLOW), null);
+			 player.sendMessage(new TranslatableComponent("item.gobber2.ring_teleport.line2").withStyle(ChatFormatting.YELLOW), null);
 			 
-			 return ActionResultType.SUCCESS;
+			 return InteractionResult.SUCCESS;
 		 }
 
-		 return ActionResultType.PASS;
+		 return InteractionResult.PASS;
 	}
 	
 	//Use the teleport function or clear it
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
 	{
-		ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getItemInHand(hand);
 	  
 		if(getPosition(stack) != null && !player.isCrouching())
 		{
 			teleport(player, world, stack);
-			world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+			world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
 		}
 	 
 		if(getPosition(stack) != null && player.isCrouching())
 		{
 			setPosition(stack, world, null, player);
-			player.sendMessage(new TranslationTextComponent("item.gobber2.ring_teleport.line3").mergeStyle(TextFormatting.YELLOW), null);
+			player.sendMessage(new TranslatableComponent("item.gobber2.ring_teleport.line3").withStyle(ChatFormatting.YELLOW), null);
 		}
 	 
 //    	if(limitedUse)
@@ -86,7 +88,7 @@ public class ItemCustomRingTeleport extends Item
 //    		}   
 //    	}
     	
-		return new ActionResult<>(ActionResultType.PASS, player.getHeldItem(hand)); 
+		return new InteractionResultHolder<>(InteractionResult.PASS, player.getItemInHand(hand)); 
 	}
 
 	//Capture player position
@@ -97,11 +99,11 @@ public class ItemCustomRingTeleport extends Item
 			return null;
 		}		 
 
-		CompoundNBT tags = stack.getTag();
+		CompoundTag tags = stack.getTag();
 	 
 		if (tags.contains("pos"))
 		{
-			return NBTUtil.readBlockPos((CompoundNBT) tags.get("pos"));
+			return NbtUtils.readBlockPos((CompoundTag) tags.get("pos"));
 		}
 		return null;
 	}
@@ -114,7 +116,7 @@ public class ItemCustomRingTeleport extends Item
 			return Integer.MAX_VALUE;
 		}
 	 
-		CompoundNBT tags = stack.getTag();
+		CompoundTag tags = stack.getTag();
 	 
 		if (tags.contains("dim"))
 		{
@@ -124,18 +126,18 @@ public class ItemCustomRingTeleport extends Item
 	}
 	
 	//Set position and dimension in the NBT
-	public static void setPosition(ItemStack stack, World world, BlockPos pos, PlayerEntity player)
+	public static void setPosition(ItemStack stack, Level world, BlockPos pos, Player player)
 	{
-		if(world.isRemote)
+		if(world.isClientSide)
 		{
 			return;
 		}
 	 
-		CompoundNBT tags;
+		CompoundTag tags;
 	 
 		if (!stack.hasTag())
 		{
-			tags = new CompoundNBT();
+			tags = new CompoundTag();
 		}
 		else
 		{
@@ -149,19 +151,19 @@ public class ItemCustomRingTeleport extends Item
 		}
 		else
 		{
-			tags.put("pos", NBTUtil.writeBlockPos(pos));
+			tags.put("pos", NbtUtils.writeBlockPos(pos));
 			
-			if(world.getDimensionKey().equals(World.OVERWORLD)) tags.putInt("dim", 0); //OVERWORLD
-			if(world.getDimensionKey().equals(World.THE_NETHER)) tags.putInt("dim", -1); //NETHER
-			if(world.getDimensionKey().equals(World.THE_END)) tags.putInt("dim", 1); //END
+			if(world.dimension().equals(Level.OVERWORLD)) tags.putInt("dim", 0); //OVERWORLD
+			if(world.dimension().equals(Level.NETHER)) tags.putInt("dim", -1); //NETHER
+			if(world.dimension().equals(Level.END)) tags.putInt("dim", 1); //END
 		}
 		stack.setTag(tags);
 	}
 
 	//Teleport
-	public void teleport(PlayerEntity player, World world, ItemStack stack)
+	public void teleport(Player player, Level world, ItemStack stack)
 	{
-		if(world.isRemote)
+		if(world.isClientSide)
 		{
 			return;
 		}
@@ -169,26 +171,26 @@ public class ItemCustomRingTeleport extends Item
 		BlockPos pos = getPosition(stack);
 		int dim = getDimension(stack);
 
-		if(world.getDimensionKey().equals(World.OVERWORLD) && dim == 0)
+		if(world.dimension().equals(Level.OVERWORLD) && dim == 0)
 		{
-			player.setPositionAndUpdate(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
+			player.teleportTo(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 		}
-		else if(world.getDimensionKey().equals(World.THE_NETHER) && dim == -1)
+		else if(world.dimension().equals(Level.NETHER) && dim == -1)
 		{
-			player.setPositionAndUpdate(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
+			player.teleportTo(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 		}
-		else if(world.getDimensionKey().equals(World.THE_END) && dim == 1)
+		else if(world.dimension().equals(Level.END) && dim == 1)
 		{
-			player.setPositionAndUpdate(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
+			player.teleportTo(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 		}
 		else
 		{
-			player.sendMessage(new TranslationTextComponent("item.gobber2.ring_teleport.line8").mergeStyle(TextFormatting.YELLOW), null);
+			player.sendMessage(new TranslatableComponent("item.gobber2.ring_teleport.line8").withStyle(ChatFormatting.YELLOW), null);
 		}
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag)
+	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag)
 	{	
 		String dimName;
 		
@@ -207,19 +209,19 @@ public class ItemCustomRingTeleport extends Item
 			dimName = "Unknown";
 			break;
 		}
-		super.addInformation(stack, world, tooltip, flag);
+		super.appendHoverText(stack, world, tooltip, flag);
 				
-		tooltip.add((new TranslationTextComponent("item.gobber2.ring_teleport.line9").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.ring_teleport.line10").mergeStyle(TextFormatting.AQUA)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.ring_teleport.line11").mergeStyle(TextFormatting.BLUE)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.ring_teleport.line12").mergeStyle(TextFormatting.RED)));
+		tooltip.add((new TranslatableComponent("item.gobber2.ring_teleport.line9").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.ring_teleport.line10").withStyle(ChatFormatting.AQUA)));
+		tooltip.add((new TranslatableComponent("item.gobber2.ring_teleport.line11").withStyle(ChatFormatting.BLUE)));
+		tooltip.add((new TranslatableComponent("item.gobber2.ring_teleport.line12").withStyle(ChatFormatting.RED)));
 		
 		if(getPosition(stack) != null)
 		{
 			BlockPos pos = getPosition(stack);
 		 
-			tooltip.add((new TranslationTextComponent("item.gobber2.ring_teleport.line13").mergeStyle(TextFormatting.GREEN)));
-			tooltip.add((new TranslationTextComponent("item.gobber2.ring_teleport.line14", dimName, pos.getX(), pos.getY(), pos.getZ()).mergeStyle(TextFormatting.LIGHT_PURPLE)));
+			tooltip.add((new TranslatableComponent("item.gobber2.ring_teleport.line13").withStyle(ChatFormatting.GREEN)));
+			tooltip.add((new TranslatableComponent("item.gobber2.ring_teleport.line14", dimName, pos.getX(), pos.getY(), pos.getZ()).withStyle(ChatFormatting.LIGHT_PURPLE)));
 		}
 	}
 }

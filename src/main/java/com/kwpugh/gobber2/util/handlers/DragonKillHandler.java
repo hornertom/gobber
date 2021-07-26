@@ -2,11 +2,11 @@ package com.kwpugh.gobber2.util.handlers;
 
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.EndPodiumFeature;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.EndPodiumFeature;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,16 +34,16 @@ public class DragonKillHandler
     public void LivingDeathEvent(LivingDeathEvent event)
     {
         //if(event.getEntity().getEntityWorld().getDimension() instanceof EndDimension)
-        if(event.getEntity().getEntityWorld().getDimensionKey().equals(World.THE_END))
+        if(event.getEntity().getCommandSenderWorld().dimension().equals(Level.END))
     	{
         	if(GobberConfigBuilder.ENABLE_DRAGON_KILL_EVERY_KILL.get())
         	{
-                if (event.getEntity() instanceof EnderDragonEntity)
+                if (event.getEntity() instanceof EnderDragon)
                 {
-                    EnderDragonEntity d = (EnderDragonEntity) event.getEntity();
-                    if (d.getFightManager() != null && d.getFightManager().hasPreviouslyKilledDragon())
+                    EnderDragon d = (EnderDragon) event.getEntity();
+                    if (d.getDragonFight() != null && d.getDragonFight().hasPreviouslyKilledDragon())
                     {
-                        event.getEntity().getEntityWorld().setBlockState(event.getEntity().getEntityWorld().getHeight(Heightmap.Type.MOTION_BLOCKING, EndPodiumFeature.END_PODIUM_LOCATION), Blocks.DRAGON_EGG.getDefaultState());
+                        event.getEntity().getCommandSenderWorld().setBlockAndUpdate(event.getEntity().getCommandSenderWorld().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, EndPodiumFeature.END_PODIUM_LOCATION), Blocks.DRAGON_EGG.defaultBlockState());
                     }
                 }	
         	}

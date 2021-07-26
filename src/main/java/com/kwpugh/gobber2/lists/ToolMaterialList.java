@@ -2,11 +2,11 @@ package com.kwpugh.gobber2.lists;
 
 import com.kwpugh.gobber2.init.ItemInit;
 
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 
-public enum ToolMaterialList implements IItemTier
+public enum ToolMaterialList implements Tier
 {
 	GOBBER2(1.0f, 9.0f, 3800, 4, 20, ItemInit.GOBBER2_INGOT.get()),
 	GOBBER2_NETHER(1.0f, 12.0f, 5200, 5, 25, ItemInit.GOBBER2_INGOT_NETHER.get()),
@@ -27,38 +27,38 @@ public enum ToolMaterialList implements IItemTier
 	}
 
 	@Override
-	public float getAttackDamage() 
+	public float getAttackDamageBonus() 
 	{
 		return this.attackDamage;
 	}
 
 	@Override
-	public float getEfficiency() 
+	public float getSpeed() 
 	{
 		return this.efficiency;
 	}
 
 	@Override
-	public int getEnchantability() 
+	public int getEnchantmentValue() 
 	{
 		return this.enchantability;
 	}
 
 	@Override
-	public int getHarvestLevel()
+	public int getLevel()
 	{
 		return this.harvestLevel;
 	}
 
 	@Override
-	public int getMaxUses() 
+	public int getUses() 
 	{
 		return this.durability;
 	}
 
 	@Override
-	public Ingredient getRepairMaterial() 
+	public Ingredient getRepairIngredient() 
 	{
-		return Ingredient.fromItems(this.repairMaterial);
+		return Ingredient.of(this.repairMaterial);
 	}
 }

@@ -3,40 +3,42 @@ package com.kwpugh.gobber2.items.tools.pickaxe;
 
 import com.kwpugh.gobber2.init.ItemInit;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomPickaxeNether extends PickaxeItem
 {
-	public ItemCustomPickaxeNether(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builder) 
+	public ItemCustomPickaxeNether(Tier tier, int attackDamageIn, float attackSpeedIn, Properties builder) 
 	{
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 	}
 	
-	public void inventoryTick(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected)
+	public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected)
 	{		
 
 	}	
 
 	@Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
     {
 		//ItemStack stack = player.getHeldItem(hand);
 		
-        if(!world.isRemote && player.isSneaking())
+        if(!world.isClientSide && player.isShiftKeyDown())
         {
             //EnableUtil.changeEnabled(player, hand);
             //player.sendMessage(new StringTextComponent("Night vision ability active: " + EnableUtil.isEnabled(stack)));
-            return new ActionResult<ItemStack>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+            return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, player.getItemInHand(hand));
         }
-        return super.onItemRightClick(world, player, hand);
+        return super.use(world, player, hand);
     }
 	
 	@Override
@@ -46,7 +48,7 @@ public class ItemCustomPickaxeNether extends PickaxeItem
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
 	{
 		return repair.getItem() == ItemInit.GOBBER2_INGOT_NETHER.get();
 	}

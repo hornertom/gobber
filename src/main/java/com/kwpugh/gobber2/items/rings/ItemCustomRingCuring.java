@@ -4,18 +4,20 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomRingCuring extends Item
 {
@@ -25,74 +27,74 @@ public class ItemCustomRingCuring extends Item
 		super(properties);
 	}
 
-	public void inventoryTick(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected)
+	public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected)
 	{
-		PlayerEntity player = (PlayerEntity)entity;
+		Player player = (Player)entity;
 		
-		if(entity instanceof PlayerEntity)
+		if(entity instanceof Player)
 		{		
-			if(player.getActivePotionEffect(Effects.BLINDNESS) != null)
+			if(player.getEffect(MobEffects.BLINDNESS) != null)
 			{
-				player.removePotionEffect(Effects.BLINDNESS);
+				player.removeEffect(MobEffects.BLINDNESS);
 			}
 	
-			if(player.getActivePotionEffect(Effects.SLOWNESS) != null)
+			if(player.getEffect(MobEffects.MOVEMENT_SLOWDOWN) != null)
 			{
-				player.removePotionEffect(Effects.SLOWNESS);
+				player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 			}
 			
-			if(player.getActivePotionEffect(Effects.MINING_FATIGUE) != null)
+			if(player.getEffect(MobEffects.DIG_SLOWDOWN) != null)
 			{
-				player.removePotionEffect(Effects.MINING_FATIGUE);
+				player.removeEffect(MobEffects.DIG_SLOWDOWN);
 			}
 			
-			if(player.getActivePotionEffect(Effects.INSTANT_DAMAGE) != null)
+			if(player.getEffect(MobEffects.HARM) != null)
 			{
-				player.removePotionEffect(Effects.INSTANT_DAMAGE);
+				player.removeEffect(MobEffects.HARM);
 			}
 			
-			if(player.getActivePotionEffect(Effects.NAUSEA) != null)
+			if(player.getEffect(MobEffects.CONFUSION) != null)
 			{
-				player.removePotionEffect(Effects.NAUSEA);
+				player.removeEffect(MobEffects.CONFUSION);
 			}
 			
-			if(player.getActivePotionEffect(Effects.HUNGER) != null)
+			if(player.getEffect(MobEffects.HUNGER) != null)
 			{
-				player.removePotionEffect(Effects.HUNGER);
+				player.removeEffect(MobEffects.HUNGER);
 			}
 			
-			if(player.getActivePotionEffect(Effects.POISON) != null)
+			if(player.getEffect(MobEffects.POISON) != null)
 			{
-				player.removePotionEffect(Effects.POISON);
+				player.removeEffect(MobEffects.POISON);
 			}
 			
-			if(player.getActivePotionEffect(Effects.WITHER) != null)
+			if(player.getEffect(MobEffects.WITHER) != null)
 			{
-				player.removePotionEffect(Effects.WITHER);
+				player.removeEffect(MobEffects.WITHER);
 			}
 			
-			if(player.getActivePotionEffect(Effects.LEVITATION) != null)
+			if(player.getEffect(MobEffects.LEVITATION) != null)
 			{
-				player.removePotionEffect(Effects.LEVITATION);
+				player.removeEffect(MobEffects.LEVITATION);
 			}
 			
-			if(player.getActivePotionEffect(Effects.UNLUCK) != null)
+			if(player.getEffect(MobEffects.UNLUCK) != null)
 			{
-				player.removePotionEffect(Effects.UNLUCK);
+				player.removeEffect(MobEffects.UNLUCK);
 			}
 			
-			if(player.getActivePotionEffect(Effects.WEAKNESS) != null)
+			if(player.getEffect(MobEffects.WEAKNESS) != null)
 			{
-				player.removePotionEffect(Effects.WEAKNESS);
+				player.removeEffect(MobEffects.WEAKNESS);
 			}	
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_curing.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_curing.line2").mergeStyle(TextFormatting.YELLOW)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_curing.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_curing.line2").withStyle(ChatFormatting.YELLOW)));
 	}   
 }

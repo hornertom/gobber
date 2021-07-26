@@ -6,22 +6,24 @@ import javax.annotation.Nullable;
 
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ArrowItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomStaffSniper extends Item
 {
@@ -33,29 +35,29 @@ public class ItemCustomStaffSniper extends Item
 	int staffSniperCooldown = GobberConfigBuilder.SNIPER_STAFF_COOLDOWN.get();
 	
 	@Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn)
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn)
     {
-		playerIn.getCooldownTracker().setCooldown(this, staffSniperCooldown);
+		playerIn.getCooldowns().addCooldown(this, staffSniperCooldown);
 		
-        if (!worldIn.isRemote)
+        if (!worldIn.isClientSide)
         {
             ArrowItem itemarrow = (ArrowItem)Items.ARROW;
-            AbstractArrowEntity entityarrow = itemarrow.createArrow(worldIn, new ItemStack(Items.ARROW), playerIn);
+            AbstractArrow entityarrow = itemarrow.createArrow(worldIn, new ItemStack(Items.ARROW), playerIn);
             float arrowVelocity = 60.0F;
-            entityarrow.setDirectionAndMovement(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, arrowVelocity, 1.0F);
-            entityarrow.setDamage(1);
-            worldIn.addEntity(entityarrow);
-            entityarrow.pickupStatus = AbstractArrowEntity.PickupStatus.DISALLOWED;
+            entityarrow.shootFromRotation(playerIn, playerIn.xRotO, playerIn.yRotO, 0.0F, arrowVelocity, 1.0F);
+            entityarrow.setBaseDamage(1);
+            worldIn.addFreshEntity(entityarrow);
+            entityarrow.pickup = AbstractArrow.Pickup.DISALLOWED;
         }
-        return new ActionResult<ItemStack>(ActionResultType.PASS, playerIn.getHeldItem(handIn));
+        return new InteractionResultHolder<ItemStack>(InteractionResult.PASS, playerIn.getItemInHand(handIn));
     }
 	
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_sniper.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_sniper.line2").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_sniper.line3").mergeStyle(TextFormatting.YELLOW)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_sniper.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_sniper.line2").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_sniper.line3").withStyle(ChatFormatting.YELLOW)));
 	}
 }

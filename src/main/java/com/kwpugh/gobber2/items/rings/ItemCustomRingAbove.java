@@ -6,23 +6,25 @@ import javax.annotation.Nullable;
 
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomRingAbove extends Item
 {
@@ -33,30 +35,30 @@ public class ItemCustomRingAbove extends Item
 
 	int ringAboveCooldown = GobberConfigBuilder.RING_ABOVE_COOLDOWN.get();
 	
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
 	{
-		ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getItemInHand(hand);
 	
 		//if (world.getDimension().getType() != DimensionType.OVERWORLD)
-		if(!world.getDimensionKey().equals(World.OVERWORLD))
+		if(!world.dimension().equals(Level.OVERWORLD))
 		{
-			player.sendStatusMessage(new TranslationTextComponent("item.gobber2.gobber2_ring_above.line5"), true);
+			player.displayClientMessage(new TranslatableComponent("item.gobber2.gobber2_ring_above.line5"), true);
 		}
 		
-		player.getCooldownTracker().setCooldown(this, ringAboveCooldown);
+		player.getCooldowns().addCooldown(this, ringAboveCooldown);
 		
-		if (!world.isRemote && (world.getDimensionKey().equals(World.OVERWORLD)))
+		if (!world.isClientSide && (world.dimension().equals(Level.OVERWORLD)))
 		{
-			if(player.isSneaking())
+			if(player.isShiftKeyDown())
 			{
 				//Checking from bottom of world and working upward
-				double x = player.getPosX();
+				double x = player.getX();
 				double y = 0;
-				double z = player.getPosZ();
+				double z = player.getZ();
 				
-				Chunk chunk = world.getChunk((int) player.getPosX() >> 4, (int)player.getPosZ() >> 4);
+				LevelChunk chunk = world.getChunk((int) player.getX() >> 4, (int)player.getZ() >> 4);
 
-				while (y < world.getHeight())
+				while (y < world.getMaxBuildHeight())
 				{
 		            y++;
 
@@ -70,9 +72,9 @@ public class ItemCustomRingAbove extends Item
 		                    if (chunk.getBlockState(headPos).getMaterial().equals(Material.AIR))
 		                    {	                    	
 		                    	player.stopRiding();
-		    	           		((ServerPlayerEntity)player).connection.setPlayerLocation(x, y, z, player.rotationYaw, player.rotationPitch);
+		    	           		((ServerPlayer)player).connection.teleport(x, y, z, player.yRotO, player.xRotO);
 		                    	
-		    	           		return ActionResult.resultSuccess(stack);                       
+		    	           		return InteractionResultHolder.success(stack);                       
 		                    }
 		                }
 		            }
@@ -82,12 +84,12 @@ public class ItemCustomRingAbove extends Item
 			else
 			{	
 				//Checking from top of world downward
-				double x = player.getPosX();
+				double x = player.getX();
 				//double y = world.getMaxHeight();
 				double y = 255;
-				double z = player.getPosZ();
+				double z = player.getZ();
 				
-				Chunk chunk = world.getChunk((int) player.getPosX() >> 4, (int)player.getPosZ() >> 4);
+				LevelChunk chunk = world.getChunk((int) player.getX() >> 4, (int)player.getZ() >> 4);
 
 				while (y > 0)
 				{
@@ -103,9 +105,9 @@ public class ItemCustomRingAbove extends Item
 		                    if (chunk.getBlockState(headPos).getMaterial().equals(Material.AIR))
 		                    {	                    	
 		                    	player.stopRiding();
-		    	           		((ServerPlayerEntity)player).connection.setPlayerLocation(x, y, z, player.rotationYaw, player.rotationPitch);
+		    	           		((ServerPlayer)player).connection.teleport(x, y, z, player.yRotO, player.xRotO);
 		                    	
-		    	           		return ActionResult.resultSuccess(stack);                       
+		    	           		return InteractionResultHolder.success(stack);                       
 		                    }
 		                }
 		            }
@@ -113,17 +115,17 @@ public class ItemCustomRingAbove extends Item
 			}
 		}
 		
-		return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+		return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, stack);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_above.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_above.line2").mergeStyle(TextFormatting.YELLOW)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_above.line3").mergeStyle(TextFormatting.YELLOW)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_above.line4").mergeStyle(TextFormatting.RED)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring.cooldown",ringAboveCooldown).mergeStyle(TextFormatting.LIGHT_PURPLE)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_above.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_above.line2").withStyle(ChatFormatting.YELLOW)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_above.line3").withStyle(ChatFormatting.YELLOW)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_above.line4").withStyle(ChatFormatting.RED)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring.cooldown",ringAboveCooldown).withStyle(ChatFormatting.LIGHT_PURPLE)));
 	} 	
 }

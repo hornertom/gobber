@@ -2,7 +2,7 @@ package com.kwpugh.gobber2.lists;
 
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 
-import net.minecraft.item.Food;
+import net.minecraft.world.food.FoodProperties;
 
 public class FoodList
 {
@@ -28,15 +28,15 @@ public class FoodList
 	static int netherGooeyBeefstewHunger = GobberConfigBuilder.NETHER_GOOEY_BEEFSTEW_HUNGER.get();
 	static double netherGooeyBeefstewSaturation = GobberConfigBuilder.NETHER_GOOEY_BEEFSTEW_SATURATION.get();
 	
-	public static Food gooFood = (new Food.Builder()).hunger(gooHunger).saturation((float) gooSaturation).setAlwaysEdible().build();
-	public static Food gooeyApple = (new Food.Builder()).hunger(gooeyAppleHunger).saturation((float) gooeyAppleSaturation).setAlwaysEdible().build();
-	public static Food gooeyBread = (new Food.Builder()).hunger(gooeyBreadHunger).saturation((float) gooeyBreadSaturation).setAlwaysEdible().build();
-	public static Food gooeyBeef = (new Food.Builder()).hunger(gooeyBeefHunger).saturation((float) gooeyBeefSaturation).meat().setAlwaysEdible().build();
-	public static Food gooeyBeefstew = (new Food.Builder()).hunger(gooeyBeefstewHunger).saturation((float) gooeyBeefstewSaturation).setAlwaysEdible().build();
+	public static FoodProperties gooFood = (new FoodProperties.Builder()).nutrition(gooHunger).saturationMod((float) gooSaturation).alwaysEat().build();
+	public static FoodProperties gooeyApple = (new FoodProperties.Builder()).nutrition(gooeyAppleHunger).saturationMod((float) gooeyAppleSaturation).alwaysEat().build();
+	public static FoodProperties gooeyBread = (new FoodProperties.Builder()).nutrition(gooeyBreadHunger).saturationMod((float) gooeyBreadSaturation).alwaysEat().build();
+	public static FoodProperties gooeyBeef = (new FoodProperties.Builder()).nutrition(gooeyBeefHunger).saturationMod((float) gooeyBeefSaturation).meat().alwaysEat().build();
+	public static FoodProperties gooeyBeefstew = (new FoodProperties.Builder()).nutrition(gooeyBeefstewHunger).saturationMod((float) gooeyBeefstewSaturation).alwaysEat().build();
 	
-	public static Food gooFoodNether = (new Food.Builder()).hunger(netherGooHunger).saturation((float) netherGooSaturation).setAlwaysEdible().build();
-	public static Food gooeyAppleNether = (new Food.Builder()).hunger(netherGooeyAppleHunger).saturation((float) netherGooeyAppleSaturation).setAlwaysEdible().build();
-	public static Food gooeyBreadNether = (new Food.Builder()).hunger(netherGooeyBreadHunger).saturation((float) netherGooeyBreadSaturation).setAlwaysEdible().build();
-	public static Food gooeyBeefNether = (new Food.Builder()).hunger(netherGooeyBeefHunger).saturation((float) netherGooeyBeefSaturation).meat().setAlwaysEdible().build();
-	public static Food gooeyBeefstewNether = (new Food.Builder()).hunger(netherGooeyBeefstewHunger).saturation((float) netherGooeyBeefstewSaturation).setAlwaysEdible().build();
+	public static FoodProperties gooFoodNether = (new FoodProperties.Builder()).nutrition(netherGooHunger).saturationMod((float) netherGooSaturation).alwaysEat().build();
+	public static FoodProperties gooeyAppleNether = (new FoodProperties.Builder()).nutrition(netherGooeyAppleHunger).saturationMod((float) netherGooeyAppleSaturation).alwaysEat().build();
+	public static FoodProperties gooeyBreadNether = (new FoodProperties.Builder()).nutrition(netherGooeyBreadHunger).saturationMod((float) netherGooeyBreadSaturation).alwaysEat().build();
+	public static FoodProperties gooeyBeefNether = (new FoodProperties.Builder()).nutrition(netherGooeyBeefHunger).saturationMod((float) netherGooeyBeefSaturation).meat().alwaysEat().build();
+	public static FoodProperties gooeyBeefstewNether = (new FoodProperties.Builder()).nutrition(netherGooeyBeefstewHunger).saturationMod((float) netherGooeyBeefstewSaturation).alwaysEat().build();
 }

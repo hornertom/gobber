@@ -6,17 +6,19 @@ import javax.annotation.Nullable;
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import com.kwpugh.gobber2.util.GrowingUtil;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomRingFarmer extends Item
 {
@@ -28,19 +30,19 @@ public class ItemCustomRingFarmer extends Item
 		super(properties);
 	}
  
-	public void inventoryTick(ItemStack stack, World world, Entity entity, int par4, boolean par5)
+	public void inventoryTick(ItemStack stack, Level world, Entity entity, int par4, boolean par5)
     {      
-    	if(!(entity instanceof PlayerEntity) || world.isRemote)
+    	if(!(entity instanceof Player) || world.isClientSide)
         {
             return;
         }
 
-    	PlayerEntity player = (PlayerEntity)entity;
-        ItemStack equippedMain = player.getHeldItemMainhand();
+    	Player player = (Player)entity;
+        ItemStack equippedMain = player.getMainHandItem();
         
         if(stack == equippedMain)
         {
-			if (!world.isRemote)
+			if (!world.isClientSide)
 			{  
 				GrowingUtil.growCrops(world, player, baseTickDelay, radius);
 			}
@@ -48,11 +50,11 @@ public class ItemCustomRingFarmer extends Item
     }
        
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_farmer.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_farmer.line2").mergeStyle(TextFormatting.YELLOW)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_farmer.line3", radius).mergeStyle(TextFormatting.LIGHT_PURPLE)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_farmer.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_farmer.line2").withStyle(ChatFormatting.YELLOW)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_farmer.line3", radius).withStyle(ChatFormatting.LIGHT_PURPLE)));
 	}  
 }

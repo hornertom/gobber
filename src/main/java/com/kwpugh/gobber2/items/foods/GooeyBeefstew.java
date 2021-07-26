@@ -1,8 +1,10 @@
 package com.kwpugh.gobber2.items.foods;
 
-import net.minecraft.item.SoupItem;
+import net.minecraft.world.item.BowlFoodItem;
 
-public class GooeyBeefstew extends SoupItem
+import net.minecraft.world.item.Item.Properties;
+
+public class GooeyBeefstew extends BowlFoodItem
 {
 
 	public GooeyBeefstew(Properties p_i50054_1_)

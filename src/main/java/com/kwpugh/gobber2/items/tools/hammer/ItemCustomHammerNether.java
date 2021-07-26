@@ -3,29 +3,31 @@ package com.kwpugh.gobber2.items.tools.hammer;
 import com.kwpugh.gobber2.init.ItemInit;
 import com.kwpugh.gobber2.items.toolbaseclasses.HammerBase;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomHammerNether extends HammerBase
 {	
-	public ItemCustomHammerNether(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builder)
+	public ItemCustomHammerNether(Tier tier, int attackDamageIn, float attackSpeedIn, Properties builder)
 	{
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 	}
 	
 	@Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
     {
-        if(!world.isRemote && player.isSneaking())
+        if(!world.isClientSide && player.isShiftKeyDown())
         {
-            return new ActionResult<ItemStack>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+            return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, player.getItemInHand(hand));
         }
-        return super.onItemRightClick(world, player, hand);
+        return super.use(world, player, hand);
     }
 	
 	@Override
@@ -35,7 +37,7 @@ public class ItemCustomHammerNether extends HammerBase
 	}
     
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
 	{
 		return repair.getItem() == ItemInit.GOBBER2_INGOT_NETHER.get();
 	}

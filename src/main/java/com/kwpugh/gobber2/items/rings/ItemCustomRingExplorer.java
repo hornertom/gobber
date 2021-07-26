@@ -7,28 +7,30 @@ import javax.annotation.Nullable;
 
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomRingExplorer extends Item
 {
@@ -42,22 +44,22 @@ public class ItemCustomRingExplorer extends Item
     int min = GobberConfigBuilder.RING_EXPLORER_MIN_RANGE.get();
     int max = GobberConfigBuilder.RING_EXPLORER_MAX_RANGE.get();
     
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
 	{
-		ItemStack stack = player.getHeldItem(hand);
-		player.getCooldownTracker().setCooldown(this, ringExplorerCooldown);
+		ItemStack stack = player.getItemInHand(hand);
+		player.getCooldowns().addCooldown(this, ringExplorerCooldown);
 		
-		if (!world.getDimensionKey().equals(World.OVERWORLD))
+		if (!world.dimension().equals(Level.OVERWORLD))
 		{
-			player.sendStatusMessage(new TranslationTextComponent("item.gobber2.gobber2_ring_above.line5"), true);
-			return ActionResult.resultSuccess(stack);	
+			player.displayClientMessage(new TranslatableComponent("item.gobber2.gobber2_ring_above.line5"), true);
+			return InteractionResultHolder.success(stack);	
 		}
 		
-		if (!world.isRemote)
+		if (!world.isClientSide)
 		{
 			//ServerPlayerEntity serverPlayer = (ServerPlayerEntity)player;
-			ServerWorld serverWorld = (ServerWorld)world;		
-			BlockPos worldSpawn = serverWorld.getSpawnPoint();
+			ServerLevel serverWorld = (ServerLevel)world;		
+			BlockPos worldSpawn = serverWorld.getSharedSpawnPos();
 		
 			Random rand = new Random();
 	
@@ -66,19 +68,19 @@ public class ItemCustomRingExplorer extends Item
 	        int y = 255;
 	        int z = (int) Math.round(worldSpawn.getZ()) + rand.nextInt(max + min) - min;
 	
-	        Chunk chunk = world.getChunk(x >> 4, z >> 4);
+	        LevelChunk chunk = world.getChunk(x >> 4, z >> 4);
 	        Biome biome = world.getBiome(new BlockPos(x, y, z));
 	
-	        if ( (biome.getCategory().getName().equals("ocean")) || 
-	        	(biome.getCategory().getName().equals("river")) || 
-	        	(biome.getCategory().getName().equals("beach"))  )
+	        if ( (biome.getBiomeCategory().getName().equals("ocean")) || 
+	        	(biome.getBiomeCategory().getName().equals("river")) || 
+	        	(biome.getBiomeCategory().getName().equals("beach"))  )
 	        {	
-	        	if(world.isRemote)  //test for server
+	        	if(world.isClientSide)  //test for server
 	        	{
-	        		player.getCooldownTracker().removeCooldown(this);
+	        		player.getCooldowns().removeCooldown(this);
 	        	}
 	        	
-	        	return onItemRightClick(world, player, hand);
+	        	return use(world, player, hand);
 	        }
 	
 	        while (y > 0) {
@@ -96,29 +98,29 @@ public class ItemCustomRingExplorer extends Item
 	                    if (chunk.getBlockState(headPos).getMaterial().equals(Material.AIR))
 	                    {
 	                    	player.stopRiding();
-	    	           		((ServerPlayerEntity)player).connection.setPlayerLocation(x, y, z, player.rotationYaw, player.rotationPitch);
+	    	           		((ServerPlayer)player).connection.teleport(x, y, z, player.yRotO, player.xRotO);
 	    	           		
-	    	           		world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+	    	           		world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
 	    	           		
-	    	           		return ActionResult.resultSuccess(stack);
+	    	           		return InteractionResultHolder.success(stack);
 	                    }
 	                }
 	            }
 	        }		        
-	        player.sendStatusMessage(new TranslationTextComponent("Sorry, no spot found, try again after cooldown"), true);
-	        return ActionResult.resultSuccess(stack);		 
+	        player.displayClientMessage(new TranslatableComponent("Sorry, no spot found, try again after cooldown"), true);
+	        return InteractionResultHolder.success(stack);		 
         }
 
-        return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+        return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, stack);
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_explorer.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_explorer.line2",min, max).mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_explorer.line3").mergeStyle(TextFormatting.YELLOW)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring.cooldown",ringExplorerCooldown).mergeStyle(TextFormatting.LIGHT_PURPLE)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_explorer.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_explorer.line2",min, max).withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_explorer.line3").withStyle(ChatFormatting.YELLOW)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring.cooldown",ringExplorerCooldown).withStyle(ChatFormatting.LIGHT_PURPLE)));
 	}  
 }

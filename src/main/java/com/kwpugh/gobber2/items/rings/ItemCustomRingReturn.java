@@ -3,23 +3,25 @@ package com.kwpugh.gobber2.items.rings;
 import java.util.List;
 import javax.annotation.Nullable;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomRingReturn extends Item
 {
@@ -32,25 +34,25 @@ public class ItemCustomRingReturn extends Item
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
     {
-        ItemStack stack = player.getHeldItem(hand);
-        player.setActiveHand(hand);
-        return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+        ItemStack stack = player.getItemInHand(hand);
+        player.startUsingItem(hand);
+        return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, stack);
     }
     
     @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World world, LivingEntity entity)
+    public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entity)
     {
-        if(!world.isRemote())
+        if(!world.isClientSide())
         {
-            ServerPlayerEntity player = (ServerPlayerEntity) entity;
+            ServerPlayer player = (ServerPlayer) entity;
            
-            if(world.getDimensionKey().equals(World.OVERWORLD)) //if dimension is Overworld
+            if(world.dimension().equals(Level.OVERWORLD)) //if dimension is Overworld
             {          	  
-                if(player.func_241140_K_() != null) //player bed location not null
+                if(player.getRespawnPosition() != null) //player bed location not null
                 {                	
-                	BlockPos bedLoc = player.func_241140_K_(); //get player bed position
+                	BlockPos bedLoc = player.getRespawnPosition(); //get player bed position
                 	
                 	if (player.isPassenger())
                 	{
@@ -58,17 +60,17 @@ public class ItemCustomRingReturn extends Item
                 	}
                 	
                     setPositionAndUpdate(entity, world, bedLoc);
-                    player.sendStatusMessage(new TranslationTextComponent("item.gobber2.ring_return.line1").mergeStyle(TextFormatting.GREEN), true); 
+                    player.displayClientMessage(new TranslatableComponent("item.gobber2.ring_return.line1").withStyle(ChatFormatting.GREEN), true); 
                 }
                 else
                 {
-                	 player.sendStatusMessage(new TranslationTextComponent("item.gobber2.ring_return.line2").mergeStyle(TextFormatting.GREEN), true);
+                	 player.displayClientMessage(new TranslatableComponent("item.gobber2.ring_return.line2").withStyle(ChatFormatting.GREEN), true);
                      return stack;
                 }
             }
             else
             {
-				player.sendStatusMessage((new TranslationTextComponent("item.gobber2.ring_return.line4").mergeStyle(TextFormatting.GREEN)), true);
+				player.displayClientMessage((new TranslatableComponent("item.gobber2.ring_return.line4").withStyle(ChatFormatting.GREEN)), true);
             }
         }
         
@@ -81,24 +83,24 @@ public class ItemCustomRingReturn extends Item
         return duration;
     }
 
-    public void setPositionAndUpdate(LivingEntity entity, World world, BlockPos bedLoc)
+    public void setPositionAndUpdate(LivingEntity entity, Level world, BlockPos bedLoc)
     {
-        entity.setPositionAndUpdate(bedLoc.getX() + 0.5F, bedLoc.getY() + 0.6F, bedLoc.getZ() + 0.5F);
+        entity.teleportTo(bedLoc.getX() + 0.5F, bedLoc.getY() + 0.6F, bedLoc.getZ() + 0.5F);
         entity.fallDistance = 0;
     }
     
     @Override
-    public UseAction getUseAction (ItemStack stack)
+    public UseAnim getUseAnimation (ItemStack stack)
     {
-        return UseAction.BOW;
+        return UseAnim.BOW;
     } 
  
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.ring_return.line3").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.ring_return.line2").mergeStyle(TextFormatting.YELLOW)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.ring_return.line4").mergeStyle(TextFormatting.LIGHT_PURPLE)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.ring_return.line3").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.ring_return.line2").withStyle(ChatFormatting.YELLOW)));
+		tooltip.add((new TranslatableComponent("item.gobber2.ring_return.line4").withStyle(ChatFormatting.LIGHT_PURPLE)));
 	} 
 }

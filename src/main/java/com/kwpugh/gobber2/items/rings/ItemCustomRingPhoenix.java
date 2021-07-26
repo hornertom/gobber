@@ -6,17 +6,19 @@ import javax.annotation.Nullable;
 
 import com.kwpugh.gobber2.util.PlayerSpecialAbilities;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomRingPhoenix extends Item
 {
@@ -25,25 +27,25 @@ public class ItemCustomRingPhoenix extends Item
 		super(properties);
 	}
 	
-	public void inventoryTick(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected)
+	public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected)
 	{		
-		if(entity instanceof PlayerEntity && !world.isRemote)
+		if(entity instanceof Player && !world.isClientSide)
 		{
-			PlayerEntity player = (PlayerEntity)entity;
+			Player player = (Player)entity;
 
-			if(player.isBurning() || player.isInLava())
+			if(player.isOnFire() || player.isInLava())
 			{
 				PlayerSpecialAbilities.giveFullHealth(world, player, stack);
-				player.extinguish();			
+				player.clearFire();			
 			}
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_phoenix.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_phoenix.line2").mergeStyle(TextFormatting.YELLOW)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_phoenix.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_phoenix.line2").withStyle(ChatFormatting.YELLOW)));
 	} 
 }

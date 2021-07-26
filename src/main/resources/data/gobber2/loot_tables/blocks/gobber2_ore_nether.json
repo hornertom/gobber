@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "gobber2:gobber2_ore_nether"
+          "name": "gobber2:gobber2_globette_nether"
         }
       ],
       "conditions": [

@@ -4,10 +4,10 @@ import com.kwpugh.gobber2.Gobber2;
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import com.kwpugh.gobber2.init.ItemInit;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.EnderChestInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.PlayerEnderChestContainer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -20,58 +20,47 @@ public class RepairTickUtil
 	@SubscribeEvent
 	public static void onPlayerTick(TickEvent.PlayerTickEvent event)
 	{
-		PlayerEntity player = event.player;
-		PlayerInventory inv = event.player.inventory;
-		EnderChestInventory end_inv = player.getInventoryEnderChest();
+		Player player = event.player;
+		Inventory inv = event.player.getInventory();
+		PlayerEnderChestContainer end_inv = player.getEnderChestInventory();
 
-		for (int slot = 0; slot < inv.getSizeInventory(); slot++)
+		for (int slot = 0; slot < inv.getContainerSize(); slot++)
 		{
-			ItemStack stack = inv.getStackInSlot(slot);
+			ItemStack stack = inv.getItem(slot);
 			if (stack.getItem() == ItemInit.GOBBER2_RING_REPAIR.get())
 			{	
-				if (player.ticksExisted % repairTickRate == 0)
+				if (player.tickCount % repairTickRate == 0)
         		{
 					repair(player, inv);
        		 	} 
 			}
 		}
 		
-		for (int slot = 0; slot < end_inv.getSizeInventory(); slot++)
+		for (int slot = 0; slot < end_inv.getContainerSize(); slot++)
 		{
-			ItemStack stack = end_inv.getStackInSlot(slot);
+			ItemStack stack = end_inv.getItem(slot);
 			if (stack.getItem() == ItemInit.GOBBER2_RING_REPAIR.get())
 			{	
-				if (player.ticksExisted % repairTickRate == 0)
+				if (player.tickCount % repairTickRate == 0)
         		{
 					repair(player, inv);
        		 	} 
 			}
 		}
-		
-		if (CuriosModCheck.CURIOS.isLoaded())
-	    {
-			if (CuriosUtil.findItem(ItemInit.GOBBER2_RING_REPAIR.get(), player) != ItemStack.EMPTY)
-			{
-				if (player.ticksExisted % repairTickRate == 0)
-	    		{
-					repair(player, inv);
-	   		 	}  
-		    }
-	    }  
 	}
 	
-	private static void repair(PlayerEntity player, PlayerInventory inv)
+	private static void repair(Player player, Inventory inv)
 	{		
-		for(int slot = 0; slot < inv.getSizeInventory(); slot++)
+		for(int slot = 0; slot < inv.getContainerSize(); slot++)
 		{
-			ItemStack target = inv.getStackInSlot(slot);
+			ItemStack target = inv.getItem(slot);
 			if (!target.isEmpty())
 			{
-				if (!(target == player.getHeldItemMainhand()))
+				if (!(target == player.getMainHandItem()))
 				{
 					if (target.isDamaged() && target.getItem().isRepairable(target))
 					{
-						target.setDamage(target.getDamage() - 1);
+						target.setDamageValue(target.getDamageValue() - 1);
 						return; 
 					}
 				}

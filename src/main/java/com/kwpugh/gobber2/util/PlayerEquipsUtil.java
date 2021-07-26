@@ -4,10 +4,10 @@ import javax.annotation.Nonnull;
 
 import com.kwpugh.gobber2.init.ItemInit;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 
 public final class PlayerEquipsUtil
 {
@@ -18,12 +18,12 @@ public final class PlayerEquipsUtil
     }
 
     //Full suit of End Armor gets perks
-    public static boolean isPlayerGotVoidProtection(PlayerEntity player)
+    public static boolean isPlayerGotVoidProtection(Player player)
     { 
-    	ItemStack head = player.getItemStackFromSlot(EquipmentSlotType.HEAD);
-    	ItemStack chest = player.getItemStackFromSlot(EquipmentSlotType.CHEST);
-    	ItemStack legs = player.getItemStackFromSlot(EquipmentSlotType.LEGS);
-    	ItemStack feet = player.getItemStackFromSlot(EquipmentSlotType.FEET);
+    	ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
+    	ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+    	ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+    	ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
     	
 	    //Full suit
     	if(head.getItem() == ItemInit.GOBBER2_HELMET_DRAGON.get() &&
@@ -38,9 +38,9 @@ public final class PlayerEquipsUtil
     } 
     
     //All helmet tiers get water breathing
-    public static boolean isPlayerGotWaterBreathing(PlayerEntity player)
+    public static boolean isPlayerGotWaterBreathing(Player player)
     { 
-    	ItemStack head = player.getItemStackFromSlot(EquipmentSlotType.HEAD);
+    	ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
 		
 	    //Head piece
     	if((head.getItem() == ItemInit.GOBBER2_HELMET.get() ||
@@ -55,10 +55,10 @@ public final class PlayerEquipsUtil
     } 
     
     //All legging tiers get no fall damage
-    public static boolean isPlayerGotFallProtection(PlayerEntity player)
+    public static boolean isPlayerGotFallProtection(Player player)
     {
-    	ItemStack legs = player.getItemStackFromSlot(EquipmentSlotType.LEGS);
-    	ItemStack mainHand = player.getHeldItemMainhand();
+    	ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+    	ItemStack mainHand = player.getMainHandItem();
     	
     	//Leggings
     	if(legs.getItem() == ItemInit.GOBBER2_LEGGINGS.get() ||
@@ -76,10 +76,10 @@ public final class PlayerEquipsUtil
     
 		
     //Nether and End chestplates get fire protection
-    public static boolean isPlayerGotFireProtection(PlayerEntity player)
+    public static boolean isPlayerGotFireProtection(Player player)
     {
-    	ItemStack chest = player.getItemStackFromSlot(EquipmentSlotType.CHEST);
-    	ItemStack mainHand = player.getHeldItemMainhand();
+    	ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+    	ItemStack mainHand = player.getMainHandItem();
     	
     	//Chestplate
     	if(chest.getItem() == ItemInit.GOBBER2_CHESTPLATE_NETHER.get() ||
@@ -91,35 +91,26 @@ public final class PlayerEquipsUtil
     		return true;  		
       	}
     	
-	    PlayerInventory inv1 = player.inventory;
+	    Inventory inv1 = player.getInventory();
 	    
 		//Is the ring in the player inventory?
-		for (int slot = 0; slot < inv1.getSizeInventory(); slot++)
+		for (int slot = 0; slot < inv1.getContainerSize(); slot++)
 		{
-			ItemStack stack = inv1.getStackInSlot(slot);
+			ItemStack stack = inv1.getItem(slot);
 			if (stack.getItem() == ItemInit.GOBBER2_RING_PHOENIX.get())
 			{	
 				return true;
 			}
 		}
-		
-		//Is the ring in a Curios slot?
-		if (CuriosModCheck.CURIOS.isLoaded())
-	    {
-			if (CuriosUtil.findItem(ItemInit.GOBBER2_RING_PHOENIX.get(), player) != ItemStack.EMPTY)
-			{
-				return true;
-		    }
-	    }
       		
         return false;
     }
     
     //Holding the Ring of Stealth
-    public static boolean isPlayerGotStealth(PlayerEntity player)
+    public static boolean isPlayerGotStealth(Player player)
     {
-    	ItemStack mainHand = player.getHeldItemMainhand();
-    	ItemStack offHand = player.getHeldItemOffhand();
+    	ItemStack mainHand = player.getMainHandItem();
+    	ItemStack offHand = player.getOffhandItem();
     	
     	if(mainHand.getItem() == ItemInit.GOBBER2_RING_STEALTH.get() && offHand.isEmpty())
       	{
@@ -129,54 +120,37 @@ public final class PlayerEquipsUtil
         return false;
     } 
     
-    public static boolean isPlayerGotHasteRing(PlayerEntity player)
+    public static boolean isPlayerGotHasteRing(Player player)
     { 	    
-		PlayerInventory inv2 = player.inventory;
+		Inventory inv2 = player.getInventory();
 		
 		//Is the ring in the player inventory?
-		for (int slot = 0; slot < inv2.getSizeInventory(); slot++)
+		for (int slot = 0; slot < inv2.getContainerSize(); slot++)
 		{
-			ItemStack stack = inv2.getStackInSlot(slot);
+			ItemStack stack = inv2.getItem(slot);
 			if (stack.getItem() == ItemInit.GOBBER2_RING_HASTE.get())
 			{	
 				return true;
 			}
 		}
 		
-		//Checks Curios slots
-		if (CuriosModCheck.CURIOS.isLoaded())
-	    {
-			if (CuriosUtil.findItem(ItemInit.GOBBER2_RING_HASTE.get(), player) != ItemStack.EMPTY)
-			{
-				return true;
-		    }
-	    } 
-		
         return false;
     } 
     
-    public static boolean isPlayerGotExpToken(PlayerEntity player)
+    public static boolean isPlayerGotExpToken(Player player)
     { 	    
-		PlayerInventory inv2 = player.inventory;
+		Inventory inv2 = player.getInventory();
 		
 		//Is the ring in the player inventory?
-		for (int slot = 0; slot < inv2.getSizeInventory(); slot++)
+		for (int slot = 0; slot < inv2.getContainerSize(); slot++)
 		{
-			ItemStack stack = inv2.getStackInSlot(slot);
+			ItemStack stack = inv2.getItem(slot);
 			if (stack.getItem() == ItemInit.GOBBER2_MEDALLION_EXP.get())
 			{	
 				return true;
 			}
 		}
-		
-		//Checks Curios slots
-		if (CuriosModCheck.CURIOS.isLoaded())
-	    {
-			if (CuriosUtil.findItem(ItemInit.GOBBER2_MEDALLION_EXP.get(), player) != ItemStack.EMPTY)
-			{
-				return true;
-		    }
-	    } 
+
 		
         return false;
     } 

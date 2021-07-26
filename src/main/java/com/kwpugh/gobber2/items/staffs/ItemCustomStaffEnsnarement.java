@@ -4,33 +4,35 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.PhantomEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.GolemEntity;
-import net.minecraft.entity.passive.horse.DonkeyEntity;
-import net.minecraft.entity.passive.horse.HorseEntity;
-import net.minecraft.entity.passive.horse.LlamaEntity;
-import net.minecraft.entity.passive.horse.MuleEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Phantom;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.animal.horse.Donkey;
+import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.animal.horse.Llama;
+import net.minecraft.world.entity.animal.horse.Mule;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomStaffEnsnarement extends Item
 {
@@ -40,28 +42,28 @@ public class ItemCustomStaffEnsnarement extends Item
 	}
 
 	@Override
-	public boolean onLeftClickEntity(ItemStack stack, PlayerEntity player, Entity entity)
+	public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity)
 	{		
-		if (entity instanceof PlayerEntity || !entity.canChangeDimension() || !entity.isAlive())
+		if (entity instanceof Player || !entity.canChangeDimensions() || !entity.isAlive())
     
 			return false;
 
-        if((stack.getOrCreateChildTag("mob_data").isEmpty()) &&
-        		(entity instanceof AnimalEntity ||	
-        				entity instanceof HorseEntity ||
-        				entity instanceof DonkeyEntity ||
-        				entity instanceof LlamaEntity ||
-        				entity instanceof MuleEntity ||
-        				entity instanceof GolemEntity ||
-        				entity instanceof MonsterEntity ||
-        				entity instanceof VillagerEntity ||
-        				entity instanceof PhantomEntity))
+        if((stack.getOrCreateTagElement("mob_data").isEmpty()) &&
+        		(entity instanceof Animal ||	
+        				entity instanceof Horse ||
+        				entity instanceof Donkey ||
+        				entity instanceof Llama ||
+        				entity instanceof Mule ||
+        				entity instanceof AbstractGolem ||
+        				entity instanceof Monster ||
+        				entity instanceof Villager ||
+        				entity instanceof Phantom))
 			{
-        		CompoundNBT tag = entity.serializeNBT();
+        		CompoundTag tag = entity.serializeNBT();
 		
-        		if (!player.world.isRemote)
+        		if (!player.level.isClientSide)
         		{
-        			entity.remove();
+        			entity.remove(Entity.RemovalReason.KILLED);
         			stack.getTag().put("mob_data", tag);
         			stack.getTag().putString("name", entity.getDisplayName().getString());
         		}
@@ -73,37 +75,37 @@ public class ItemCustomStaffEnsnarement extends Item
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext iuc)
+	public InteractionResult useOn(UseOnContext iuc)
 	{
-		CompoundNBT tag = iuc.getItem().getOrCreateChildTag("mob_data");
+		CompoundTag tag = iuc.getItemInHand().getOrCreateTagElement("mob_data");
 		if (!tag.isEmpty())
 		{
-			BlockPos pos = iuc.getPos().offset(iuc.getFace());
-			if (!iuc.getWorld().isRemote)
+			BlockPos pos = iuc.getClickedPos().relative(iuc.getClickedFace());
+			if (!iuc.getLevel().isClientSide)
 			{
-				Entity entity = EntityType.loadEntityAndExecute(tag, iuc.getWorld(), a -> a);
+				Entity entity = EntityType.loadEntityRecursive(tag, iuc.getLevel(), a -> a);
 				if (entity != null)
 				{
-					entity.setPosition(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-					((ServerWorld) iuc.getWorld()).addEntityIfNotDuplicate(entity);
-					iuc.getItem().getTag().remove("mob_data");
+					entity.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+					((ServerLevel) iuc.getLevel()).addFreshEntity(entity);
+					iuc.getItemInHand().getTag().remove("mob_data");
 
-					if (iuc.getItem().attemptDamageItem(1, iuc.getWorld().rand, (ServerPlayerEntity) iuc.getPlayer()))
+					if (iuc.getItemInHand().hurt(1, iuc.getLevel().random, (ServerPlayer) iuc.getPlayer()))
 					{
-						iuc.getItem().shrink(1);
+						iuc.getItemInHand().shrink(1);
 					}
-					return ActionResultType.SUCCESS;
+					return InteractionResult.SUCCESS;
 				}
 			}
 		}
-		return ActionResultType.FAIL;
+		return InteractionResult.FAIL;
 	}
 
 	@Override
-	public CompoundNBT getShareTag(ItemStack stack)
+	public CompoundTag getShareTag(ItemStack stack)
 	{
-		CompoundNBT tag = super.getShareTag(stack);
-		CompoundNBT mob = new CompoundNBT();
+		CompoundTag tag = super.getShareTag(stack);
+		CompoundTag mob = new CompoundTag();
 
 		if (tag == null)
 		{
@@ -123,32 +125,32 @@ public class ItemCustomStaffEnsnarement extends Item
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack stack)
+	public boolean isFoil(ItemStack stack)
 	{
-		return stack.hasTag() && !stack.getOrCreateChildTag("mob_data").isEmpty();
+		return stack.hasTag() && !stack.getOrCreateTagElement("mob_data").isEmpty();
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_ensnarement.line1").mergeStyle(TextFormatting.GREEN)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_ensnarement.line2").mergeStyle(TextFormatting.GREEN)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_ensnarement.line1").withStyle(ChatFormatting.GREEN)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_ensnarement.line2").withStyle(ChatFormatting.GREEN)));
 
 		if (stack.hasTag())
 		{
-			CompoundNBT tag = stack.getOrCreateChildTag("mob_data");
+			CompoundTag tag = stack.getOrCreateTagElement("mob_data");
 
 			if (tag.isEmpty())
 			{
-				tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_ensnarement.line3").mergeStyle(TextFormatting.GREEN)));
+				tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_ensnarement.line3").withStyle(ChatFormatting.GREEN)));
 			}
 			else
 			{
-				tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_ensnarement.line4", stack.getTag().getString("name")).mergeStyle(TextFormatting.GREEN)));
+				tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_ensnarement.line4", stack.getTag().getString("name")).withStyle(ChatFormatting.GREEN)));
 			}
 		}
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_ensnarement.line5").mergeStyle(TextFormatting.AQUA)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_staff_ensnarement.line6").mergeStyle(TextFormatting.YELLOW)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_ensnarement.line5").withStyle(ChatFormatting.AQUA)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_staff_ensnarement.line6").withStyle(ChatFormatting.YELLOW)));
 	}
 }

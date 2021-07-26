@@ -7,28 +7,31 @@ import javax.annotation.Nullable;
 
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.GravelBlock;
-import net.minecraft.block.SandBlock;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.GravelBlock;
+import net.minecraft.world.level.block.SandBlock;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomRingMiner extends Item
 {
@@ -45,19 +48,19 @@ public class ItemCustomRingMiner extends Item
 
 	boolean shiftKeyPressed = false;
 
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
 	{
-		ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getItemInHand(hand);
 
-        ItemStack equippedMain = player.getHeldItemMainhand();
+        ItemStack equippedMain = player.getMainHandItem();
 
         if(equippedMain == stack)   //Only works in the main hand
         {
-        	shiftKeyPressed = player.isSneaking();
+        	shiftKeyPressed = player.isShiftKeyDown();
 
-        	player.getCooldownTracker().setCooldown(this, ringMinerCooldown);
+        	player.getCooldowns().addCooldown(this, ringMinerCooldown);
 
-        	if(!world.isRemote)
+        	if(!world.isClientSide)
 			{
 				Block block;
 				List<BlockPos> poslist = new ArrayList<BlockPos>();
@@ -68,13 +71,14 @@ public class ItemCustomRingMiner extends Item
 					{
 						for (int z = 5; z >= -5; z--)
 						{
-							BlockPos pos = player.getPosition().add(x, y, z);
-							block = world.getBlockState(pos).getBlock();
+							BlockPos pos = player.blockPosition().offset(x, y, z);
+							BlockState state = world.getBlockState(pos);
+							block = state.getBlock();
 							String blockForgeTags = block.getTags().toString();
 
 							if (block == Blocks.STONE ||
-									block.isIn(BlockTags.BASE_STONE_OVERWORLD) ||   // base_stone_overworld
-									block.isIn(BlockTags.BASE_STONE_NETHER) ||   // base_stone_nether
+									state.is(BlockTags.BASE_STONE_OVERWORLD) ||   // base_stone_overworld
+									state.is(BlockTags.BASE_STONE_NETHER) ||   // base_stone_nether
 									blockForgeTags.contains("forge:stone") ||
 									blockForgeTags.contains("forge:sandstone") ||
 									blockForgeTags.contains("forge:sand") ||
@@ -83,7 +87,7 @@ public class ItemCustomRingMiner extends Item
 									block instanceof GravelBlock ||
 									block instanceof SandBlock ||
 									block == Blocks.DIRT ||
-									block == Blocks.GRASS_PATH ||
+									block == Blocks.DIRT_PATH ||
 									block == Blocks.SAND  ||
 									block == Blocks.RED_SAND  ||
 									block == Blocks.SANDSTONE ||
@@ -96,7 +100,6 @@ public class ItemCustomRingMiner extends Item
 									block == Blocks.GRANITE ||
 									block == Blocks.ANDESITE ||
 									block == Blocks.DIORITE  ||
-									block == Blocks.DIORITE ||
 									block == Blocks.SOUL_SAND ||
 									block == Blocks.SOUL_SOIL ||
 									block == Blocks.MOSSY_COBBLESTONE ||
@@ -121,7 +124,7 @@ public class ItemCustomRingMiner extends Item
 									block == Blocks.WARPED_WART_BLOCK ||
 									block == Blocks.NETHERRACK)
 							{
-								poslist.add(player.getPosition().add(x, y, z));
+								poslist.add(player.blockPosition().offset(x, y, z));
 							}
 						}
 					}
@@ -176,7 +179,7 @@ public class ItemCustomRingMiner extends Item
 							BlockPos targetpos = poslist.get(i);
 							block = world.getBlockState(targetpos).getBlock();
 
-							if(player.isSneaking())
+							if(player.isShiftKeyDown())
 							{
 								world.destroyBlock(targetpos, !reverseRingMiner);
 							}
@@ -189,36 +192,36 @@ public class ItemCustomRingMiner extends Item
 				}
 			}
         }
-        return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+        return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, stack);
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_miner.line1").mergeStyle(TextFormatting.GREEN)));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_miner.line1").withStyle(ChatFormatting.GREEN)));
 
 		if(reverseRingMiner)
 		{
-			tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_miner.line4").mergeStyle(TextFormatting.YELLOW)));
-			tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_miner.line5").mergeStyle(TextFormatting.YELLOW)));
+			tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_miner.line4").withStyle(ChatFormatting.YELLOW)));
+			tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_miner.line5").withStyle(ChatFormatting.YELLOW)));
 		}
 		else
 		{
-			tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_miner.line2").mergeStyle(TextFormatting.YELLOW)));
-			tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_miner.line3").mergeStyle(TextFormatting.YELLOW)));
+			tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_miner.line2").withStyle(ChatFormatting.YELLOW)));
+			tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_miner.line3").withStyle(ChatFormatting.YELLOW)));
 		}
 
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_miner.line6").mergeStyle(TextFormatting.LIGHT_PURPLE)));
-		tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring.cooldown", ringMinerCooldown).mergeStyle(TextFormatting.LIGHT_PURPLE)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_miner.line6").withStyle(ChatFormatting.LIGHT_PURPLE)));
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring.cooldown", ringMinerCooldown).withStyle(ChatFormatting.LIGHT_PURPLE)));
 
 		if(delayedBreakMode)
 		{
-			tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_miner.mode.line2").mergeStyle(TextFormatting.LIGHT_PURPLE)));
+			tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_miner.mode.line2").withStyle(ChatFormatting.LIGHT_PURPLE)));
 		}
 		else
 		{
-			tooltip.add((new TranslationTextComponent("item.gobber2.gobber2_ring_miner.mode.line1").mergeStyle(TextFormatting.LIGHT_PURPLE)));
+			tooltip.add((new TranslatableComponent("item.gobber2.gobber2_ring_miner.mode.line1").withStyle(ChatFormatting.LIGHT_PURPLE)));
 		}
 	}
 }

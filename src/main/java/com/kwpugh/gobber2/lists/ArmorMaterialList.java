@@ -3,14 +3,14 @@ package com.kwpugh.gobber2.lists;
 import com.kwpugh.gobber2.Gobber2;
 import com.kwpugh.gobber2.init.ItemInit;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 
-public enum ArmorMaterialList implements IArmorMaterial
+public enum ArmorMaterialList implements ArmorMaterial
 {
 	//Armor order: helmet, leggings, chestplate, boots
 	GOBBER2("gobber2", 71, new int[] {6, 9, 11, 6}, 25, ItemInit.GOBBER2_INGOT.get(), "item.armor.equip_netherite", 2.5f, 0.10f),
@@ -39,19 +39,19 @@ public enum ArmorMaterialList implements IArmorMaterial
 	}
 
 	@Override
-	public int getDamageReductionAmount(EquipmentSlotType slot) 
+	public int getDefenseForSlot(EquipmentSlot slot) 
 	{
 		return this.damageReductionAmounts[slot.getIndex()];
 	}
 
 	@Override
-	public int getDurability(EquipmentSlotType slot) 
+	public int getDurabilityForSlot(EquipmentSlot slot) 
 	{
 		return max_damage_array[slot.getIndex()] * this.durability;
 	}
 
 	@Override
-	public int getEnchantability() 
+	public int getEnchantmentValue() 
 	{
 		return this.enchantability;
 	}
@@ -63,13 +63,13 @@ public enum ArmorMaterialList implements IArmorMaterial
 	}
 
 	@Override
-	public Ingredient getRepairMaterial() 
+	public Ingredient getRepairIngredient() 
 	{
-		return Ingredient.fromItems(this.repairItem);
+		return Ingredient.of(this.repairItem);
 	}
 
 	@Override
-	public SoundEvent getSoundEvent() 
+	public SoundEvent getEquipSound() 
 	{
 		return new SoundEvent(new ResourceLocation(equipSound));
 	}
