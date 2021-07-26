@@ -1,7 +1,7 @@
 {
     "key.toggleRingAttraction": "Toggle Ring of Attraction on/off",
     "key.categories.gobber2": "Gobber",
-    
+
 	"block.gobber2.gobber2_lucky_block": "Gobber Lucky Block",
 
 	"block.gobber2.gobber2_ore": "Gobber Ore",
@@ -97,7 +97,6 @@
 	"item.gobber2.gobber2_shovel_end": "End Shovel",
 	"item.gobber2.gobber2_bow_end": "End Bow",
 
-	"item.gobber2.gobber2_armor.line1": "Repair with Armor Plate",
 	"item.gobber2.gobber2_armor.line2": "Helmet: Slow auto-feeding and water breathing",
 	"item.gobber2.gobber2_armor.line3": "Chestplate: None",
 	"item.gobber2.gobber2_armor.line4": "Leggings: No fall damage",
@@ -108,7 +107,6 @@
 	"item.gobber2.gobber2_leggings": "Gobber Leggings",
 	"item.gobber2.gobber2_boots": "Gobber Boots",
 
-	"item.gobber2.gobber2_armor_nether.line1": "Repair with Armor Plate",
 	"item.gobber2.gobber2_armor_nether.line2": "Helmet: Moderate auto-feeding with saturation, water breathing, and aborption hearts",
 	"item.gobber2.gobber2_armor_nether.line3": "Chestplate: Fire protection and knockback resistance",
 	"item.gobber2.gobber2_armor_nether.line4": "Leggings: No fall damage",
@@ -118,7 +116,6 @@
 	"item.gobber2.gobber2_chestplate_nether": "Nether Chestplate",
 	"item.gobber2.gobber2_leggings_nether": "Nether Leggings",
 	"item.gobber2.gobber2_boots_nether": "Nether Boots",
-
 
 	"item.gobber2.gobber2_armor_end.line1": "Helmet: Rapid auto-feeding with saturation, water breathing and aborption hearts",
 	"item.gobber2.gobber2_armor_end.line2": "Chestplate: Fire protection and knockback resistance",
@@ -137,7 +134,6 @@
 	"item.gobber2.gobber2_leggings_dragon": "Dragon Leggings",
 	"item.gobber2.gobber2_boots_dragon": "Dragon Boots",
 
-	"item.gobber2.gobber2_armor_repair": "Armor Repair Plate",
 	"item.gobber2.gobber2_links_end": "End Armor Links",
 
 	"item.gobber2.gobber2_ring.cooldown": "Cooldown interval (ticks): %s",
@@ -371,62 +367,6 @@
 	"block.gobber2.gobber2_glass_nether": "Nether Glass",
 	"block.gobber2.gobber2_glass_end": "End Glass",
 	"block.gobber2.clear_glass": "Clear Glass",
-
-	"block.gobber2.block_healer": "The Healer",
-	"item.gobber2.block_healer": "The Healer",
-	"item.gobber2.block_healer.line1": "Active block range for Healer: %s",
-	"item.gobber2.block_healer.line2": "The Healer provides a slow, but steady health regen",
-	"item.gobber2.block_healer.line3": "Block range: %s",
-	"item.gobber2.block_healer.jei.line1": "The Healer block provides players in a defined block range with a slow but steady health regeneration.",
-	"item.gobber2.block_healer.jei.line2": "The Healer automatically activates when first placed. Block radius can be adjusted in config file",
-	"block.gobber2.block_protector": "The Protector",
-	"item.gobber2.block_protector.line1": "Active block range for Protector: %s",
-	"item.gobber2.block_protector.line2": "The Protector provides a moderate, but steady health regen",
-	"item.gobber2.block_protector.line3": "and eliminates many, annoying hostile mobs",
-	"item.gobber2.block_protector.line4": "Block range: %s",
-	"item.gobber2.block_protector.jei.line1": "The Protector block provides players in a defined block range with a moderate but steady health regeneration.",
-	"item.gobber2.block_protector.jei.line2": "Additionally, The Protector will eliminate many types of hostile mobs such as zombies, skeletons, spiders, and others. No drops or xp are spawned.",
-	"item.gobber2.block_protector.jei.line3": "The Protector automatically activates when first placed. Block radius can be adjusted in config file",
-	"block.gobber2.block_defender": "The Defender",
-	"item.gobber2.block_defender": "The Defender",
-	"item.gobber2.block_defender.line1": "Active block range for Defender: %s",
-	"item.gobber2.block_defender.line2": "The Defender provides a steady health regen",
-	"item.gobber2.block_defender.line3": "and eliminates many, annoying hostile mobs",
-	"item.gobber2.block_defender.line4": "Block range: %s",
-	"item.gobber2.block_defender.jei.line1": "The Defender block is an improved version of the Protector and provides players in a defined block range with an improved health regeneration.",
-	"item.gobber2.block_defender.jei.line2": "Additionally, The Defender will eliminate many types of hostile mobs such as zombies, skeletons, spiders, and others. No drops or xp are spawned.",
-	"item.gobber2.block_defender.jei.line3": "The Protector automatically activates when first placed. Block radius can be adjusted in config file",
-	"block.gobber2.block_looter": "The Looter",
-	"item.gobber2.block_looter": "The Looter",
-	"item.gobber2.block_looter.line1": "Active block range for Looter: %s",
-	"item.gobber2.block_looter.line2": "The Looter kills mobs and drops goodies",
-	"item.gobber2.block_looter.line3": "Block range: %s",
-	"item.gobber2.block_looter.jei.line1": "The Looter is basically a portable mob grinder with pre-defined drops. It has a defined block range. Mobs in range will be killed and their drops and xp will spawn near the Looter block.",
-	"item.gobber2.block_looter.jei.line2": "Mobs and drops:",
-	"item.gobber2.block_looter.jei.line3": "Zombies -> gold ingot",
-	"item.gobber2.block_looter.jei.line4": "Spiders -> string",
-	"item.gobber2.block_looter.jei.line5": "Skeletons -> bone",
-	"item.gobber2.block_looter.jei.line6": "Pillagers -> iron ingot",
-	"item.gobber2.block_looter.jei.line7": "Creepers -> gunpowder",
-	"item.gobber2.block_looter.jei.line8": "Slimes -> slime ball",
-	"item.gobber2.block_looter.jei.line9": "Witches * Silverfish -> emerald",
-	"item.gobber2.block_looter.jei.line10": "Endermen -> ender pearl",
-	"item.gobber2.block_looter.jei.line11": "Blaze -> blaze rods",
-	"item.gobber2.block_looter.jei.line12": "Wither Skeletons -> wither skeleton skull",
-	"item.gobber2.block_looter.jei.line13": "Vindicators -> diamond",
-	"item.gobber2.block_looter.jei.line14": "Phantoms -> membrane",
-	"item.gobber2.block_looter.jei.line15": "Hoglins & Zoblins -> Leather",
-	"item.gobber2.block_looter.jei.line16": "An Armor Stand in range causes the Looter to be XP only.  You need to break and place the Looter to reset to default mode.",
-	"item.gobber2.block_looter.jei.line17": "The Looter automatically activates when first placed. Block radius can be adjusted in config file",
-	"block.gobber2.block_maturator": "The Maturator",
-	"item.gobber2.block_maturator": "The Maturator",
-	"item.gobber2.block_maturator.line1": "Active block range for Maturator: %s",
-	"item.gobber2.block_maturator.line2": "Provides various crops and other growables a little boost",
-	"item.gobber2.block_maturator.line3": "Block range: %s",
-	"item.gobber2.block_maturator.jei.line1": "The Maturator provides growth boost to many plants and crops in a defined area, centered around the block. Block radius can be adjusted in config file",
-	"item.gobber2.block_maturator.jei.line2": "Works on:",
-	"item.gobber2.block_maturator.jei.line3": "Sapling, Vine, Sugarcane, Sweet Berry, Cactus, Melon, Pumpkin, Bamboo, Cococa, Chorus flower, Netherwart and many other modded crops based off of these.",
-	"item.gobber2.block_maturator.jei.line4": "Min tick updates can be adjusted in the config",
 
 	"itemGroup.gobber2": "Gobber 2"
 }

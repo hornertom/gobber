@@ -13,7 +13,7 @@ import net.minecraft.sounds.SoundEvent;
 public enum ArmorMaterialList implements ArmorMaterial
 {
 	//Armor order: helmet, leggings, chestplate, boots
-	GOBBER2("gobber2", 71, new int[] {6, 9, 11, 6}, 25, ItemInit.GOBBER2_INGOT.get(), "item.armor.equip_netherite", 2.5f, 0.10f),
+	//GOBBER2("gobber2", 71, new int[] {6, 9, 11, 6}, 25, ItemInit.GOBBER2_INGOT.get(), "item.armor.equip_netherite", 2.5f, 0.10f),
 	GOBBER2_NETHER("gobber2_nether", 83, new int[] {7, 10, 12, 7}, 30, ItemInit.GOBBER2_INGOT_NETHER.get(), "item.armor.equip_netherite", 2.75f, 0.10f),
 	GOBBER2_END("gobber2_end", 100, new int[] {8, 11, 13, 8}, 30, ItemInit.GOBBER2_INGOT_END.get(), "item.armor.equip_netherite", 3.0f, 0.20f),
 	GOBBER2_DRAGON("gobber2_dragon", 100, new int[] {8, 11, 13, 8}, 30, ItemInit.GOBBER2_INGOT_END.get(), "item.armor.equip_netherite", 3.0f, 0.30f);

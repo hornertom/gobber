@@ -30,10 +30,4 @@ public class BlockInit
 	public static final RegistryObject<Block> GOBBER2_GLASS_NETHER = BLOCKS.register("gobber2_glass_nether", () -> new BlockGobberGlassNether(Block.Properties.of(Material.GLASS, MaterialColor.STONE).strength(2.0F, 2.0F).noOcclusion().lightLevel((state) -> { return 15; }).sound(SoundType.GLASS)));
 	public static final RegistryObject<Block> GOBBER2_GLASS_END = BLOCKS.register("gobber2_glass_end", () -> new BlockGobberGlassEnd(Block.Properties.of(Material.GLASS, MaterialColor.STONE).strength(2.0F, 2.0F).noOcclusion().lightLevel((state) -> { return 15; }).sound(SoundType.GLASS)));
 	public static final RegistryObject<Block> CLEAR_GLASS = BLOCKS.register("clear_glass", () -> new BlockClearGlass(Block.Properties.of(Material.GLASS, MaterialColor.STONE).strength(2.0F, 2.0F).noOcclusion().lightLevel((state) -> { return 15; }).sound(SoundType.GLASS)));
-
-//	public static final RegistryObject<Block> BLOCK_HEALER = BLOCKS.register("block_healer", () -> new BlockHealer(Block.Properties.of(Material.METAL, MaterialColor.METAL).strength(3.0F, 3.0F).sound(SoundType.METAL)));
-//	public static final RegistryObject<Block> BLOCK_PROTECTOR = BLOCKS.register("block_protector", () -> new BlockProtector(Block.Properties.of(Material.METAL, MaterialColor.METAL).strength(3.0F, 3.0F).sound(SoundType.METAL)));
-//	public static final RegistryObject<Block> BLOCK_DEFENDER = BLOCKS.register("block_defender", () -> new BlockDefender(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).strength(3.0F, 3.0F).sound(SoundType.METAL)));
-//	public static final RegistryObject<Block> BLOCK_LOOTER = BLOCKS.register("block_looter", () -> new BlockLooter(Block.Properties.of(Material.METAL, MaterialColor.METAL).strength(3.0F, 3.0F).sound(SoundType.METAL)));
-//	public static final RegistryObject<Block> BLOCK_MATURATOR = BLOCKS.register("block_maturator", () -> new BlockMaturator(Block.Properties.of(Material.METAL, MaterialColor.METAL).strength(3.0F, 3.0F).sound(SoundType.METAL)));
 }

@@ -188,7 +188,7 @@ public class ItemCustomArmorDragon extends ArmorItem
 	@Override
 	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
 	{
-		return repair.getItem() == ItemInit.GOBBER2_ARMOR_REPAIR.get();
+		return repair.getItem() == ItemInit.GOBBER2_INGOT_END.get();
 	}
 	
 	@OnlyIn(Dist.CLIENT)

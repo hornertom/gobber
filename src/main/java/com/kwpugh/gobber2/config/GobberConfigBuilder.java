@@ -78,16 +78,6 @@ public class GobberConfigBuilder
     public static ForgeConfigSpec.IntValue NETHER_GOOEY_BEEFSTEW_HUNGER;
     public static ForgeConfigSpec.DoubleValue NETHER_GOOEY_BEEFSTEW_SATURATION;
 
-    public static ForgeConfigSpec.IntValue HEALER_RADIUS;
-    public static ForgeConfigSpec.IntValue PROTECTOR_RADIUS;
-    public static ForgeConfigSpec.BooleanValue PROTECTOR_KILL_FISH;
-    public static ForgeConfigSpec.IntValue DEFENDER_RADIUS;
-    public static ForgeConfigSpec.BooleanValue DEFENDER_KILL_FISH;
-    public static ForgeConfigSpec.IntValue LOOTER_RADIUS;
-    public static ForgeConfigSpec.IntValue MATURATOR_RADIUS;
-    public static ForgeConfigSpec.IntValue MATURATOR_VERTICAL_RANGE;
-    public static ForgeConfigSpec.IntValue MATURATOR_MIN_TICK;
-
     public static ForgeConfigSpec.IntValue GOBBER_ARMOR_HUNGER;
     public static ForgeConfigSpec.DoubleValue GOBBER_ARMOR_SATURATION;
     public static ForgeConfigSpec.IntValue GOBBER_NETHER_ARMOR_HUNGER;
@@ -96,7 +86,18 @@ public class GobberConfigBuilder
     public static ForgeConfigSpec.DoubleValue GOBBER_END_ARMOR_SATURATION;
     public static ForgeConfigSpec.IntValue GOBBER_DRAGON_ARMOR_HUNGER;
     public static ForgeConfigSpec.DoubleValue GOBBER_DRAGON_ARMOR_SATURATION;
-    
+
+    public static ForgeConfigSpec.IntValue GOBBER_TOOLS_DURABILITY;
+    public static ForgeConfigSpec.DoubleValue GOBBER_TOOLS_MINING_SPEED;
+    public static ForgeConfigSpec.DoubleValue GOBBER_TOOLS_ATTACK_DAMAGE;
+    public static ForgeConfigSpec.IntValue GOBBER_TOOLS_MINING_LEVEL;
+    public static ForgeConfigSpec.IntValue GOBBER_TOOLS_ENCHANTABILITY;
+
+    public static ForgeConfigSpec.IntValue GOBBER_ARMOR_DURABILITY_MULTIPLIER;
+    public static ForgeConfigSpec.IntValue GOBBER_ARMOR_ENCHANTABILITY;
+    public static ForgeConfigSpec.DoubleValue GOBBER_ARMOR_TOUGHNESS;
+    public static ForgeConfigSpec.DoubleValue GOBBER_ARMOR_KNOCKBACK;
+
     public static ForgeConfigSpec.BooleanValue ENABLE_GOBBER_ARMOR_HEALTH_PERKS;
     public static ForgeConfigSpec.BooleanValue ENABLE_GOBBER_NETHER_ARMOR_HEALTH_PERKS;
     public static ForgeConfigSpec.BooleanValue ENABLE_GOBBER_END_ARMOR_HEALTH_PERKS;
@@ -108,6 +109,27 @@ public class GobberConfigBuilder
 
     public static void init(ForgeConfigSpec.Builder SERVER_BUILDER)
     {
+        SERVER_BUILDER.comment("Gobber Tool Material Values").push("gobber_tool_material");
+
+        GOBBER_TOOLS_DURABILITY = SERVER_BUILDER.comment("Gobber tool durability [1-9000, default: 3800]").defineInRange("gobberToolsDurability", 3800, 0, 9000);
+        GOBBER_TOOLS_MINING_SPEED = SERVER_BUILDER.comment("Gobber tool mining speed [1-25, default: 9.0]").defineInRange("gobberToolsSpeed", 9.0, 1, 25.0);
+        GOBBER_TOOLS_ATTACK_DAMAGE = SERVER_BUILDER.comment("Gobber tool attack damage [1-100, default: 1.0]").defineInRange("gobberToolsDamage", 1.0, 1, 100.0);
+        GOBBER_TOOLS_MINING_LEVEL = SERVER_BUILDER.comment("Gobber tool mining level [1-6, default: 4]").defineInRange("gobberToolsMiningLevel", 4, 1, 6);
+        GOBBER_TOOLS_ENCHANTABILITY = SERVER_BUILDER.comment("Gobber tool enchantability [0-5, default: 20]").defineInRange("gobberToolsEnchantability", 20, 1, 50);
+
+        SERVER_BUILDER.pop();
+
+
+        SERVER_BUILDER.comment("Gobber Armor Material Values").push("gobber_armor_material");
+
+        GOBBER_ARMOR_DURABILITY_MULTIPLIER = SERVER_BUILDER.comment("Gobber armor durability multiplier [1-200, default: 71]").defineInRange("gobberArmorDurabilityMultiplier", 71, 1, 200);
+        GOBBER_ARMOR_ENCHANTABILITY = SERVER_BUILDER.comment("Gobber armor enchantability [1-50, default: 25]").defineInRange("gobberArmorEnchantability", 25, 1, 50);
+        GOBBER_ARMOR_TOUGHNESS = SERVER_BUILDER.comment("Gobber armor toughness [0-5, default: 2.5]").defineInRange("gobberArmorToughness", 2.5, 0, 5.0);
+        GOBBER_ARMOR_KNOCKBACK = SERVER_BUILDER.comment("Gobber armor knockback [0-5, default: 0.1]").defineInRange("gobberArmorKnockback", 0.1, 0, 5.0);
+
+        SERVER_BUILDER.pop();
+
+
         SERVER_BUILDER.comment("Gobber Food Values").push("gobber_foods");
 
         GOO_HUNGER = SERVER_BUILDER.comment("Goo hunger value [0-25, default: 7]").defineInRange("gooHunger", 7, 0, 25);
@@ -262,27 +284,6 @@ public class GobberConfigBuilder
 
         MEDALLION_EXP_ORBS = SERVER_BUILDER.comment("Medallion of Experience multiplier for extra XP orbs [default: 5]").defineInRange("medallionExpOrbs", 5, 0, 20);
         MEDALLION_EXP_LOOT = SERVER_BUILDER.comment("Medallion of Experience multiplier for extra mob loot [default: 10]").defineInRange("medallionExpLoot", 20, 5, 100);
-
-        SERVER_BUILDER.pop();
-
-
-        SERVER_BUILDER.comment("Settings for area effect blocks").push("area_block_effect_settings");
-
-        HEALER_RADIUS = SERVER_BUILDER.comment("Block range for Healer block effects [default: 12]").defineInRange("healerRange", 12, 0, 16);
-        PROTECTOR_RADIUS = SERVER_BUILDER.comment("Block range for Protector block effects [default: 24]").defineInRange("protectorRange", 24, 0, 32);
-        PROTECTOR_KILL_FISH = SERVER_BUILDER.comment("Should the Protector kill fish [true / false]").define("protectorKillFish", false);
-        DEFENDER_RADIUS = SERVER_BUILDER.comment("Block range for Defender block effects [default: 32]").defineInRange("defenderRange", 32, 0, 64);
-        DEFENDER_KILL_FISH = SERVER_BUILDER.comment("Should the Defender kill fish [true / false]").define("defenderKillFish", false);
-        LOOTER_RADIUS = SERVER_BUILDER.comment("Block rangefor Looter block effects [default: 24]").defineInRange("looterRange", 24, 0, 32);
-
-        SERVER_BUILDER.pop();
-
-
-        SERVER_BUILDER.comment("Settings for Maturator").push("maturator_settings");
-
-        MATURATOR_RADIUS = SERVER_BUILDER.comment("Block range for Maturator block effects [default: 16]").defineInRange("maturatorRange", 10, 0, 20);
-        MATURATOR_VERTICAL_RANGE = SERVER_BUILDER.comment("Vertical block range for Maturator block effects [default: 10]").defineInRange("maturatorVerticalRange", 5, 0, 10);
-        MATURATOR_MIN_TICK = SERVER_BUILDER.comment("Min interval of world ticks for the Maturator [default: 40]").defineInRange("maturatorMinTick", 40, 1, 1000);
 
         SERVER_BUILDER.pop();
 

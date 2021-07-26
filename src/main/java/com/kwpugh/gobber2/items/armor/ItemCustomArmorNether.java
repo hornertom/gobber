@@ -105,14 +105,13 @@ public class ItemCustomArmorNether extends ArmorItem
 	@Override
 	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
 	{
-		return repair.getItem() == ItemInit.GOBBER2_ARMOR_REPAIR.get();
+		return repair.getItem() == ItemInit.GOBBER2_INGOT_NETHER.get();
 	}
 	
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_armor_nether.line1").withStyle(ChatFormatting.AQUA)));
 		
 		if(enablePerks)
 		{
