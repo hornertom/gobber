@@ -102,7 +102,14 @@ public final class PlayerEquipsUtil
 				return true;
 			}
 		}
-      		
+		//Is the ring in a Curios slot?
+		if (CuriosModCheck.CURIOS.isLoaded())
+		{
+			if (CuriosUtil.findItem(ItemInit.GOBBER2_RING_PHOENIX.get(), player) != ItemStack.EMPTY)
+			{
+				return true;
+			}
+		}
         return false;
     }
     
@@ -133,8 +140,15 @@ public final class PlayerEquipsUtil
 				return true;
 			}
 		}
-		
-        return false;
+		//Checks Curios slots
+		if (CuriosModCheck.CURIOS.isLoaded())
+		{
+			if (CuriosUtil.findItem(ItemInit.GOBBER2_RING_HASTE.get(), player) != ItemStack.EMPTY)
+			{
+				return true;
+			}
+		}
+		return false;
     } 
     
     public static boolean isPlayerGotExpToken(Player player)
@@ -151,7 +165,14 @@ public final class PlayerEquipsUtil
 			}
 		}
 
-		
-        return false;
+		//Checks Curios slots
+		if (CuriosModCheck.CURIOS.isLoaded())
+		{
+			if (CuriosUtil.findItem(ItemInit.GOBBER2_MEDALLION_EXP.get(), player) != ItemStack.EMPTY)
+			{
+				return true;
+			}
+		}
+		return false;
     } 
 } 

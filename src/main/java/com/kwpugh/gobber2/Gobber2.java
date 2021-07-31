@@ -1,5 +1,7 @@
 package com.kwpugh.gobber2;
 
+import com.kwpugh.gobber2.util.CuriosModCheck;
+import net.minecraftforge.fml.InterModComms;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,6 +23,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import top.theillusivec4.curios.api.SlotTypeMessage;
 
 @Mod(Gobber2.modid)
 public class Gobber2 
@@ -36,7 +39,6 @@ public class Gobber2
 		GobberConfig.loadConfig(GobberConfig.CONFIG, FMLPaths.CONFIGDIR.get().resolve("gobber-general.toml"));
 		BlockInit.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
     	ItemInit.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-    	//BlockEntityInit.TILE_ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
 		
     	FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modSetup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
@@ -49,18 +51,26 @@ public class Gobber2
 	{	
 		OreGenerator.registerConfiguredFeatures();
 		MinecraftForge.EVENT_BUS.register(new PlayerSpecialAbilities());
-		MinecraftForge.EVENT_BUS.register(new DragonKillHandler());		
+		MinecraftForge.EVENT_BUS.register(new DragonKillHandler());
+
 		logger.info("Gobber common setup");
 	}
 	
 	private void clientSetup(final FMLClientSetupEvent event)
 	{
-		BlockRenders.defineRenders();		
+		BlockRenders.defineRenders();
+
 		logger.info("Gobber client setup");
 	}
 
     private void enqueueIMC(final InterModEnqueueEvent event)
     {
+		if (CuriosModCheck.CURIOS.isLoaded())
+		{
+			InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("belt").size(4).build());
+			InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("ring").size(4).build());
+		}
+
         logger.info("Gobber IMC setup");
     }
     
