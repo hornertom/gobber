@@ -6,11 +6,9 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 
-import net.minecraft.world.level.block.Block;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,8 +24,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.minecraft.world.item.Item.Properties;
-
 /*
  * This is the base class for all types of Excavators
  * 
@@ -35,17 +31,6 @@ import net.minecraft.world.item.Item.Properties;
 
 public class ExcavatorBase extends ShovelItem
 {
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.GRASS_BLOCK, 
-			Blocks.DIRT_PATH,
-			Blocks.DIRT, 
-			Blocks.COARSE_DIRT, 
-			Blocks.RED_SAND, 
-			Blocks.SAND, 
-			Blocks.PODZOL, 
-			Blocks.GRAVEL, 
-			Blocks.SOUL_SAND, 
-			Blocks.CLAY);
-	
 	public static final Set<Material> EFFECTIVE_MATERIALS = ImmutableSet.of(Material.DIRT);
 
 	public ExcavatorBase(Tier tier, float attackDamageIn, float attackSpeedIn, Properties builder)
@@ -59,7 +44,7 @@ public class ExcavatorBase extends ShovelItem
 
         if (entity instanceof Player)
         {
-        	ExcavatorUtil.attemptBreakNeighbors(world, pos, (Player) entity, EFFECTIVE_ON, EFFECTIVE_MATERIALS);
+        	ExcavatorUtil.attemptBreakNeighbors(world, pos, (Player) entity, BlockTags.MINEABLE_WITH_SHOVEL, EFFECTIVE_MATERIALS);
         }
         return super.mineBlock(stack, world, state, pos, entity);
     }

@@ -3,8 +3,10 @@ package com.kwpugh.gobber2.items.tools.paxel;
 import java.util.Set;
 
 import com.kwpugh.gobber2.init.ItemInit;
+import com.kwpugh.gobber2.init.TagInit;
 import com.kwpugh.gobber2.items.toolbaseclasses.PaxelBase;
 
+import net.minecraft.tags.Tag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.ItemStack;
@@ -13,10 +15,10 @@ import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomPaxelNether extends PaxelBase
 {
-	public ItemCustomPaxelNether(float attackDamageIn, float attackSpeedIn, Tier tier, Set<Block> effectiveBlocksIn,
+	public ItemCustomPaxelNether(float attackDamageIn, float attackSpeedIn, Tier tier, Tag<Block> effectiveBlocksIn,
 			Properties builder)
 	{
-		super(attackDamageIn, attackSpeedIn, tier, EFFECTIVE_ON, builder);	
+		super(attackDamageIn, attackSpeedIn, tier, TagInit.PAXEL_MINEABLE, builder);
 	}
 
 	@Override

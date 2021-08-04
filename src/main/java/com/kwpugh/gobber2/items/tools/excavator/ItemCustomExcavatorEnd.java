@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.kwpugh.gobber2.items.toolbaseclasses.ExcavatorUtil;
 
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -55,7 +56,7 @@ public class ItemCustomExcavatorEnd extends ShovelItem
 	{
 		if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F)
 		{
-			ExcavatorUtil.attemptBreakNeighbors(world, pos, (Player) entityLiving, EFFECTIVE_ON, EFFECTIVE_MATERIALS);
+			ExcavatorUtil.attemptBreakNeighbors(world, pos, (Player) entityLiving, BlockTags.MINEABLE_WITH_SHOVEL, EFFECTIVE_MATERIALS);
     	  
 			stack.hurtAndBreak(0, entityLiving, (p_220038_0_) -> {
             p_220038_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);

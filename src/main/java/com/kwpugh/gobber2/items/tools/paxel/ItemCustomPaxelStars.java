@@ -5,9 +5,11 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.kwpugh.gobber2.init.TagInit;
 import com.kwpugh.gobber2.items.toolbaseclasses.PaxelBase;
 import com.kwpugh.gobber2.util.EnableUtil;
 
+import net.minecraft.tags.Tag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -39,10 +41,10 @@ import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomPaxelStars extends PaxelBase
 {
-	public ItemCustomPaxelStars(float attackDamageIn, float attackSpeedIn, Tier tier, Set<Block> effectiveBlocksIn,
+	public ItemCustomPaxelStars(float attackDamageIn, float attackSpeedIn, Tier tier, Tag<Block> effectiveBlocksIn,
 			Properties builder)
 	{
-		super(attackDamageIn, attackSpeedIn, tier, EFFECTIVE_ON, builder);
+		super(attackDamageIn, attackSpeedIn, tier, TagInit.PAXEL_MINEABLE, builder);
 	}
 
     @Override

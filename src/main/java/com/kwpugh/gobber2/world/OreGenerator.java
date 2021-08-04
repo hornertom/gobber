@@ -41,11 +41,6 @@ public class OreGenerator
 		GOBBER2_ORE_END_TARGET_LIST = ImmutableList.of(OreConfiguration.target(CustomOreFeature.FillerBlockType.end_stone, BlockInit.GOBBER2_ORE_END.get().defaultBlockState()));
 
 
-		//GOBBER2_LUCKY_BLOCK = Feature.ORE.configured(new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE, BlockInit.GOBBER2_LUCKY_BLOCK.get().defaultBlockState(), GobberConfigBuilder.GOBBER2_LUCKY_BLOCK_SIZE.get())).range(GobberConfigBuilder.GOBBER2_LUCKY_BLOCK_MAX_HEIGHT.get()).squared().count(GobberConfigBuilder.GOBBER2_LUCKY_BLOCK_CHANCE.get());
-		//GOBBER2_ORE = Feature.ORE.configured(new OreConfiguration(OreConfiguration.Predicates.NATURAL_STONE, BlockInit.GOBBER2_ORE.get().defaultBlockState(), GobberConfigBuilder.GOBBER2_ORE_SIZE.get())).range(GobberConfigBuilder.GOBBER2_ORE_MAX_HEIGHT.get()).squared().count(GobberConfigBuilder.GOBBER2_ORE_CHANCE.get());
-		//GOBBER2_ORE_NETHER = Feature.ORE.configured(new OreConfiguration(OreConfiguration.Predicates.NETHER_ORE_REPLACEABLES, BlockInit.GOBBER2_ORE_NETHER.get().defaultBlockState(), GobberConfigBuilder.GOBBER2_ORE_NETHER_SIZE.get())).range(GobberConfigBuilder.GOBBER2_ORE_NETHER_MAX_HEIGHT.get()).squared().count(GobberConfigBuilder.GOBBER2_ORE_NETHER_CHANCE.get());
-		//GOBBER2_ORE_END = Feature.ORE.configured(new OreConfiguration(CustomOreFeature.FillerBlockType.end_stone, BlockInit.GOBBER2_ORE_END.get().defaultBlockState(), 4)).range(90).squared().count(20);
-
 		GOBBER2_LUCKY_BLOCK = Feature.ORE.configured(new OreConfiguration(GOBBER2_LUCKY_BLOCK_TARGET_LIST,
 				GobberConfigBuilder.GOBBER2_LUCKY_BLOCK_SIZE.get()))
 				.rangeUniform(VerticalAnchor.bottom(),
