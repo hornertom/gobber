@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.kwpugh.gobber2.init.ItemInit;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.WitherSkeleton;
@@ -25,8 +26,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomSwordNether extends SwordItem
 {
@@ -50,7 +49,7 @@ public class ItemCustomSwordNether extends SwordItem
 	{
 		if(target instanceof WitherSkeleton)
 	    {
-			target.remove(true);
+			target.remove(Entity.RemovalReason.KILLED);
 	       	target.spawnAtLocation(Items.WITHER_SKELETON_SKULL, 1);
 	    }
 	 

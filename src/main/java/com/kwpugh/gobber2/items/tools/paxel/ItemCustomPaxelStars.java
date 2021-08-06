@@ -1,7 +1,7 @@
 package com.kwpugh.gobber2.items.tools.paxel;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -9,13 +9,12 @@ import com.kwpugh.gobber2.init.TagInit;
 import com.kwpugh.gobber2.items.toolbaseclasses.PaxelBase;
 import com.kwpugh.gobber2.util.EnableUtil;
 
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.Tag;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.HoneycombItem;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CampfireBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -33,18 +32,31 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants.WorldEvents;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomPaxelStars extends PaxelBase
 {
-	public ItemCustomPaxelStars(float attackDamageIn, float attackSpeedIn, Tier tier, Tag<Block> effectiveBlocksIn,
-			Properties builder)
+	public ItemCustomPaxelStars(float attackDamageIn, float attackSpeedIn, Tier tier, Tag<Block> mineabl,
+					 Properties builder)
 	{
-		super(attackDamageIn, attackSpeedIn, tier, TagInit.PAXEL_MINEABLE, builder);
+		super(attackDamageIn, attackSpeedIn, tier, TagInit.PAXEL_MINEABLE,
+				builder.addToolType(net.minecraftforge.common.ToolType.AXE, tier.getLevel())
+						.addToolType(net.minecraftforge.common.ToolType.PICKAXE, tier.getLevel())
+						.addToolType(net.minecraftforge.common.ToolType.SHOVEL, tier.getLevel()));
+	}
+
+	public boolean isCorrectToolForDrops(BlockState blockIn) {
+		int i = this.getTier().getLevel();
+		return i >= blockIn.getHarvestLevel();
+	}
+
+	public float getDestroySpeed(ItemStack stack, BlockState state) {
+		Material material = state.getMaterial();
+		return material != Material.METAL && material != Material.HEAVY_METAL && material != Material.STONE
+				&& material != Material.WOOD && material != Material.PLANT ? super.getDestroySpeed(stack, state)
+				: this.speed;
 	}
 
     @Override
@@ -57,49 +69,100 @@ public class ItemCustomPaxelStars extends PaxelBase
     	Player player = iuc.getPlayer();
     	ItemStack stack = player.getMainHandItem();
     	BlockState blockstate = world.getBlockState(blockpos);
-    	BlockState resultToSet = null;
-    	Block strippedResult = BLOCK_STRIPPING_MAP.get(blockstate.getBlock());
           
     	if(!EnableUtil.isEnabled(stack))
     	{
-    		if (strippedResult != null)
-            {
-                world.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
-                resultToSet = strippedResult.defaultBlockState().setValue(RotatedPillarBlock.AXIS, blockstate.getValue(RotatedPillarBlock.AXIS));
-            }
-            else
-            {
-                if (iuc.getClickedFace() == Direction.DOWN)
-                {
-                    return InteractionResult.PASS;
-                }
-                
-                BlockState foundResult = SHOVEL_LOOKUP.get(blockstate.getBlock());
-                
-                if (foundResult != null && world.isEmptyBlock(blockpos.above()))
-                {
-                    world.playSound(player, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    resultToSet = foundResult;
-                }
-                else if (blockstate.getBlock() instanceof CampfireBlock && blockstate.getValue(CampfireBlock.LIT))
-                {
-                    world.levelEvent(null, WorldEvents.FIRE_EXTINGUISH_SOUND, blockpos, 0);
-                    resultToSet = blockstate.setValue(CampfireBlock.LIT, false);
-                }
-            }
-            if (resultToSet == null)
-            {
-                return InteractionResult.PASS;
-            }
-            if (!world.isClientSide)
-            {
-                world.setBlock(blockpos, resultToSet, 11);
-                
-                if (player != null)
-                {
-                    iuc.getItemInHand().hurtAndBreak(0, player, onBroken -> onBroken.broadcastBreakEvent(iuc.getHand()));
-                }
-            }
+			// Log-stripping logic
+			Level level = iuc.getLevel();
+			Optional<BlockState> optional = Optional.ofNullable(blockstate.getToolModifiedState(level, blockpos, player, iuc.getItemInHand(),  net.minecraftforge.common.ToolType.AXE));
+			Optional<BlockState> optional1 = WeatheringCopper.getPrevious(blockstate);
+			Optional<BlockState> optional2 = Optional.ofNullable(HoneycombItem.WAX_OFF_BY_BLOCK.get().get(blockstate.getBlock())).map((p_150694_) -> {
+				return p_150694_.withPropertiesOf(blockstate);
+			});
+			ItemStack itemstack = iuc.getItemInHand();
+			Optional<BlockState> optional3 = Optional.empty();
+			if (optional.isPresent())
+			{
+				level.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
+				optional3 = optional;
+			}
+			else if (optional1.isPresent())
+			{
+				level.playSound(player, blockpos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+				level.levelEvent(player, 3005, blockpos, 0);
+				optional3 = optional1;
+			}
+			else if (optional2.isPresent())
+			{
+				level.playSound(player, blockpos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+				level.levelEvent(player, 3004, blockpos, 0);
+				optional3 = optional2;
+			}
+
+			if (optional3.isPresent())
+			{
+				if (player instanceof ServerPlayer)
+				{
+					CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockpos, itemstack);
+				}
+
+				level.setBlock(blockpos, optional3.get(), 11);
+
+				if (player != null)
+				{
+					itemstack.hurtAndBreak(1, player, (p_150686_) -> {
+						p_150686_.broadcastBreakEvent(iuc.getHand());
+					});
+				}
+
+				return InteractionResult.sidedSuccess(level.isClientSide);
+			}
+			else
+			{
+				// shovel logic
+				if (iuc.getClickedFace() == Direction.DOWN)
+				{
+					return InteractionResult.PASS;
+				}
+				else
+				{
+					BlockState blockstate1 = blockstate.getToolModifiedState(level, blockpos, player, iuc.getItemInHand(), net.minecraftforge.common.ToolType.SHOVEL);
+					BlockState blockstate2 = null;
+					if (blockstate1 != null && level.isEmptyBlock(blockpos.above()))
+					{
+						level.playSound(player, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
+						blockstate2 = blockstate1;
+					}
+					else if (blockstate.getBlock() instanceof CampfireBlock && blockstate.getValue(CampfireBlock.LIT))
+					{
+						if (!level.isClientSide())
+						{
+							level.levelEvent((Player)null, 1009, blockpos, 0);
+						}
+
+						CampfireBlock.dowse(iuc.getPlayer(), level, blockpos, blockstate);
+						blockstate2 = blockstate.setValue(CampfireBlock.LIT, Boolean.valueOf(false));
+					}
+
+					if (blockstate2 != null)
+					{
+						if (!level.isClientSide)
+						{
+							level.setBlock(blockpos, blockstate2, 11);
+							if (player != null)
+							{
+								iuc.getItemInHand().hurtAndBreak(1, player, (p_43122_) ->
+								{
+									p_43122_.broadcastBreakEvent(iuc.getHand());
+								});
+							}
+						}
+
+						return InteractionResult.sidedSuccess(level.isClientSide);
+					}
+				}
+			}
+
             stack.setDamageValue(0);  //no damage
             
             return InteractionResult.SUCCESS;
