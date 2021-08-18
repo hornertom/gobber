@@ -1,14 +1,14 @@
 {
-  "parent": "gobber2:gobber2_medallion_lesser_healing",
+  "parent": "gobber2:gobber2_staff_clearing",
   "display": {
     "icon": {
-      "item": "gobber2:gobber2_medallion_healing2"
+      "item": "gobber2:gobber2_staff_farmer"
     },
     "title": {
-      "translate": "advancements.gobber2.gobber2_medallion_healing.title"
+      "translate": "advancements.gobber2.gobber2_staff_farmer.title"
     },
     "description": {
-      "translate": "advancements.gobber2.gobber2_medallion_healing.desc"
+      "translate": "advancements.gobber2.gobber2_staff_farmer.desc"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,12 +16,12 @@
     "hidden": false
   },
   "criteria": {
-    "gobber2_medallion_healing": {
+    "gobber2_staff_farmer": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": ["gobber2:gobber2_medallion_healing2"]
+            "items": ["gobber2:gobber2_staff_farmer"]
           }
         ]
       }
@@ -29,7 +29,7 @@
   },
   "requirements": [
     [
-      "gobber2_medallion_healing"
+      "gobber2_staff_farmer"
     ]
   ]
 }

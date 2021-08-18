@@ -1,5 +1,5 @@
 {
-  "parent": "gobber2:gobber2_rod",
+  "parent": "gobber2:gobber2_staff_clearing",
   "display": {
     "icon": {
       "item": "gobber2:gobber2_staff_ensnarement"

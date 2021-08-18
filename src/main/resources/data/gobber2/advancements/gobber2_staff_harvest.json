@@ -1,14 +1,14 @@
 {
-  "parent": "gobber2:gobber2_medallion_end",
+  "parent": "gobber2:gobber2_staff_farmer",
   "display": {
     "icon": {
-      "item": "gobber2:gobber2_medallion_sea"
+      "item": "gobber2:gobber2_staff_harvest"
     },
     "title": {
-      "translate": "advancements.gobber2.gobber2_medallion_sea.title"
+      "translate": "advancements.gobber2.gobber2_staff_harvest.title"
     },
     "description": {
-      "translate": "advancements.gobber2.gobber2_medallion_sea.desc"
+      "translate": "advancements.gobber2.gobber2_staff_harvest.desc"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,12 +16,12 @@
     "hidden": false
   },
   "criteria": {
-    "gobber2_medallion_sea": {
+    "gobber2_staff_harvest": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": ["gobber2:gobber2_medallion_sea"]
+            "items": ["gobber2:gobber2_staff_harvest"]
           }
         ]
       }
@@ -29,7 +29,7 @@
   },
   "requirements": [
     [
-      "gobber2_medallion_sea"
+      "gobber2_staff_harvest"
     ]
   ]
 }

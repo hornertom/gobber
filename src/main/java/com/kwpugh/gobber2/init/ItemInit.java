@@ -257,10 +257,4 @@ public class ItemInit
 	public static final RegistryObject<Item> GOOEY_BREAD_NETHER = ITEMS.register("gobber2_gooey_bread_nether", () -> new Item(new Item.Properties().food(FoodList.gooeyBreadNether).tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOOEY_BEEF_NETHER = ITEMS.register("gobber2_gooey_beef_nether", () -> new Item(new Item.Properties().food(FoodList.gooeyBeefNether).tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOOEY_BEEFSTEW_NETHER = ITEMS.register("gobber2_gooey_beefstew_nether", () -> new Item(new Item.Properties().food(FoodList.gooeyBeefstewNether).tab(Gobber2.gobber2)));
-
-//	public static final RegistryObject<Item> BLOCK_HEALER = ITEMS.register("block_healer", () -> new BlockItem(BlockInit.BLOCK_HEALER.get(), new Item.Properties().tab(Gobber2.gobber2)));
-//	public static final RegistryObject<Item> BLOCK_PROTECTOR = ITEMS.register("block_protector", () -> new BlockItem(BlockInit.BLOCK_PROTECTOR.get(), new Item.Properties().tab(Gobber2.gobber2)));
-//	public static final RegistryObject<Item> BLOCK_DEFENDER = ITEMS.register("block_defender", () -> new BlockItem(BlockInit.BLOCK_DEFENDER.get(), new Item.Properties().tab(Gobber2.gobber2)));
-//	public static final RegistryObject<Item> BLOCK_MATURATOR = ITEMS.register("block_maturator", () -> new BlockItem(BlockInit.BLOCK_MATURATOR.get(), new Item.Properties().tab(Gobber2.gobber2)));
-//	public static final RegistryObject<Item> BLOCK_LOOTER = ITEMS.register("block_looter", () -> new BlockItem(BlockInit.BLOCK_LOOTER.get(), new Item.Properties().tab(Gobber2.gobber2)));
 }

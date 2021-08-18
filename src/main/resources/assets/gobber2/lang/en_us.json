@@ -368,8 +368,8 @@
 	"block.gobber2.gobber2_glass_end": "End Glass",
 	"block.gobber2.clear_glass": "Clear Glass",
 
-	"advancements.gobber2.root.title": "The Gobber Adventure",
-	"advancements.gobber2.root.desc": "Smelt a Gobber Ore",
+	"advancements.gobber2.root.title": "The Gobber adventure begins...",
+	"advancements.gobber2.root.desc": "Obtain a Gobber Globette",
 
 	"advancements.gobber2.gobber2_mining_dim.title": "A nice place to visit and mine",
 	"advancements.gobber2.gobber2_mining_dim.desc": "Travel to Mining Dimension",
@@ -501,12 +501,14 @@
 
 	"advancements.gobber2.gobber2_staff_clearing.title": "Time to Mow the Lawn",
 	"advancements.gobber2.gobber2_staff_clearing.desc": "Craft a Staff of Clearing",
-	"advancements.gobber2.gobber2_staff_transformation.title": "A Better Way to Get Your Resources",
-	"advancements.gobber2.gobber2_staff_transformation.desc": "Craft a Staff of Transformation",
 	"advancements.gobber2.gobber2_staff_ensnarement.title": "A Mob in Your Pocket",
 	"advancements.gobber2.gobber2_staff_ensnarement.desc": "Craft a Staff of Ensnarement",
 	"advancements.gobber2.gobber2_staff_nature.title": "A Sapling by Any Other Name",
 	"advancements.gobber2.gobber2_staff_nature.desc": "Craft a Staff of Nature",
+	"advancements.gobber2.gobber2_staff_farmer.title": "Harvest in a larger area",
+	"advancements.gobber2.gobber2_staff_farmer.desc": "Craft a Staff of the Farmer",
+	"advancements.gobber2.gobber2_staff_harvest.title": "Grow and harvest in one tool!",
+	"advancements.gobber2.gobber2_staff_harvest.desc": "Craft a Staff of the Farmer",
 	"advancements.gobber2.gobber2_staff_stars.title": "Light up the World",
 	"advancements.gobber2.gobber2_staff_stars.desc": "Craft a Staff of the Stars",
 	"advancements.gobber2.gobber2_staff_sniper.title": "A Most Deadly Aim",

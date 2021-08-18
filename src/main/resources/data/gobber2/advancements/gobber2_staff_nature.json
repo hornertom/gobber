@@ -1,5 +1,5 @@
 {
-  "parent": "gobber2:gobber2_staff_clearing",
+  "parent": "gobber2:gobber2_rod_nether",
   "display": {
     "icon": {
       "item": "gobber2:gobber2_staff_nature"
