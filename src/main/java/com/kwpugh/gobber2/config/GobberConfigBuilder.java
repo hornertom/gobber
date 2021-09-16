@@ -44,6 +44,7 @@ public class GobberConfigBuilder
     public static ForgeConfigSpec.DoubleValue RING_DISMISSAL_VELOCITY;
     public static ForgeConfigSpec.DoubleValue RING_DISMISSAL_LIFT;
     public static ForgeConfigSpec.DoubleValue RING_DISMISSAL_RANGE;
+    public static ForgeConfigSpec.BooleanValue RING_TELEPORT_LIMITED_USE;
 
     public static ForgeConfigSpec.IntValue RING_FARMER_TICK_DELAY;
     public static ForgeConfigSpec.IntValue RING_FARMER_RADIUS;
@@ -313,6 +314,7 @@ public class GobberConfigBuilder
         RING_DISMISSAL_VELOCITY = SERVER_BUILDER.comment("Ring of Dismissal - Sets the horizontal velocity [default: 0.2]").defineInRange("ringDismissalVelocity", 0.2, 0.0, 15.0);
         RING_DISMISSAL_LIFT = SERVER_BUILDER.comment("Ring of Dismissal - Sets the vertical lift [default: 1.5]").defineInRange("ringDismissalLift", 1.5, 0.0, 15.0);
         RING_DISMISSAL_RANGE = SERVER_BUILDER.comment("Ring of Dismissal - Sets the horizontal range to detect mobs [default: 8.0]").defineInRange("ringDismissalLift", 8.0, 0.0, 16.0);
+        RING_TELEPORT_LIMITED_USE = SERVER_BUILDER.comment("Enable a single use of the Ring of Teleport [true / false]").define("limitedUseRingTeleport", false);
 
         SERVER_BUILDER.pop();
 

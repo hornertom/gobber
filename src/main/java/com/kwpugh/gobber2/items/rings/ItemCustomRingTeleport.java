@@ -27,8 +27,6 @@ import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomRingTeleport extends Item
 {
-	//boolean limitedUse = GeneralModConfig.LIMITED_USE.get();
-	
 	public ItemCustomRingTeleport(Properties properties)
 	{
 		super(properties);
@@ -77,16 +75,6 @@ public class ItemCustomRingTeleport extends Item
 			setPosition(stack, world, null, player);
 			player.sendMessage(new TranslatableComponent("item.gobber2.ring_teleport.line3").withStyle(ChatFormatting.YELLOW), null);
 		}
-	 
-//    	if(limitedUse)
-//    	{
-//    		stack.setDamage(getDamage(stack) + 1);
-//
-//    		if(stack.getDamage() >= stack.getMaxDamage())
-//    		{
-//    			stack.shrink(1);
-//    		}   
-//    	}
     	
 		return new InteractionResultHolder<>(InteractionResult.PASS, player.getItemInHand(hand)); 
 	}
