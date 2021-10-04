@@ -359,7 +359,7 @@ public class GobberConfigBuilder
         ENABLE_GOBBER_DRAGON_ARMOR_HEALTH_PERKS = SERVER_BUILDER.comment("Enable/disable Gobber Dragon Armor health perks").define("gobberDragonArmorHealthPerks", true);
 
         SERVER_BUILDER.pop();
-        
+
 
         SERVER_BUILDER.comment("Medallion of Experience Settings").push("medallion_exp_settings");
 

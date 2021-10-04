@@ -18,6 +18,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.minecraft.world.item.Item.Properties;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 
 public class ItemCustomRingCuring extends Item
 {
