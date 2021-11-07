@@ -31,6 +31,7 @@ public class GobberConfigBuilder
     public static ForgeConfigSpec.IntValue RING_EXPLORER_COOLDOWN;
     public static ForgeConfigSpec.IntValue SNIPER_SWORD_COOLDOWN;
     public static ForgeConfigSpec.IntValue SNIPER_STAFF_COOLDOWN;
+    public static ForgeConfigSpec.IntValue RING_HUSBANDRY_COOLDOWN;
 
     public static ForgeConfigSpec.IntValue RING_EXPLORER_MIN_RANGE;
     public static ForgeConfigSpec.IntValue RING_EXPLORER_MAX_RANGE;
@@ -291,6 +292,7 @@ public class GobberConfigBuilder
         RING_EXPLORER_COOLDOWN = SERVER_BUILDER.comment("Number of ticks duration for the Ring of the Explorer cooldown [0-3600, default: 480]").defineInRange("ringExplorerCooldown", 480, 0, 3600);
         SNIPER_SWORD_COOLDOWN = SERVER_BUILDER.comment("Number of ticks duration for the Sword of the Sniper cooldown [0-3600, default: 60]").defineInRange("swordSniperCooldown", 60, 0, 3600);
         SNIPER_STAFF_COOLDOWN = SERVER_BUILDER.comment("Number of ticks duration for the Staff of the Sniper cooldown [0-3600, default: 60]").defineInRange("staffSniperCooldown", 60, 0, 3600);
+        RING_HUSBANDRY_COOLDOWN = SERVER_BUILDER.comment("Number of ticks duration for the Ring of Husbandry cooldown [0-9600, default: 2400]").defineInRange("ringHusbandryCooldown", 2400, 0, 9600);
 
         SERVER_BUILDER.pop();
 

@@ -2,18 +2,15 @@ package com.kwpugh.gobber2.items.tools.pickaxe;
 
 
 import com.kwpugh.gobber2.init.ItemInit;
-
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomPickaxe extends PickaxeItem
 {
@@ -34,8 +31,6 @@ public class ItemCustomPickaxe extends PickaxeItem
 		
         if(!world.isClientSide && player.isShiftKeyDown())
         {
-            //EnableUtil.changeEnabled(player, hand);
-            //player.sendMessage(new StringTextComponent("Night vision ability active: " + EnableUtil.isEnabled(stack)));
             return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, player.getItemInHand(hand));
         }
         return super.use(world, player, hand);

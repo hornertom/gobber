@@ -1,27 +1,27 @@
 package com.kwpugh.gobber2.items.rings;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.world.item.TooltipFlag;
+import com.kwpugh.gobber2.config.GobberConfigBuilder;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.minecraft.world.item.Item.Properties;
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemCustomRingHusbandry extends Item
 {
+	static int cooldownHusbandry = GobberConfigBuilder.RING_HUSBANDRY_COOLDOWN.get();
+
 	public ItemCustomRingHusbandry(Properties properties)
 	{
 		super(properties);
@@ -32,16 +32,18 @@ public class ItemCustomRingHusbandry extends Item
 	{
 		InteractionResultHolder<ItemStack> result = super.use(world, player, hand);
 
-			if (!world.isClientSide)
+		if (!world.isClientSide)
+		{
+			int radius = 10;
+
+			List<Animal> mobs = world.getEntitiesOfClass(Animal.class, player.getBoundingBox().inflate(radius, radius, radius));
+			for (Animal animal : mobs)
 			{
-				int radius = 10;
-		        
-			   	List<Animal> mobs = world.getEntitiesOfClass(Animal.class, player.getBoundingBox().inflate(radius, radius, radius));
-			    for (Animal animal : mobs)
-			    {
-			       	animal.setInLove(player);
-			    }
-			}		
+				animal.setInLove(player);
+			}
+			player.getCooldowns().addCooldown(this, cooldownHusbandry);
+		}
+
 		return result; 	
 	}
 	
