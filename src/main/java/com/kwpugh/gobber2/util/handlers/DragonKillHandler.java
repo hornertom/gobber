@@ -33,7 +33,6 @@ public class DragonKillHandler
     @SubscribeEvent
     public void LivingDeathEvent(LivingDeathEvent event)
     {
-        //if(event.getEntity().getEntityWorld().getDimension() instanceof EndDimension)
         if(event.getEntity().getCommandSenderWorld().dimension().equals(Level.END))
     	{
         	if(GobberConfigBuilder.ENABLE_DRAGON_KILL_EVERY_KILL.get())

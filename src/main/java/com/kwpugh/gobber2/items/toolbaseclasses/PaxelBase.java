@@ -31,7 +31,7 @@ import net.minecraftforge.common.ToolActions;
 
 public class PaxelBase extends DiggerItem
 {
-    public PaxelBase(float attackDamageIn, float attackSpeedIn, Tier tier, Tag<Block> mineabl,
+    public PaxelBase(float attackDamageIn, float attackSpeedIn, Tier tier, Tag<Block> mineable,
                      Properties builder)
     {
         super(attackDamageIn, attackSpeedIn, tier, TagInit.PAXEL_MINEABLE, builder);
@@ -42,7 +42,7 @@ public class PaxelBase extends DiggerItem
         ShovelItem and AxeItem
         and combined
 
-        Should with both vanilla and properly
+        Should work with both vanilla and properly
         coded modded logs and paths
      */
     @Override

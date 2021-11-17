@@ -14,7 +14,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
 
-version = '2.5.6'
+version = '2.5.7'
 group = 'com.kwpugh.gobber2'
 archivesBaseName = 'Gobber2-Forge-1.17.1'
 
