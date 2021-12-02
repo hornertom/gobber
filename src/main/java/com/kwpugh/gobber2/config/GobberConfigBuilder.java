@@ -230,7 +230,7 @@ public class GobberConfigBuilder
         //GOBBER2_ORE_END_GENERATION = SERVER_BUILDER.comment("Generate Gobber End Ore in the world [true / false]").define("gobberOreEndGeneration", true);
         GOBBER2_ORE_END_SIZE = SERVER_BUILDER.comment("Size of Gobber End Ore pockets [0-100, default: 9]").defineInRange("gobberOreEndSize", 9, 0, 100);
         GOBBER2_ORE_END_CHANCE = SERVER_BUILDER.comment("Chances of Gobber End Ore pocket being generated [0-30, default: 15]").defineInRange("gobberOreEndChance", 15, 0, 30);
-        GOBBER2_ORE_END_MIN_HEIGHT = SERVER_BUILDER.comment("Minimal height for Gobber End Ore pocket generation, [0-255, default: 40]").defineInRange("gobberOreEndMinHeight", 40, 0, 255);
+        GOBBER2_ORE_END_MIN_HEIGHT = SERVER_BUILDER.comment("Minimal height for Gobber End Ore pocket generation, [0-255, default: 40]").defineInRange("gobberOreEndMinHeight", 0, 0, 255);
         GOBBER2_ORE_END_MAX_HEIGHT = SERVER_BUILDER.comment("Maximal height for Gobber End Ore pocket generation [0-255, default: 255]").defineInRange("gobberOreEndMaxHeight", 255, 0, 255);
 
         SERVER_BUILDER.pop();
