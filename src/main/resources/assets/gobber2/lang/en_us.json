@@ -3,10 +3,17 @@
     "key.categories.gobber2": "Gobber",
 
 	"block.gobber2.gobber2_lucky_block": "Gobber Lucky Block",
+	"block.gobber2.gobber2_lucky_block_deepslate": "Deepslate Gobber Lucky Block",
+	"item.gobber2.gobber2_lucky_block_deepslate": "Deepslate Gobber Lucky Block",
+	"block.gobber2.gobber2_lucky_block_nether": "Nether Gobber Lucky Block",
+	"item.gobber2.gobber2_lucky_block_nether": "Nether Gobber Lucky Block",
 
 	"block.gobber2.gobber2_ore": "Gobber Ore",
 	"item.gobber2.gobber2_ore": "Gobber Ore",
+	"block.gobber2.gobber2_ore_deepslate": "Deepslate Gobber Ore",
+	"item.gobber2.gobber2_ore_deepslate": "Deepslate Gobber Ore",
 	"item.gobber2.gobber2_ore.line1": "Requires diamond-level pickaxe to mine",
+
 	"item.gobber2.gobber2_glob": "Gobber Glob",
 	"item.gobber2.gobber2_ingot": "Gobber Ingot",
 	"block.gobber2.gobber2_block": "Gobber Block",
@@ -213,9 +220,8 @@
 	"item.gobber2.gobber2_ring_stealth": "Ring of Stealth",
 	"item.gobber2.gobber2_ring_stealth.line1": "Allows the player to go undetected by hostile mobs",
 	"item.gobber2.gobber2_ring_stealth.line2": "Works while in player main hand",
-	
-	"item.gobber2.gobber2_ring_teleport": "Ring of Teleport (Obsolete)",
-	"item.gobber2.gobber2_ring_teleport2": "Ring of Teleport",
+
+	"item.gobber2.gobber2_ring_teleport": "Ring of Teleport",
 	"item.gobber2.ring_teleport.line1": "Location set!",
 	"item.gobber2.ring_teleport.line2": "Location already set.",
 	"item.gobber2.ring_teleport.line3": "Location cleared!",

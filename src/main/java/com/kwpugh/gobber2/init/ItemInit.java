@@ -56,7 +56,7 @@ import com.kwpugh.gobber2.lists.*;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -73,10 +73,13 @@ public class ItemInit
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Gobber2.modid);
 
 	public static final RegistryObject<Item> GOBBER2_ORE = ITEMS.register("gobber2_ore", () -> new BlockItem(BlockInit.GOBBER2_ORE.get(), new Item.Properties().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_ORE_DEEPSLATE = ITEMS.register("gobber2_ore_deepslate", () -> new BlockItem(BlockInit.GOBBER2_ORE_DEEPSLATE.get(), new Item.Properties().tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_ORE_NETHER = ITEMS.register("gobber2_ore_nether", () -> new BlockItem(BlockInit.GOBBER2_ORE_NETHER.get(), new Item.Properties().tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_ORE_END = ITEMS.register("gobber2_ore_end", () -> new BlockItem(BlockInit.GOBBER2_ORE_END.get(), new Item.Properties().tab(Gobber2.gobber2)));
 
 	public static final RegistryObject<Item> GOBBER2_LUCKY_BLOCK = ITEMS.register("gobber2_lucky_block", () -> new BlockItem(BlockInit.GOBBER2_LUCKY_BLOCK.get(), new Item.Properties().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_LUCKY_BLOCK_DEEPSLATE = ITEMS.register("gobber2_lucky_block_deepslate", () -> new BlockItem(BlockInit.GOBBER2_LUCKY_BLOCK_DEEPSLATE.get(), new Item.Properties().tab(Gobber2.gobber2)));
+	public static final RegistryObject<Item> GOBBER2_LUCKY_BLOCK_NETHER = ITEMS.register("gobber2_lucky_block_nether", () -> new BlockItem(BlockInit.GOBBER2_LUCKY_BLOCK_NETHER.get(), new Item.Properties().tab(Gobber2.gobber2)));
 
 	public static final RegistryObject<Item> GOBBER2_BLOCK = ITEMS.register("gobber2_block", () -> new BlockItem(BlockInit.GOBBER2_BLOCK.get(), new Item.Properties().tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_BLOCK_NETHER = ITEMS.register("gobber2_block_nether", () -> new BlockItem(BlockInit.GOBBER2_BLOCK_NETHER.get(), new Item.Properties().tab(Gobber2.gobber2)));
@@ -198,7 +201,6 @@ public class ItemInit
 	public static final RegistryObject<Item> GOBBER2_RING_AIRWALKING = ITEMS.register("gobber2_ring_airwalking", () -> new ItemCustomRingAirwalking(new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_RING_STEALTH = ITEMS.register("gobber2_ring_stealth", () -> new ItemCustomRingStealth(new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_RING_TELEPORT = ITEMS.register("gobber2_ring_teleport", () -> new ItemCustomRingTeleport(new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
-	public static final RegistryObject<Item> GOBBER2_RING_TELEPORT2 = ITEMS.register("gobber2_ring_teleport2", () -> new ItemCustomRingTeleport2(new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_RING_BLINK = ITEMS.register("gobber2_ring_blink", () -> new ItemCustomRingBlink(new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
 	public static final RegistryObject<Item> GOBBER2_RING_EXPLORER = ITEMS.register("gobber2_ring_explorer", () -> new ItemCustomRingExplorer(new Item.Properties().stacksTo(1).tab(Gobber2.gobber2)));
 

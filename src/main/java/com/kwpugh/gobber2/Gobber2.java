@@ -1,5 +1,7 @@
 package com.kwpugh.gobber2;
 
+import com.kwpugh.gobber2.world.GobberConfiguredFeature;
+import com.kwpugh.gobber2.world.GobberPlacedFeature;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,7 +12,6 @@ import com.kwpugh.gobber2.util.BlockRenders;
 import com.kwpugh.gobber2.util.Gobber2_Group;
 import com.kwpugh.gobber2.util.PlayerSpecialAbilities;
 import com.kwpugh.gobber2.util.handlers.DragonKillHandler;
-import com.kwpugh.gobber2.world.OreGenerator;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.common.MinecraftForge;
@@ -46,7 +47,8 @@ public class Gobber2
     
 	private void modSetup(final FMLCommonSetupEvent event)
 	{	
-		OreGenerator.registerConfiguredFeatures();
+		GobberConfiguredFeature.registerConfiguredFeatures();
+		GobberPlacedFeature.registerPlacedFeatures();
 		MinecraftForge.EVENT_BUS.register(new PlayerSpecialAbilities());
 		MinecraftForge.EVENT_BUS.register(new DragonKillHandler());
 

@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "gobber2:gobber2_ore",
+    "gobber2:gobber2_ore_deepslate",
     "gobber2:gobber2_block",
     "gobber2:gobber2_glass",
     "gobber2:clear_glass"
