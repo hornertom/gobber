@@ -15,7 +15,6 @@ public class PlayerSpecialAbilities
 	public static void giveFullHealth(World world, PlayerEntity player, ItemStack itemstack)
 	{
     	player.setHealth(20);
-		return;
 	}
 
 	//Set player health beyond normal max health
@@ -24,8 +23,6 @@ public class PlayerSpecialAbilities
 		//player.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(newMax);
 		float healthAsFloat = (float) newMax;
 		player.setHealth(healthAsFloat);
-		
-		return;
 	}
 	
 	//Increases the player's food level to max on tick update, based on inputs
@@ -35,16 +32,12 @@ public class PlayerSpecialAbilities
 		{
 			player.getFoodStats().addStats(newfoodlevel, newsatlevel);
 		}
-		
-    	return;
 	}
 		
 	//Set player saturation level to max 
 	public static void giveSaturationEffect(World world, PlayerEntity player, ItemStack itemstack)
 	{
 		player.getFoodStats().setFoodSaturationLevel(7.0F);
-		
-    	return;
 	}
 	
 	//gives extra yellow hears and a variable rate
@@ -70,25 +63,20 @@ public class PlayerSpecialAbilities
 			if (player.ticksExisted % 180 == 0)
 			{
 				player.setAbsorptionAmount(current + absorptionRate);
-			} 
-			return;
+			}
 		}
-		
-    	return;
 	}	
 
 	//Set player yellow hearts to none on tick update
 	public static void giveNoExtraHearts(World world, PlayerEntity player, ItemStack itemstack)
 	{
 		player.setAbsorptionAmount(0);
-    	return;
 	}
 	
 	//Set player oxygen to max on tick update
 	public static void giveBreathing(World world, PlayerEntity player, ItemStack itemstack)
 	{
 		player.setAir(300);
-    	return;
 	}
 	
 	//Gives player Dolphin's Grace

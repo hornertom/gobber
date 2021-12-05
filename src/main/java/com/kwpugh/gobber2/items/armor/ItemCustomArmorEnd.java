@@ -113,8 +113,7 @@ public class ItemCustomArmorEnd extends ArmorItem
 	    if(head.getItem() == ItemInit.GOBBER2_HELMET_END.get())
 		{
 			PlayerSpecialAbilities.giveYellowHearts(world, player, stack, 10, 0.33F);	
-			PlayerSpecialAbilities.giveRegenEffect(world, player, stack, hunger, (float) saturation);	
-			//PlayerSpecialAbilities.giveRegenEffect(world, player, stack, 1, 0.10F);			
+			PlayerSpecialAbilities.giveRegenEffect(world, player, stack, hunger, (float) saturation);
 		}
 		else
 		{
