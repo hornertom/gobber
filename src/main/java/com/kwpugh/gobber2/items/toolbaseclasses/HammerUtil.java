@@ -58,15 +58,15 @@ public class HammerUtil
     
     public static void attemptBreak(World world, BlockPos pos, PlayerEntity player, Set<Material> effectiveMaterials)
     {
-
         BlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
         boolean isWithinHarvestLevel = player.getHeldItemMainhand().canHarvestBlock(state);  //added to ensure each block in the breaking is harvestable with this tool material
+        boolean isHarvestable = block.canHarvestBlock(state, world, pos, player);  // added in case a block overrides canHarvestBlock to false at block level
         boolean isEffective = effectiveMaterials.contains(state.getMaterial());
-        
+
         boolean witherImmune = BlockTags.WITHER_IMMUNE.contains(state.getBlock());
-        
-        
-        if(isEffective && !witherImmune && isWithinHarvestLevel)	
+
+        if(isEffective && !witherImmune && isWithinHarvestLevel & isHarvestable)
         {
         	if(!state.hasTileEntity())
         	{
