@@ -7,10 +7,7 @@ import javax.annotation.Nullable;
 
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.GravelBlock;
-import net.minecraft.world.level.block.SandBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -86,6 +83,7 @@ public class ItemCustomRingMiner extends Item
 									blockForgeTags.contains("forge:gravel") ||
 									block instanceof GravelBlock ||
 									block instanceof SandBlock ||
+									block instanceof MagmaBlock ||
 									block == Blocks.DIRT ||
 									block == Blocks.DIRT_PATH ||
 									block == Blocks.SAND  ||
