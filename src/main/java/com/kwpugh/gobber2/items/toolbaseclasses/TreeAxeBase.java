@@ -45,202 +45,202 @@ import net.minecraft.world.item.Item.Properties;
 
 /*
  * Adapted from several sources
- * 
+ *
  * Credits to original authors:
- * 
+ *
  * - astradamus
  * - neurodr0me
  * - DoubleDoorDev
  * - and few others I don't remember
- * 
- * 
- * 
+ *
+ *
+ *
  */
 
 public class TreeAxeBase extends AxeItem
-{   
-    public static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS, Blocks.BOOKSHELF, Blocks.OAK_WOOD, Blocks.SPRUCE_WOOD, Blocks.BIRCH_WOOD, Blocks.JUNGLE_WOOD, Blocks.ACACIA_WOOD, Blocks.DARK_OAK_WOOD, Blocks.OAK_LOG, Blocks.SPRUCE_LOG, Blocks.BIRCH_LOG, Blocks.JUNGLE_LOG, Blocks.ACACIA_LOG, Blocks.DARK_OAK_LOG, Blocks.CHEST, Blocks.PUMPKIN, Blocks.CARVED_PUMPKIN, Blocks.JACK_O_LANTERN, Blocks.MELON, Blocks.LADDER, Blocks.SCAFFOLDING, Blocks.OAK_BUTTON, Blocks.SPRUCE_BUTTON, Blocks.BIRCH_BUTTON, Blocks.JUNGLE_BUTTON, Blocks.DARK_OAK_BUTTON, Blocks.ACACIA_BUTTON, Blocks.OAK_PRESSURE_PLATE, Blocks.SPRUCE_PRESSURE_PLATE, Blocks.BIRCH_PRESSURE_PLATE, Blocks.JUNGLE_PRESSURE_PLATE, Blocks.DARK_OAK_PRESSURE_PLATE, Blocks.ACACIA_PRESSURE_PLATE);
+{
+	public static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.OAK_PLANKS, Blocks.SPRUCE_PLANKS, Blocks.BIRCH_PLANKS, Blocks.JUNGLE_PLANKS, Blocks.ACACIA_PLANKS, Blocks.DARK_OAK_PLANKS, Blocks.BOOKSHELF, Blocks.OAK_WOOD, Blocks.SPRUCE_WOOD, Blocks.BIRCH_WOOD, Blocks.JUNGLE_WOOD, Blocks.ACACIA_WOOD, Blocks.DARK_OAK_WOOD, Blocks.OAK_LOG, Blocks.SPRUCE_LOG, Blocks.BIRCH_LOG, Blocks.JUNGLE_LOG, Blocks.ACACIA_LOG, Blocks.DARK_OAK_LOG, Blocks.CHEST, Blocks.PUMPKIN, Blocks.CARVED_PUMPKIN, Blocks.JACK_O_LANTERN, Blocks.MELON, Blocks.LADDER, Blocks.SCAFFOLDING, Blocks.OAK_BUTTON, Blocks.SPRUCE_BUTTON, Blocks.BIRCH_BUTTON, Blocks.JUNGLE_BUTTON, Blocks.DARK_OAK_BUTTON, Blocks.ACACIA_BUTTON, Blocks.OAK_PRESSURE_PLATE, Blocks.SPRUCE_PRESSURE_PLATE, Blocks.BIRCH_PRESSURE_PLATE, Blocks.JUNGLE_PRESSURE_PLATE, Blocks.DARK_OAK_PRESSURE_PLATE, Blocks.ACACIA_PRESSURE_PLATE);
 
-    public static final Set<Material> EFFECTIVE_MATERIALS = ImmutableSet.of(Material.WOOD, Material.VEGETABLE, Material.CACTUS);
+	public static final Set<Material> EFFECTIVE_MATERIALS = ImmutableSet.of(Material.WOOD, Material.VEGETABLE, Material.CACTUS);
 
-    public static final int LOG_BREAK_DELAY = 1;
+	public static final int LOG_BREAK_DELAY = 1;
 
-    public TreeAxeBase(Tier tier, float attackDamageIn, float attackSpeedIn, Properties builder)
-    {
-        super(tier, attackDamageIn, attackSpeedIn, builder);
-    }
+	public TreeAxeBase(Tier tier, float attackDamageIn, float attackSpeedIn, Properties builder)
+	{
+		super(tier, attackDamageIn, attackSpeedIn, builder);
+	}
 
-    @Override
-    public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entityLiving)
-    {
-    	if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F)
-    	{
-    		 stack.hurt(0, random, null);
+	@Override
+	public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity entityLiving)
+	{
+		if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F)
+		{
+			stack.hurt(0, random, null);
 
-    	        if (entityLiving instanceof Player)
-    	        {
-    	            Player player = (Player) entityLiving;
+			if (entityLiving instanceof Player)
+			{
+				Player player = (Player) entityLiving;
 
-    	            if (!attemptFellTree(world, pos, player))
-    	            {
-    	                attemptBreakNeighbors(world, pos, player, EFFECTIVE_ON, EFFECTIVE_MATERIALS, false);
-    	            }
-    	        }        
-    	}
-    	
-    	return super.mineBlock(stack, world, state, pos, entityLiving);
-    }
+				if (!attemptFellTree(world, pos, player))
+				{
+					attemptBreakNeighbors(world, pos, player, EFFECTIVE_ON, EFFECTIVE_MATERIALS, false);
+				}
+			}
+		}
 
-    private boolean attemptFellTree(Level world, BlockPos pos, Player player)
-    {
+		return super.mineBlock(stack, world, state, pos, entityLiving);
+	}
 
-        ArrayList<BlockPos> logs = new ArrayList<>();
-        ArrayList<BlockPos> candidates = new ArrayList<>();
-        candidates.add(pos);
+	private boolean attemptFellTree(Level world, BlockPos pos, Player player)
+	{
 
-        int leaves = 0;
+		ArrayList<BlockPos> logs = new ArrayList<>();
+		ArrayList<BlockPos> candidates = new ArrayList<>();
+		candidates.add(pos);
 
-        for (int i = 0; i < candidates.size(); i++)
-        {
-            if (logs.size() > 200) return false; 
+		int leaves = 0;
 
-            BlockPos candidate = candidates.get(i);
-            Block block = world.getBlockState(candidate).getBlock();
+		for (int i = 0; i < candidates.size(); i++)
+		{
+			if (logs.size() > 200) return false;
 
-            if (BlockTags.LEAVES.contains(block))
-            {
-                leaves++;
-            }
-            else if (logs.size() == 0 || BlockTags.LOGS.contains(block))
-            {
-                logs.add(candidate);
+			BlockPos candidate = candidates.get(i);
+			Block block = world.getBlockState(candidate).getBlock();
 
-                for (int x = -1; x <= 1; x++)
-                {
-                    for (int y = 0; y <= 1; y++)
-                    { 
-                        for (int z = -1; z <= 1; z++)
-                        {
-                            BlockPos neighbor = candidate.offset(x, y, z);
-                            if (candidates.contains(neighbor)) continue; 
-                            candidates.add(neighbor);
-                        }
-                    }
-                }
-            }
-        }
+			if (BlockTags.LEAVES.contains(block))
+			{
+				leaves++;
+			}
+			else if (logs.size() == 0 || BlockTags.LOGS.contains(block))
+			{
+				logs.add(candidate);
 
-        if (logs.size() == 0) return false; 
+				for (int x = -1; x <= 1; x++)
+				{
+					for (int y = 0; y <= 1; y++)
+					{
+						for (int z = -1; z <= 1; z++)
+						{
+							BlockPos neighbor = candidate.offset(x, y, z);
+							if (candidates.contains(neighbor)) continue;
+							candidates.add(neighbor);
+						}
+					}
+				}
+			}
+		}
 
-        if (leaves >= logs.size()/6.0)
-        { 
-            MinecraftForge.EVENT_BUS.register(new Object()
-            {
-                int fortuneLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, player.getMainHandItem());
-                int silkLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, player.getMainHandItem());
+		if (logs.size() == 0) return false;
 
-                int delay = LOG_BREAK_DELAY;
-                int i = 0;
+		if (leaves >= logs.size()/6.0)
+		{
+			MinecraftForge.EVENT_BUS.register(new Object()
+			{
+				int fortuneLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, player.getMainHandItem());
+				int silkLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, player.getMainHandItem());
 
-                @SubscribeEvent
-                public void onTick(TickEvent.WorldTickEvent event)
-                {
-                    if (delay-- > 0) return;
-                    delay = LOG_BREAK_DELAY;
-                    if (i < logs.size()) {
-                        BlockPos log = logs.get(i);
-                        attemptBreak(world, log, player, EFFECTIVE_ON, EFFECTIVE_MATERIALS, fortuneLevel, silkLevel, false);
-                        i++;
-                    }
-                    else
-                    {
-                        MinecraftForge.EVENT_BUS.unregister(this);
-                    }
-                }
-            });
+				int delay = LOG_BREAK_DELAY;
+				int i = 0;
 
-            return true;
-        }
+				@SubscribeEvent
+				public void onTick(TickEvent.WorldTickEvent event)
+				{
+					if (delay-- > 0) return;
+					delay = LOG_BREAK_DELAY;
+					if (i < logs.size()) {
+						BlockPos log = logs.get(i);
+						attemptBreak(world, log, player, EFFECTIVE_ON, EFFECTIVE_MATERIALS, fortuneLevel, silkLevel, false);
+						i++;
+					}
+					else
+					{
+						MinecraftForge.EVENT_BUS.unregister(this);
+					}
+				}
+			});
 
-        return false;
-    }
-    
+			return true;
+		}
 
-    public static final Random random = new Random();
+		return false;
+	}
 
-    public static void attemptBreakNeighbors(Level world, BlockPos pos, Player player, Set<Block> effectiveOn, Set<Material> effectiveMaterials, boolean checkHarvestLevel)
-    {
-        world.setBlockAndUpdate(pos, Blocks.GLASS.defaultBlockState());
-        HitResult trace = calcRayTrace(world, player, ClipContext.Fluid.ANY);
-        world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 
-        if (trace.getType() == HitResult.Type.BLOCK)
-        {
-            BlockHitResult blockTrace = (BlockHitResult) trace;
-            Direction face = blockTrace.getDirection();
+	public static final Random random = new Random();
 
-            int fortuneLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, player.getMainHandItem());
-            int silkLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, player.getMainHandItem());
+	public static void attemptBreakNeighbors(Level world, BlockPos pos, Player player, Set<Block> effectiveOn, Set<Material> effectiveMaterials, boolean checkHarvestLevel)
+	{
+		world.setBlockAndUpdate(pos, Blocks.GLASS.defaultBlockState());
+		HitResult trace = calcRayTrace(world, player, ClipContext.Fluid.ANY);
+		world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 
-            for (int a = -1; a <= 1; a++)
-            {
-                for (int b = -1; b <= 1; b++)
-                {
-                    if (a == 0 && b == 0) continue;
+		if (trace.getType() == HitResult.Type.BLOCK)
+		{
+			BlockHitResult blockTrace = (BlockHitResult) trace;
+			Direction face = blockTrace.getDirection();
 
-                    BlockPos target = null;
+			int fortuneLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, player.getMainHandItem());
+			int silkLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, player.getMainHandItem());
 
-                    if (face == Direction.UP    || face == Direction.DOWN)  target = pos.offset(a, 0, b);
-                    if (face == Direction.NORTH || face == Direction.SOUTH) target = pos.offset(a, b, 0);
-                    if (face == Direction.EAST  || face == Direction.WEST)  target = pos.offset(0, a, b);
+			for (int a = -1; a <= 1; a++)
+			{
+				for (int b = -1; b <= 1; b++)
+				{
+					if (a == 0 && b == 0) continue;
 
-                    attemptBreak(world, target, player, effectiveOn, effectiveMaterials, fortuneLevel, silkLevel, checkHarvestLevel);
-                }
-            }
-        }
-    }
+					BlockPos target = null;
 
-    public static void attemptBreak(Level world, BlockPos pos, Player player, Set<Block> effectiveOn, Set<Material> effectiveMaterials, int fortuneLevel, int silkLevel, boolean checkHarvestLevel)
-    {
-        BlockState state = world.getBlockState(pos);
+					if (face == Direction.UP    || face == Direction.DOWN)  target = pos.offset(a, 0, b);
+					if (face == Direction.NORTH || face == Direction.SOUTH) target = pos.offset(a, b, 0);
+					if (face == Direction.EAST  || face == Direction.WEST)  target = pos.offset(0, a, b);
 
-        boolean validHarvest = !checkHarvestLevel || player.getMainHandItem().isCorrectToolForDrops(state);
-        boolean isEffective = effectiveOn.contains(state.getBlock()) || effectiveMaterials.contains(state.getMaterial());
-        boolean witherImmune = BlockTags.WITHER_IMMUNE.contains(state.getBlock());
+					attemptBreak(world, target, player, effectiveOn, effectiveMaterials, fortuneLevel, silkLevel, checkHarvestLevel);
+				}
+			}
+		}
+	}
 
-        if (validHarvest && isEffective && !witherImmune)
-        {
-            world.destroyBlock(pos, false);
-            Block.dropResources(state, world, pos, null, player, player.getMainHandItem());
+	public static void attemptBreak(Level world, BlockPos pos, Player player, Set<Block> effectiveOn, Set<Material> effectiveMaterials, int fortuneLevel, int silkLevel, boolean checkHarvestLevel)
+	{
+		BlockState state = world.getBlockState(pos);
 
-            int exp = state.getExpDrop(world, pos, fortuneLevel, silkLevel);
-            if (exp > 0)
-            {
-                state.getBlock().popExperience((ServerLevel) world, pos, exp);
-            }
-        }
-    }
+		boolean validHarvest = !checkHarvestLevel || player.getMainHandItem().isCorrectToolForDrops(state);
+		boolean isEffective = effectiveOn.contains(state.getBlock()) || effectiveMaterials.contains(state.getMaterial());
+		boolean witherImmune = BlockTags.WITHER_IMMUNE.contains(state.getBlock());
 
-    public static HitResult calcRayTrace(Level worldIn, Player player, ClipContext.Fluid fluidMode)
-    {
-        float f = player.xRotO;
-        float f1 = player.yRotO;
-        Vec3 vec3d = player.getEyePosition(1.0F);
-        float f2 = Mth.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f3 = Mth.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f4 = -Mth.cos(-f * ((float)Math.PI / 180F));
-        float f5 = Mth.sin(-f * ((float)Math.PI / 180F));
-        float f6 = f3 * f4;
-        float f7 = f2 * f4;
-        double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue() + 1;
-        Vec3 vec3d1 = vec3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
-        return worldIn.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.OUTLINE, fluidMode, player));
-    }
-    
+		if (validHarvest && isEffective && !witherImmune)
+		{
+			world.destroyBlock(pos, false);
+			Block.dropResources(state, world, pos, null, player, player.getMainHandItem());
+
+			int exp = state.getExpDrop(world, pos, fortuneLevel, silkLevel);
+			if (exp > 0)
+			{
+				state.getBlock().popExperience((ServerLevel) world, pos, exp);
+			}
+		}
+	}
+
+	public static HitResult calcRayTrace(Level worldIn, Player player, ClipContext.Fluid fluidMode)
+	{
+		float f = player.xRotO;
+		float f1 = player.yRotO;
+		Vec3 vec3d = player.getEyePosition(1.0F);
+		float f2 = Mth.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
+		float f3 = Mth.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
+		float f4 = -Mth.cos(-f * ((float)Math.PI / 180F));
+		float f5 = Mth.sin(-f * ((float)Math.PI / 180F));
+		float f6 = f3 * f4;
+		float f7 = f2 * f4;
+		double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue() + 1;
+		Vec3 vec3d1 = vec3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
+		return worldIn.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.OUTLINE, fluidMode, player));
+	}
+
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_tree_axe.line1").withStyle(ChatFormatting.GREEN)));			
+		tooltip.add((new TranslatableComponent("item.gobber2.gobber2_tree_axe.line1").withStyle(ChatFormatting.GREEN)));
 	}
-} 
+}

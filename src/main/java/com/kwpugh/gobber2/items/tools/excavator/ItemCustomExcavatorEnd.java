@@ -33,17 +33,17 @@ import net.minecraft.world.item.Item.Properties;
 
 public class ItemCustomExcavatorEnd extends ShovelItem
 {
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.GRASS_BLOCK, 
+	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.GRASS_BLOCK,
 			Blocks.DIRT_PATH,
-			Blocks.DIRT, 
-			Blocks.COARSE_DIRT, 
-			Blocks.RED_SAND, 
-			Blocks.SAND, 
-			Blocks.PODZOL, 
-			Blocks.GRAVEL, 
-			Blocks.SOUL_SAND, 
+			Blocks.DIRT,
+			Blocks.COARSE_DIRT,
+			Blocks.RED_SAND,
+			Blocks.SAND,
+			Blocks.PODZOL,
+			Blocks.GRAVEL,
+			Blocks.SOUL_SAND,
 			Blocks.CLAY);
-	
+
 	public static final Set<Material> EFFECTIVE_MATERIALS = ImmutableSet.of(Material.DIRT);
 
 	public ItemCustomExcavatorEnd(Tier tier, float attackDamageIn, float attackSpeedIn, Properties builder)
@@ -57,35 +57,35 @@ public class ItemCustomExcavatorEnd extends ShovelItem
 		if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F)
 		{
 			ExcavatorUtil.attemptBreakNeighbors(world, pos, (Player) entityLiving, BlockTags.MINEABLE_WITH_SHOVEL, EFFECTIVE_MATERIALS);
-    	  
+
 			stack.hurtAndBreak(0, entityLiving, (p_220038_0_) -> {
-            p_220038_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-         });
+				p_220038_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+			});
 		}
 
 		return true;
 	}
 
 	@Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
-    {
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
+	{
 		stack.setDamageValue(0);  //no damage
-        
-        return true;
-    }
-	
+
+		return true;
+	}
+
 	@Override
 	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
 		stack.getOrCreateTag().putBoolean("Unbreakable", true);
 	}
-	
+
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book)
 	{
 		return true;
 	}
-	
+
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
 	{

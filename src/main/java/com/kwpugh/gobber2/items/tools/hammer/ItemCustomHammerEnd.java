@@ -29,18 +29,15 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-
-import net.minecraft.world.item.Item.Properties;
-
 public class ItemCustomHammerEnd extends PickaxeItem
-{	
+{
 	public static final Set<Material> EFFECTIVE_MATERIALS = ImmutableSet.of(Material.STONE, Material.METAL, Material.GLASS, Material.ICE, Material.ICE_SOLID, Material.HEAVY_METAL);
 
 	public ItemCustomHammerEnd(Tier tier, int attackDamageIn, float attackSpeedIn, Properties builder)
 	{
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 	}
-	
+
 	/**
 	 * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
 	 */
@@ -49,36 +46,36 @@ public class ItemCustomHammerEnd extends PickaxeItem
 		if (!world.isClientSide && state.getDestroySpeed(world, pos) != 0.0F)
 		{
 			HammerUtil.attemptBreakNeighbors(world, pos, (Player) entityLiving, EFFECTIVE_MATERIALS);
-    	  
+
 			stack.hurtAndBreak(0, entityLiving, (p_220038_0_) -> {
-            p_220038_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-         });
+				p_220038_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+			});
 		}
 
 		return true;
 	}
 
 	@Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
-    {
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
+	{
 		stack.setDamageValue(0);  //no damage
-        
-        return true;
-    }
-    
+
+		return true;
+	}
+
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected)
-	{		
+	{
 		//Nothing right now
 	}
-	
+
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
 	{
 		if(!world.isClientSide && player.isShiftKeyDown())
 		{
-		   return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, player.getItemInHand(hand));
+			return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 		}
-	
+
 		return super.use(world, player, hand);
 	}
 
@@ -87,7 +84,7 @@ public class ItemCustomHammerEnd extends PickaxeItem
 	{
 		stack.getOrCreateTag().putBoolean("Unbreakable", true);
 	}
-	
+
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book)
 	{

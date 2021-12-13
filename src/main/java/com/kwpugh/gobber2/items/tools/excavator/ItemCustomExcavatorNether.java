@@ -13,7 +13,7 @@ public class ItemCustomExcavatorNether extends ExcavatorBase
 	{
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 	}
- 
+
 	@Override
 	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
 	{

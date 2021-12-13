@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": { "item": "gobber2:gobber2_ore_deepslate" },
-  "result": "gobber2:gobber2_globette",
+  "result": "gobber2:gobber2_glob",
   "experience": 3.0,
   "cookingtime": 100
 }

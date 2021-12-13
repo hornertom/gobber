@@ -11,32 +11,30 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class ItemCustomHammer extends HammerBase
 {
-	
+
 	public ItemCustomHammer(Tier tier, int attackDamageIn, float attackSpeedIn, Properties builder)
 	{
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 	}
 
 	@Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
-    {
-        if(!world.isClientSide && player.isShiftKeyDown())
-        {
-            return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, player.getItemInHand(hand));
-        }
-        return super.use(world, player, hand);
-    }
-	
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
+	{
+		if(!world.isClientSide && player.isShiftKeyDown())
+		{
+			return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, player.getItemInHand(hand));
+		}
+		return super.use(world, player, hand);
+	}
+
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book)
 	{
 		return true;
 	}
-    
+
 	@Override
 	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair)
 	{
