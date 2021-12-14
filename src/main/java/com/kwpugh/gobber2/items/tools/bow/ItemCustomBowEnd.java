@@ -2,6 +2,7 @@ package com.kwpugh.gobber2.items.tools.bow;
 
 import java.util.function.Predicate;
 
+import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import com.kwpugh.gobber2.init.ItemInit;
 
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -161,7 +162,10 @@ public class ItemCustomBowEnd extends BowItem
 	@Override
 	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
-		stack.getOrCreateTag().putBoolean("Unbreakable", true);
+       if(GobberConfigBuilder.END_GOBBER_TOOLS_UNBREAKABLE.get())
+       {
+          stack.getOrCreateTag().putBoolean("Unbreakable", true);
+       }
 	}
 	
 	@Override

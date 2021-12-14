@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import com.kwpugh.gobber2.items.toolbaseclasses.ExcavatorUtil;
 
 import net.minecraft.tags.BlockTags;
@@ -77,7 +78,10 @@ public class ItemCustomExcavatorEnd extends ShovelItem
 	@Override
 	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
-		stack.getOrCreateTag().putBoolean("Unbreakable", true);
+		if(GobberConfigBuilder.END_GOBBER_TOOLS_UNBREAKABLE.get())
+		{
+			stack.getOrCreateTag().putBoolean("Unbreakable", true);
+		}
 	}
 
 	@Override

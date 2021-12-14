@@ -1,5 +1,6 @@
 package com.kwpugh.gobber2.items.tools.pickaxe;
 
+import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -51,7 +52,10 @@ public class ItemCustomPickaxeEnd extends PickaxeItem
 	@Override
 	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
-		stack.getOrCreateTag().putBoolean("Unbreakable", true);
+        if(GobberConfigBuilder.END_GOBBER_TOOLS_UNBREAKABLE.get())
+        {
+            stack.getOrCreateTag().putBoolean("Unbreakable", true);
+        }
 	}
 	
 	@Override

@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
+import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -73,7 +74,10 @@ public class ItemCustomTreeAxeEnd extends AxeItem
 	@Override
 	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
-		stack.getOrCreateTag().putBoolean("Unbreakable", true);
+		if(GobberConfigBuilder.END_GOBBER_TOOLS_UNBREAKABLE.get())
+		{
+			stack.getOrCreateTag().putBoolean("Unbreakable", true);
+		}
 	}
 
 	@Override

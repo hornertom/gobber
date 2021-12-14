@@ -1,5 +1,6 @@
 package com.kwpugh.gobber2.items.tools.paxel;
 
+import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import com.kwpugh.gobber2.init.TagInit;
 import com.kwpugh.gobber2.items.toolbaseclasses.PaxelBase;
 import com.kwpugh.gobber2.util.EnableUtil;
@@ -264,7 +265,10 @@ public class ItemCustomPaxelStars extends PaxelBase
 	@Override
 	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
-		stack.getOrCreateTag().putBoolean("Unbreakable", true);
+		if(GobberConfigBuilder.END_GOBBER_TOOLS_UNBREAKABLE.get())
+		{
+			stack.getOrCreateTag().putBoolean("Unbreakable", true);
+		}
 	}
 
 	@Override

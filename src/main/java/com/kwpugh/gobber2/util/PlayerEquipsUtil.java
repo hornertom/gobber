@@ -2,6 +2,7 @@ package com.kwpugh.gobber2.util;
 
 import javax.annotation.Nonnull;
 
+import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import com.kwpugh.gobber2.init.ItemInit;
 
 import net.minecraft.world.entity.player.Player;
@@ -61,17 +62,23 @@ public final class PlayerEquipsUtil
     	ItemStack mainHand = player.getMainHandItem();
     	
     	//Leggings
-    	if(legs.getItem() == ItemInit.GOBBER2_LEGGINGS.get() ||
-      			legs.getItem() == ItemInit.GOBBER2_LEGGINGS_NETHER.get() ||
-      			legs.getItem() == ItemInit.GOBBER2_LEGGINGS_END.get() ||
-      					legs.getItem() == ItemInit.GOBBER2_LEGGINGS_DRAGON.get() ||
-      			
-      			mainHand.getItem() == ItemInit.GOBBER2_RING_ASCENT.get())
-      	{
-      		return true;  		
-      	}
-      		
-        return false;
+		if(GobberConfigBuilder.ENABLE_ARMOR_NO_FALL_DAMAGE.get())
+		{
+			if(legs.getItem() == ItemInit.GOBBER2_LEGGINGS.get() ||
+					legs.getItem() == ItemInit.GOBBER2_LEGGINGS_NETHER.get() ||
+					legs.getItem() == ItemInit.GOBBER2_LEGGINGS_END.get() ||
+					legs.getItem() == ItemInit.GOBBER2_LEGGINGS_DRAGON.get())
+			{
+				return true;
+			}
+		}
+
+		if(mainHand.getItem() == ItemInit.GOBBER2_RING_ASCENT.get())
+		{
+			return true;
+		}
+
+		return false;
     } 
     
 		
@@ -82,15 +89,23 @@ public final class PlayerEquipsUtil
     	ItemStack mainHand = player.getMainHandItem();
     	
     	//Chestplate
-    	if(chest.getItem() == ItemInit.GOBBER2_CHESTPLATE_NETHER.get() ||
-      			chest.getItem() == ItemInit.GOBBER2_CHESTPLATE_END.get()  ||
-      			chest.getItem() == ItemInit.GOBBER2_CHESTPLATE_DRAGON.get() ||
-      			
-      			mainHand.getItem() == ItemInit.GOBBER2_RING_BLAZE.get())
-      	{
-    		return true;  		
-      	}
-    	
+    	if(GobberConfigBuilder.ENABLE_ARMOR_FIRE_PROTECTION.get())
+		{
+			if(chest.getItem() == ItemInit.GOBBER2_CHESTPLATE_NETHER.get() ||
+					chest.getItem() == ItemInit.GOBBER2_CHESTPLATE_END.get()  ||
+					chest.getItem() == ItemInit.GOBBER2_CHESTPLATE_DRAGON.get() ||
+
+					mainHand.getItem() == ItemInit.GOBBER2_RING_BLAZE.get())
+			{
+				return true;
+			}
+		}
+
+		if(mainHand.getItem() == ItemInit.GOBBER2_RING_BLAZE.get())
+		{
+			return true;
+		}
+
 	    Inventory inv1 = player.getInventory();
 	    
 		//Is the ring in the player inventory?

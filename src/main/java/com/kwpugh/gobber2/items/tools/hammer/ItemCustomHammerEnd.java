@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableSet;
+import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import com.kwpugh.gobber2.items.toolbaseclasses.HammerUtil;
 
 import net.minecraft.world.level.block.state.BlockState;
@@ -82,7 +83,10 @@ public class ItemCustomHammerEnd extends PickaxeItem
 	@Override
 	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
-		stack.getOrCreateTag().putBoolean("Unbreakable", true);
+		if(GobberConfigBuilder.END_GOBBER_TOOLS_UNBREAKABLE.get())
+		{
+			stack.getOrCreateTag().putBoolean("Unbreakable", true);
+		}
 	}
 
 	@Override

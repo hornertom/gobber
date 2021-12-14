@@ -1,5 +1,6 @@
 package com.kwpugh.gobber2.items.tools.sword;
 
+import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -51,7 +52,10 @@ public class ItemCustomSwordEnd extends SwordItem
 	@Override
 	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
-		stack.getOrCreateTag().putBoolean("Unbreakable", true);
+        if(GobberConfigBuilder.END_GOBBER_TOOLS_UNBREAKABLE.get())
+        {
+            stack.getOrCreateTag().putBoolean("Unbreakable", true);
+        }
 	}
 	
 	@Override

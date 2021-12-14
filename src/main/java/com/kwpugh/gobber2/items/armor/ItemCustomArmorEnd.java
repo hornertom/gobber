@@ -163,7 +163,10 @@ public class ItemCustomArmorEnd extends ArmorItem
 	@Override
 	public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn)
 	{
-		stack.getOrCreateTag().putBoolean("Unbreakable", true);
+		if(GobberConfigBuilder.END_GOBBER_ARMOR_UNBREAKABLE.get())
+		{
+			stack.getOrCreateTag().putBoolean("Unbreakable", true);
+		}
 	}
 	
 	@Override
