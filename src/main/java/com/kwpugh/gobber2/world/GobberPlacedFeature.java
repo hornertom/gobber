@@ -78,13 +78,40 @@ public class GobberPlacedFeature
     public static void registerBiomeModification(final BiomeLoadingEvent event)
     {
         // Add features to be inserted into biome generation
-		event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_LUCKY_BLOCK_OVERWORLD);
-        event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_LUCKY_BLOCK_OVERWORLD_DEEPSLATE);
-        event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_LUCKY_BLOCK_NETHER);
-        event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_GOBBER_OVERWORLD);
-        event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_GOBBER_OVERWORLD_DEEPSLATE);
-        event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_GOBBER_NETHER);
-        event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_GOBBER_THEEND);
+		if(GobberConfigBuilder.GOBBER2_LUCKY_BLOCK_GENERATION.get())
+        {
+            event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_LUCKY_BLOCK_OVERWORLD);
+        }
+
+		if(GobberConfigBuilder.GOBBER2_LUCKY_BLOCK_DEEPSLATE_GENERATION.get())
+        {
+            event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_LUCKY_BLOCK_OVERWORLD_DEEPSLATE);
+        }
+
+		if(GobberConfigBuilder.GOBBER2_LUCKY_BLOCK_NETHER_GENERATION.get())
+        {
+            event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_LUCKY_BLOCK_NETHER);
+        }
+
+		if(GobberConfigBuilder.GOBBER2_ORE_GENERATION.get())
+        {
+            event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_GOBBER_OVERWORLD);
+        }
+
+		if(GobberConfigBuilder.GOBBER2_ORE_DEEPSLATE_GENERATION.get())
+        {
+            event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_GOBBER_OVERWORLD_DEEPSLATE);
+        }
+
+		if(GobberConfigBuilder.GOBBER2_ORE_NETHER_GENERATION.get())
+        {
+            event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_GOBBER_NETHER);
+        }
+
+		if(GobberConfigBuilder.GOBBER2_ORE_END_GENERATION.get())
+        {
+            event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(() -> ORE_GOBBER_THEEND);
+        }
     }
 
     private static List<PlacementModifier> orePlacement(PlacementModifier p_195347_, PlacementModifier p_195348_)

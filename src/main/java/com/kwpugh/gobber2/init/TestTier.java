@@ -19,9 +19,9 @@ package com.kwpugh.gobber2.init;
 //@Mod.EventBusSubscriber(modid = Gobber2.modid, bus = Mod.EventBusSubscriber.Bus.FORGE)
 //public class TestTier
 //{
-//    public static final Tag.Named<Block> MY_TOOL_TAG = BlockTags.createOptional(new ResourceLocation("gobber2:minable/my_tool"));
-//    public static final Tag.Named<Block> MY_TIER_TAG = BlockTags.createOptional(new ResourceLocation("gobber2:needs_my_tier_tool"));
-//    public static final Tier MY_TIER = TierSortingRegistry.registerTier(
+//    public static final Tag.Named<Block> NETHER_GOBBER_TOOLS = BlockTags.createOptional(new ResourceLocation("gobber2:minable/nether_goobber_tools"));
+//    public static final Tag.Named<Block> NETHER_GOBBER_TIER = BlockTags.createOptional(new ResourceLocation("gobber2:needs_nether_goobber_tool"));
+//    public static final Tier NNETHER_GOBBBERR = TierSortingRegistry.registerTier(
 //            new ForgeTier(5, 5000, 10, 100, 0, MY_TIER_TAG, () -> Ingredient.of(Items.BEDROCK)),
 //            new ResourceLocation("gobber2:my_tier"),
 //            List.of(Tiers.DIAMOND), List.of());
