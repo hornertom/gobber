@@ -6,17 +6,8 @@ import javax.annotation.Nullable;
 
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 
-import net.minecraft.world.level.block.BambooBlock;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.CactusBlock;
-import net.minecraft.world.level.block.CocoaBlock;
-import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.MelonBlock;
-import net.minecraft.world.level.block.NetherWartBlock;
-import net.minecraft.world.level.block.PumpkinBlock;
-import net.minecraft.world.level.block.SugarCaneBlock;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -60,7 +51,8 @@ public class ItemCustomStaffHarvest extends Item
 				BlockState defaultState = block.defaultBlockState();
 				
 				//These plants are simply broken with drops
-				if(block instanceof CocoaBlock ||
+				if(block instanceof BonemealableBlock ||
+						block instanceof CocoaBlock ||
 						block instanceof MelonBlock ||
 						block instanceof PumpkinBlock ||
 						block instanceof CactusBlock ||
