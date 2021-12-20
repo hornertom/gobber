@@ -1,29 +1,25 @@
 package com.kwpugh.gobber2.items.staffs;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
-
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.minecraft.world.item.Item.Properties;
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemCustomStaffHarvest extends Item
 { 
@@ -51,8 +47,7 @@ public class ItemCustomStaffHarvest extends Item
 				BlockState defaultState = block.defaultBlockState();
 				
 				//These plants are simply broken with drops
-				if(block instanceof BonemealableBlock ||
-						block instanceof CocoaBlock ||
+				if(block instanceof CocoaBlock ||
 						block instanceof MelonBlock ||
 						block instanceof PumpkinBlock ||
 						block instanceof CactusBlock ||
