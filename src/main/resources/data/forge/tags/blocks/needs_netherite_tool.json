@@ -2,10 +2,10 @@
   "replace": false,
   "values": [
     "gobber2:gobber2_ore_nether",
-    "gobber2:gobber2_ore_end",
     "gobber2:gobber2_block_nether",
-    "gobber2:gobber2_block_end",
     "gobber2:gobber2_glass_nether",
+    "gobber2:gobber2_ore_end",
+    "gobber2:gobber2_block_end",
     "gobber2:gobber2_glass_end"
   ]
 }

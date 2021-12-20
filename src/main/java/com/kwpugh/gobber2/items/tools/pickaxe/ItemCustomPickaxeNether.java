@@ -27,8 +27,6 @@ public class ItemCustomPickaxeNether extends PickaxeItem
 	@Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
     {
-		//ItemStack stack = player.getHeldItem(hand);
-		
         if(!world.isClientSide && player.isShiftKeyDown())
         {
             return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, player.getItemInHand(hand));

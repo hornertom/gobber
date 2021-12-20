@@ -1,7 +1,9 @@
 package com.kwpugh.gobber2;
 
+import com.kwpugh.gobber2.lists.ToolMaterialTiers;
 import com.kwpugh.gobber2.world.GobberConfiguredFeature;
 import com.kwpugh.gobber2.world.GobberPlacedFeature;
+import net.minecraftforge.fml.event.lifecycle.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,10 +18,6 @@ import com.kwpugh.gobber2.util.handlers.DragonKillHandler;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 
@@ -51,6 +49,8 @@ public class Gobber2
 		GobberPlacedFeature.registerPlacedFeatures();
 		MinecraftForge.EVENT_BUS.register(new PlayerSpecialAbilities());
 		MinecraftForge.EVENT_BUS.register(new DragonKillHandler());
+
+		//ToolMaterialTiers.init();
 
 		logger.info("Gobber common setup");
 	}

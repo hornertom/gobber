@@ -231,7 +231,6 @@ public class GobberConfigBuilder
         GOBBER_TOOLS_DURABILITY = SERVER_BUILDER.comment("Gobber tool durability [1-9000, default: 3800]").defineInRange("gobberToolsDurability", 3800, 0, 9000);
         GOBBER_TOOLS_MINING_SPEED = SERVER_BUILDER.comment("Gobber tool mining speed [1-25, default: 9.0]").defineInRange("gobberToolsSpeed", 9.0, 1, 25.0);
         GOBBER_TOOLS_ATTACK_DAMAGE = SERVER_BUILDER.comment("Gobber tool attack damage [1-100, default: 1.0]").defineInRange("gobberToolsDamage", 1.0, 1, 100.0);
-        GOBBER_TOOLS_MINING_LEVEL = SERVER_BUILDER.comment("Gobber tool mining level [1-6, default: 4]").defineInRange("gobberToolsMiningLevel", 4, 1, 6);
         GOBBER_TOOLS_ENCHANTABILITY = SERVER_BUILDER.comment("Gobber tool enchantability [0-50, default: 20]").defineInRange("gobberToolsEnchantability", 20, 1, 50);
         SERVER_BUILDER.pop();
 
@@ -248,7 +247,6 @@ public class GobberConfigBuilder
         NETHER_GOBBER_TOOLS_DURABILITY = SERVER_BUILDER.comment("Nether Gobber tool durability [1-9000, default: 5200]").defineInRange("netherGobberToolsDurability", 5200, 0, 9000);
         NETHER_GOBBER_TOOLS_MINING_SPEED = SERVER_BUILDER.comment("Nether Gobber tool mining speed [1-25, default: 12.0]").defineInRange("netherGobberToolsSpeed", 12.0, 1, 25.0);
         NETHER_GOBBER_TOOLS_ATTACK_DAMAGE = SERVER_BUILDER.comment("Nether Gobber tool attack damage [1-100, default: 1.0]").defineInRange("netherGobberToolsDamage", 1.0, 1, 100.0);
-        NETHER_GOBBER_TOOLS_MINING_LEVEL = SERVER_BUILDER.comment("Nether Gobber tool mining level [1-6, default: 5]").defineInRange("netherGobberToolsMiningLevel", 5, 1, 6);
         NETHER_GOBBER_TOOLS_ENCHANTABILITY = SERVER_BUILDER.comment("Nether Gobber tool enchantability [0-50, default: 25]").defineInRange("netherGobberToolsEnchantability", 25, 1, 50);
         SERVER_BUILDER.pop();
 
@@ -265,7 +263,6 @@ public class GobberConfigBuilder
         END_GOBBER_TOOLS_DURABILITY = SERVER_BUILDER.comment("End Gobber tool durability [1-9000, default: 8000]").defineInRange("endGobberToolsDurability", 8000, 0, 9000);
         END_GOBBER_TOOLS_MINING_SPEED = SERVER_BUILDER.comment("End Gobber tool mining speed [1-25, default: 14.0]").defineInRange("endGobberToolsSpeed", 14.0, 1, 25.0);
         END_GOBBER_TOOLS_ATTACK_DAMAGE = SERVER_BUILDER.comment("End Gobber tool attack damage [1-100, default: 1.0]").defineInRange("endGobberToolsDamage", 1.0, 1, 100.0);
-        END_GOBBER_TOOLS_MINING_LEVEL = SERVER_BUILDER.comment("End Gobber tool mining level [1-6, default: 5]").defineInRange("endGobberToolsMiningLevel", 5, 1, 6);
         END_GOBBER_TOOLS_ENCHANTABILITY = SERVER_BUILDER.comment("End Gobber tool enchantability [0-50, default: 30]").defineInRange("endGobberToolsEnchantability", 30, 1, 50);
         END_GOBBER_TOOLS_UNBREAKABLE = SERVER_BUILDER.comment("Should Tools be unbreakable when crafted? [true / false]").define("endGobberToolsUnbreakable", true);
         SERVER_BUILDER.pop();

@@ -6,6 +6,8 @@ import javax.annotation.Nullable;
 import com.kwpugh.gobber2.config.GobberConfigBuilder;
 import com.kwpugh.gobber2.util.GrowingUtil;
 
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -19,6 +21,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.minecraft.world.item.Item.Properties;
+import net.minecraftforge.common.TierSortingRegistry;
 
 public class ItemCustomRingFarmer extends Item
 {
@@ -29,7 +32,15 @@ public class ItemCustomRingFarmer extends Item
 	{
 		super(properties);
 	}
- 
+
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
+	{
+		System.out.println(TierSortingRegistry.getSortedTiers());
+
+		return super.use(world, player, hand);
+	}
+
 	public void inventoryTick(ItemStack stack, Level world, Entity entity, int par4, boolean par5)
     {      
     	if(!(entity instanceof Player) || world.isClientSide)

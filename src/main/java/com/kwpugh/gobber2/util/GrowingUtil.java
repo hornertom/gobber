@@ -19,6 +19,7 @@ public class GrowingUtil
 			Block block = blockstate.getBlock();
 
 			if ((blockstate.getBlock() instanceof CropBlock) ||
+					(block instanceof BonemealableBlock) ||
 					(block instanceof SaplingBlock) ||
 					(block instanceof VineBlock) ||                     		               
 					(block instanceof SugarCaneBlock) ||
@@ -35,8 +36,7 @@ public class GrowingUtil
 				} 	
 			}
      
-			if ((block instanceof CoralBlock) ||		
-					(block instanceof BambooSaplingBlock) || 
+			if ((block instanceof BambooSaplingBlock) ||
 					(block instanceof BambooBlock)  ||
 					(block instanceof CocoaBlock) || 
 					(block instanceof StemGrownBlock) ||

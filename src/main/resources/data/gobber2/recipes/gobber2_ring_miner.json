@@ -12,9 +12,9 @@
 	{
 		"A": { "item": "gobber2:gobber2_ring" },
 		"B": { "item": "minecraft:ancient_debris" },
-		"C": { "item": "minecraft:gold_ore" },
-		"D": { "item": "minecraft:diamond_ore" },
-		"E": { "item": "minecraft:emerald_ore" }
+		"C": { "tag": "minecraft:gold_ores" },
+		"D": { "tag": "minecraft:diamond_ores" },
+		"E": { "tag": "minecraft:emerald_ores" }
 
 	},
 
