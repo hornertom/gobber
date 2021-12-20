@@ -28,7 +28,7 @@ public class GrowingUtil
 					(block instanceof CactusBlock) ||
 					(block instanceof MelonBlock) ||
 					(block instanceof StemBlock) ||
-					(block instanceof PumpkinBlock) ) 
+					(block instanceof PumpkinBlock)  )
 			{
 				if (player.tickCount % (baseTickDelay) == 0)
 				{	

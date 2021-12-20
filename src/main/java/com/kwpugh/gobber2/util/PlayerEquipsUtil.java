@@ -42,15 +42,18 @@ public final class PlayerEquipsUtil
     public static boolean isPlayerGotWaterBreathing(Player player)
     { 
     	ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
-		
-	    //Head piece
-    	if((head.getItem() == ItemInit.GOBBER2_HELMET.get() ||
-      			head.getItem() == ItemInit.GOBBER2_HELMET_NETHER.get() ||
-      			head.getItem() == ItemInit.GOBBER2_HELMET_END.get() ||
-      			head.getItem() == ItemInit.GOBBER2_HELMET_DRAGON.get())	)
-      	{
-      		return true;  		
-      	}
+
+    	if(GobberConfigBuilder.ENABLE_ARMOR_WATER_BREATHING.get())
+		{
+			//Head piece
+			if((head.getItem() == ItemInit.GOBBER2_HELMET.get() ||
+					head.getItem() == ItemInit.GOBBER2_HELMET_NETHER.get() ||
+					head.getItem() == ItemInit.GOBBER2_HELMET_END.get() ||
+					head.getItem() == ItemInit.GOBBER2_HELMET_DRAGON.get())	)
+			{
+				return true;
+			}
+		}
       		
         return false;
     } 

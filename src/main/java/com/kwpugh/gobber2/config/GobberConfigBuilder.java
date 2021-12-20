@@ -153,6 +153,7 @@ public class GobberConfigBuilder
 
     public static ForgeConfigSpec.BooleanValue ENABLE_ARMOR_NO_FALL_DAMAGE;
     public static ForgeConfigSpec.BooleanValue ENABLE_ARMOR_FIRE_PROTECTION;
+    public static ForgeConfigSpec.BooleanValue ENABLE_ARMOR_WATER_BREATHING;
     public static ForgeConfigSpec.BooleanValue ENABLE_GOBBER_ARMOR_HEALTH_PERKS;
     public static ForgeConfigSpec.BooleanValue ENABLE_GOBBER_NETHER_ARMOR_HEALTH_PERKS;
     public static ForgeConfigSpec.BooleanValue ENABLE_GOBBER_END_ARMOR_HEALTH_PERKS;
@@ -290,6 +291,7 @@ public class GobberConfigBuilder
         ENABLE_GOBBER_ARMOR_HEALTH_PERKS = SERVER_BUILDER.comment("Enable/disable Gobber Armor health perks").define("gobberArmorHealthPerks", true);
         ENABLE_ARMOR_NO_FALL_DAMAGE = SERVER_BUILDER.comment("Enable/disable Gobber Armor No Fall Damage").define("gobberArmorNoFallDamage", true);
         ENABLE_ARMOR_FIRE_PROTECTION = SERVER_BUILDER.comment("Enable/disable Gobber Armor fire protection").define("gobberArmorFireProtection", true);
+        ENABLE_ARMOR_WATER_BREATHING = SERVER_BUILDER.comment("Enable/disable Gobber Armor water breathing").define("gobberArmorWaterBreathing", true);
         ENABLE_GOBBER_NETHER_ARMOR_HEALTH_PERKS = SERVER_BUILDER.comment("Enable/disable Gobber Nether Armor health perks").define("gobberNetherArmorHealthPerks", true);
         ENABLE_GOBBER_END_ARMOR_HEALTH_PERKS = SERVER_BUILDER.comment("Enable/disable Gobber End Armor health perks").define("gobberEndArmorHealthPerks", true);
         ENABLE_GOBBER_DRAGON_ARMOR_HEALTH_PERKS = SERVER_BUILDER.comment("Enable/disable Gobber Dragon Armor health perks").define("gobberDragonArmorHealthPerks", true);
