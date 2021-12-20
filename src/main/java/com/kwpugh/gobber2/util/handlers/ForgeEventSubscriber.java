@@ -28,7 +28,7 @@ public final class ForgeEventSubscriber
 	static int extraLoot = GobberConfigBuilder.MEDALLION_EXP_LOOT.get();
 	static boolean enableVoidProtection = GobberConfigBuilder.ENABLE_DRAGON_ARMOR_VOID_PROTECTION.get();
 	
-	//Cancels various damages to the player
+	//Cancels various damages to the player - used in PlayerEquipsUtil class
     @SubscribeEvent(receiveCanceled = true, priority= EventPriority.HIGHEST)
     public static void onLivingHurtEvent(LivingAttackEvent event)
     {
@@ -151,6 +151,5 @@ public final class ForgeEventSubscriber
     			}
     		}
     	}
-    	
     }
 } 

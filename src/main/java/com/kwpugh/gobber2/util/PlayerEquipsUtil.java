@@ -18,7 +18,7 @@ public final class PlayerEquipsUtil
         return null;
     }
 
-    //Full suit of End Armor gets perks
+    //Full suit of End Armor gets perks - used by ForgeEventSubscriber class
     public static boolean isPlayerGotVoidProtection(Player player)
     { 
     	ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
@@ -38,7 +38,7 @@ public final class PlayerEquipsUtil
         return false;
     } 
     
-    //All helmet tiers get water breathing
+    //All helmet tiers get water breathing - used by ForgeEventSubscriber class
     public static boolean isPlayerGotWaterBreathing(Player player)
     { 
     	ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
@@ -58,7 +58,7 @@ public final class PlayerEquipsUtil
         return false;
     } 
     
-    //All legging tiers get no fall damage
+    //All legging tiers get no fall damage - used by ForgeEventSubscriber class
     public static boolean isPlayerGotFallProtection(Player player)
     {
     	ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
@@ -85,7 +85,7 @@ public final class PlayerEquipsUtil
     } 
     
 		
-    //Nether and End chestplates get fire protection
+    //Nether and End chestplates get fire protection - used by ForgeEventSubscriber class
     public static boolean isPlayerGotFireProtection(Player player)
     {
     	ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
