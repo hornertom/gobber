@@ -103,7 +103,7 @@ public class ItemCustomArmorNether extends ArmorItem
 	@Override
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
 	{
-		return repair.getItem() == ItemInit.GOBBER2_ARMOR_REPAIR.get();
+		return repair.getItem() == ItemInit.GOBBER2_INGOT_NETHER.get();
 	}
 	
 	@OnlyIn(Dist.CLIENT)

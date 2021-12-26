@@ -110,7 +110,7 @@ public class ItemCustomArmorGobber extends ArmorItem
 	@Override
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
 	{
-		return repair.getItem() == ItemInit.GOBBER2_ARMOR_REPAIR.get();
+		return repair.getItem() == ItemInit.GOBBER2_INGOT.get();
 	}
 	
 	@OnlyIn(Dist.CLIENT)
