@@ -14,9 +14,13 @@ public class DragonArmorMaterial implements ArmorMaterial
     private static int enchantability = GobberConfigBuilder.DRAGON_ARMOR_ENCHANTABILITY.get();
     private static double toughness = GobberConfigBuilder.DRAGON_ARMOR_TOUGHNESS.get();
     private static double knochback = GobberConfigBuilder.DRAGON_ARMOR_KNOCKBACK.get();
+    private static int dragonHead = GobberConfigBuilder.DRAGON_HEAD_PROTECTION.get();
+    private static int dragonChest = GobberConfigBuilder.DRAGON_CHEST_PROTECTION.get();
+    private static int dragonLeggings = GobberConfigBuilder.DRAGON_LEGGINGS_PROTECTION.get();
+    private static int dragonBoots = GobberConfigBuilder.DRAGON_BOOTS_PROTECTION.get();
 
     private static final int[] BASE_DURABILITY = new int[]{13, 15, 16, 11};
-    private static final int[] PROTECTION_AMOUNT = new int[]{7, 10, 12, 7};
+    private static final int[] PROTECTION_AMOUNT = new int[]{dragonHead, dragonLeggings, dragonChest, dragonBoots};
 
     @Override
     public int getDurabilityForSlot(EquipmentSlot equipmentSlot)

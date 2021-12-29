@@ -14,9 +14,13 @@ public class GobberArmorMaterial implements ArmorMaterial
     private static int enchantability = GobberConfigBuilder.GOBBER_ARMOR_ENCHANTABILITY.get();
     private static double toughness = GobberConfigBuilder.GOBBER_ARMOR_TOUGHNESS.get();
     private static double knochback = GobberConfigBuilder.GOBBER_ARMOR_KNOCKBACK.get();
+    private static int gobberHead = GobberConfigBuilder.GOBBER_HEAD_PROTECTION.get();
+    private static int gobberChest = GobberConfigBuilder.GOBBER_CHEST_PROTECTION.get();
+    private static int gobberLeggings = GobberConfigBuilder.GOBBER_LEGGINGS_PROTECTION.get();
+    private static int gobberBoots = GobberConfigBuilder.GOBBER_BOOTS_PROTECTION.get();
 
     private static final int[] BASE_DURABILITY = new int[]{13, 15, 16, 11};
-    private static final int[] PROTECTION_AMOUNT = new int[]{6, 9, 11, 6};
+    private static final int[] PROTECTION_AMOUNT = new int[]{gobberHead, gobberLeggings, gobberChest, gobberBoots};
 
     @Override
     public int getDurabilityForSlot(EquipmentSlot equipmentSlot)

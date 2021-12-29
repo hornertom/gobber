@@ -133,23 +133,39 @@ public class GobberConfigBuilder
     public static ForgeConfigSpec.IntValue GOBBER_ARMOR_ENCHANTABILITY;
     public static ForgeConfigSpec.DoubleValue GOBBER_ARMOR_TOUGHNESS;
     public static ForgeConfigSpec.DoubleValue GOBBER_ARMOR_KNOCKBACK;
+    public static ForgeConfigSpec.IntValue GOBBER_HEAD_PROTECTION;
+    public static ForgeConfigSpec.IntValue GOBBER_CHEST_PROTECTION;
+    public static ForgeConfigSpec.IntValue GOBBER_LEGGINGS_PROTECTION;
+    public static ForgeConfigSpec.IntValue GOBBER_BOOTS_PROTECTION;
 
     public static ForgeConfigSpec.IntValue NETHER_GOBBER_ARMOR_DURABILITY_MULTIPLIER;
     public static ForgeConfigSpec.IntValue NETHER_GOBBER_ARMOR_ENCHANTABILITY;
     public static ForgeConfigSpec.DoubleValue NETHER_GOBBER_ARMOR_TOUGHNESS;
     public static ForgeConfigSpec.DoubleValue NETHER_GOBBER_ARMOR_KNOCKBACK;
+    public static ForgeConfigSpec.IntValue NETHER_HEAD_PROTECTION;
+    public static ForgeConfigSpec.IntValue NETHER_CHEST_PROTECTION;
+    public static ForgeConfigSpec.IntValue NETHER_LEGGINGS_PROTECTION;
+    public static ForgeConfigSpec.IntValue NETHER_BOOTS_PROTECTION;
 
     public static ForgeConfigSpec.IntValue END_GOBBER_ARMOR_DURABILITY_MULTIPLIER;
     public static ForgeConfigSpec.IntValue END_GOBBER_ARMOR_ENCHANTABILITY;
     public static ForgeConfigSpec.DoubleValue END_GOBBER_ARMOR_TOUGHNESS;
     public static ForgeConfigSpec.DoubleValue END_GOBBER_ARMOR_KNOCKBACK;
     public static ForgeConfigSpec.BooleanValue END_GOBBER_ARMOR_UNBREAKABLE;
+    public static ForgeConfigSpec.IntValue END_HEAD_PROTECTION;
+    public static ForgeConfigSpec.IntValue END_CHEST_PROTECTION;
+    public static ForgeConfigSpec.IntValue END_LEGGINGS_PROTECTION;
+    public static ForgeConfigSpec.IntValue END_BOOTS_PROTECTION;
 
     public static ForgeConfigSpec.IntValue DRAGON_ARMOR_DURABILITY_MULTIPLIER;
     public static ForgeConfigSpec.IntValue DRAGON_ARMOR_ENCHANTABILITY;
     public static ForgeConfigSpec.DoubleValue DRAGON_ARMOR_TOUGHNESS;
     public static ForgeConfigSpec.DoubleValue DRAGON_ARMOR_KNOCKBACK;
     public static ForgeConfigSpec.BooleanValue DRAGON_ARMOR_UNBREAKABLE;
+    public static ForgeConfigSpec.IntValue DRAGON_HEAD_PROTECTION;
+    public static ForgeConfigSpec.IntValue DRAGON_CHEST_PROTECTION;
+    public static ForgeConfigSpec.IntValue DRAGON_LEGGINGS_PROTECTION;
+    public static ForgeConfigSpec.IntValue DRAGON_BOOTS_PROTECTION;
 
     public static ForgeConfigSpec.BooleanValue ENABLE_ARMOR_NO_FALL_DAMAGE;
     public static ForgeConfigSpec.BooleanValue ENABLE_ARMOR_FIRE_PROTECTION;
@@ -258,6 +274,10 @@ public class GobberConfigBuilder
         GOBBER_ARMOR_ENCHANTABILITY = SERVER_BUILDER.comment("Gobber armor enchantability [1-50, default: 25]").defineInRange("gobberArmorEnchantability", 25, 1, 50);
         GOBBER_ARMOR_TOUGHNESS = SERVER_BUILDER.comment("Gobber armor toughness [0-5, default: 2.5]").defineInRange("gobberArmorToughness", 2.5, 0, 5.0);
         GOBBER_ARMOR_KNOCKBACK = SERVER_BUILDER.comment("Gobber armor knockback [0-5, default: 0.1]").defineInRange("gobberArmorKnockback", 0.1, 0, 5.0);
+        GOBBER_HEAD_PROTECTION = SERVER_BUILDER.comment("Gobber armor head protection [1-20, default: 6]").defineInRange("gobberHeadProtection", 6, 1, 20);
+        GOBBER_CHEST_PROTECTION = SERVER_BUILDER.comment("Gobber armor chest protection [1-20, default: 11]").defineInRange("gobberChestProtection", 11, 1, 20);
+        GOBBER_LEGGINGS_PROTECTION = SERVER_BUILDER.comment("Gobber armor leggings protection [1-20, default: 9]").defineInRange("gobberLeggingsProtection", 9, 1, 20);
+        GOBBER_BOOTS_PROTECTION = SERVER_BUILDER.comment("Gobber armor boots protection [1-20, default: 6]").defineInRange("gobberBootsProtection", 6, 1, 20);
         SERVER_BUILDER.pop();
 
 
@@ -266,6 +286,10 @@ public class GobberConfigBuilder
         NETHER_GOBBER_ARMOR_ENCHANTABILITY = SERVER_BUILDER.comment("Nether Gobber armor enchantability [1-50, default: 30]").defineInRange("netherGobberArmorEnchantability", 30, 1, 50);
         NETHER_GOBBER_ARMOR_TOUGHNESS = SERVER_BUILDER.comment("Nether Gobber armor toughness [0-5, default: 2.75]").defineInRange("netherGobberArmorToughness", 2.75, 0, 5.0);
         NETHER_GOBBER_ARMOR_KNOCKBACK = SERVER_BUILDER.comment("Nether Gobber armor knockback [0-5, default: 0.1]").defineInRange("netherGobberArmorKnockback", 0.1, 0, 5.0);
+        NETHER_HEAD_PROTECTION = SERVER_BUILDER.comment("Nether armor head protection [1-20, default: 7]").defineInRange("netherHeadProtection", 7, 1, 20);
+        NETHER_CHEST_PROTECTION = SERVER_BUILDER.comment("Nether armor chest protection [1-20, default: 12]").defineInRange("netherChestProtection", 12, 1, 20);
+        NETHER_LEGGINGS_PROTECTION = SERVER_BUILDER.comment("Nether armor leggings protection [1-20, default: 10]").defineInRange("netherLeggingsProtection", 10, 1, 20);
+        NETHER_BOOTS_PROTECTION = SERVER_BUILDER.comment("Nether armor boots protection [1-20, default: 7]").defineInRange("netherBootsProtection", 7, 1, 20);
         SERVER_BUILDER.pop();
 
 
@@ -275,6 +299,10 @@ public class GobberConfigBuilder
         END_GOBBER_ARMOR_TOUGHNESS = SERVER_BUILDER.comment("End Gobber armor toughness [0-5, default: 3.0]").defineInRange("endGobberArmorToughness", 3.0, 0, 5.0);
         END_GOBBER_ARMOR_KNOCKBACK = SERVER_BUILDER.comment("End Gobber armor knockback [0-5, default: 0.2]").defineInRange("endGobberArmorKnockback", 0.2, 0, 5.0);
         END_GOBBER_ARMOR_UNBREAKABLE = SERVER_BUILDER.comment("Should Armor be unbreakable when crafted? [true / false]").define("endGobberArmorUnbreakable", true);
+        END_HEAD_PROTECTION = SERVER_BUILDER.comment("End armor head protection [1-20, default: 8]").defineInRange("endHeadProtection", 8, 1, 20);
+        END_CHEST_PROTECTION = SERVER_BUILDER.comment("End armor chest protection [1-20, default: 13]").defineInRange("endChestProtection", 13, 1, 20);
+        END_LEGGINGS_PROTECTION = SERVER_BUILDER.comment("End armor leggings protection [1-20, default: 11]").defineInRange("endLeggingsProtection", 11, 1, 20);
+        END_BOOTS_PROTECTION = SERVER_BUILDER.comment("End armor boots protection [1-20, default: 8]").defineInRange("endBootsProtection", 8, 1, 20);
         SERVER_BUILDER.pop();
 
 
@@ -284,6 +312,10 @@ public class GobberConfigBuilder
         DRAGON_ARMOR_TOUGHNESS = SERVER_BUILDER.comment("Dragon armor toughness [0-5, default: 3.0]").defineInRange("dragonArmorToughness", 3.0, 0, 5.0);
         DRAGON_ARMOR_KNOCKBACK = SERVER_BUILDER.comment("Dragon armor knockback [0-5, default: 0.3]").defineInRange("dragonArmorKnockback", 0.3, 0, 5.0);
         DRAGON_ARMOR_UNBREAKABLE = SERVER_BUILDER.comment("Should Armor be unbreakable when crafted? [true / false]").define("dragonArmorUnbreakable", true);
+        DRAGON_HEAD_PROTECTION = SERVER_BUILDER.comment("Dragon armor head protection [1-20, default: 8]").defineInRange("dragonHeadProtection", 8, 1, 20);
+        DRAGON_CHEST_PROTECTION = SERVER_BUILDER.comment("Dragon armor chest protection [1-20, default: 13]").defineInRange("dragonChestProtection", 13, 1, 20);
+        DRAGON_LEGGINGS_PROTECTION = SERVER_BUILDER.comment("Dragon armor leggings protection [1-20, default: 11]").defineInRange("dragonLeggingsProtection", 11, 1, 20);
+        DRAGON_BOOTS_PROTECTION = SERVER_BUILDER.comment("Dragon armor boots protection [1-20, default: 8]").defineInRange("dragonBootsProtection", 8, 1, 20);
         SERVER_BUILDER.pop();
 
 
