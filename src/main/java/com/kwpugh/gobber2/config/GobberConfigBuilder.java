@@ -183,7 +183,7 @@ public class GobberConfigBuilder
     {
         SERVER_BUILDER.comment("Gobber Lucky Block Generation").push("gobber2_lucky_block");
         GOBBER2_LUCKY_BLOCK_GENERATION = SERVER_BUILDER.comment("Generate Gobber Lucky Block in the world [true / false]").define("gobberLuckyBlockGeneration", true);
-        GOBBER2_LUCKY_BLOCK_SIZE = SERVER_BUILDER.comment("Size of Gobber Lucky Block pockets [0-100, default: 4]").defineInRange("gobberLuckyBlockSize", 4, 0, 100);
+        GOBBER2_LUCKY_BLOCK_SIZE = SERVER_BUILDER.comment("Size of Gobber Lucky Block pockets [3-100, default: 4]").defineInRange("gobberLuckyBlockSize", 4, 3, 100);
         GOBBER2_LUCKY_BLOCK_CHANCE = SERVER_BUILDER.comment("Chances of Gobber Lucky Block pocket being generated [0-30, default: 20]").defineInRange("gobberLuckyBlockChance", 20, 0, 30);
         GOBBER2_LUCKY_BLOCK_MIN_HEIGHT = SERVER_BUILDER.comment("Minimal height for Gobber Lucky Block pocket generation, [0-384, default: 1]").defineInRange("gobberLuckyBlockMinHeight", 1, 0, 384);
         GOBBER2_LUCKY_BLOCK_MAX_HEIGHT = SERVER_BUILDER.comment("Maximal height for Gobber Lucky Block pocket generation [0-384, default: 255]").defineInRange("gobberLuckyBlockMaxHeight", 255, 0, 384);
@@ -192,7 +192,7 @@ public class GobberConfigBuilder
 
         SERVER_BUILDER.comment("Gobber Lucky Block Deepslate Generation").push("gobber2_lucky_block_deepslate");
         GOBBER2_LUCKY_BLOCK_DEEPSLATE_GENERATION = SERVER_BUILDER.comment("Generate Gobber Lucky Block Deepslate in the world [true / false]").define("gobberLuckyBlockDeepslateGeneration", true);
-        GOBBER2_LUCKY_BLOCK_DEEPSLATE_SIZE = SERVER_BUILDER.comment("Size of Gobber Lucky Block Deepslate pockets [0-100, default: 4]").defineInRange("gobberLuckyBlockDeepslateSize", 4, 0, 100);
+        GOBBER2_LUCKY_BLOCK_DEEPSLATE_SIZE = SERVER_BUILDER.comment("Size of Gobber Lucky Block Deepslate pockets [3-100, default: 4]").defineInRange("gobberLuckyBlockDeepslateSize", 4, 3, 100);
         GOBBER2_LUCKY_BLOCK_DEEPSLATE_CHANCE = SERVER_BUILDER.comment("Chances of Gobber Lucky Block Deepslate pocket being generated [0-30, default: 20]").defineInRange("gobberLuckyBlockDeepslateChance", 20, 0, 30);
         GOBBER2_LUCKY_BLOCK_DEEPSLATE_MIN_HEIGHT = SERVER_BUILDER.comment("Minimal height for Gobber Lucky Block Deepslate pocket generation, [-64 to 0, default: -64]").defineInRange("gobberLuckyBlockDeepslateMinHeight", -64, -64, 0);
         GOBBER2_LUCKY_BLOCK_DEEPSLATE_MAX_HEIGHT = SERVER_BUILDER.comment("Maximal height for Gobber Lucky Block Deepslate pocket generation [-64 to 0, default: 0]").defineInRange("gobberLuckyBlockDeepslateMaxHeight", 0, -64, 0);
@@ -201,7 +201,7 @@ public class GobberConfigBuilder
 
         SERVER_BUILDER.comment("Gobber Lucky Block Nether Generation").push("gobber2_lucky_block_nether");
         GOBBER2_LUCKY_BLOCK_NETHER_GENERATION = SERVER_BUILDER.comment("Generate Gobber Lucky Block Nether in the world [true / false]").define("gobberLuckyBlockNetherGeneration", true);
-        GOBBER2_LUCKY_BLOCK_NETHER_SIZE = SERVER_BUILDER.comment("Size of Gobber Lucky Block Nether pockets [0-100, default: 4]").defineInRange("gobberLuckyBlockNetherSize", 4, 0, 100);
+        GOBBER2_LUCKY_BLOCK_NETHER_SIZE = SERVER_BUILDER.comment("Size of Gobber Lucky Block Nether pockets [3-100, default: 4]").defineInRange("gobberLuckyBlockNetherSize", 4, 3, 100);
         GOBBER2_LUCKY_BLOCK_NETHER_CHANCE = SERVER_BUILDER.comment("Chances of Gobber Lucky Block Nether pocket being generated [0-30, default: 20]").defineInRange("gobberLuckyBlockNetherChance", 20, 0, 30);
         GOBBER2_LUCKY_BLOCK_NETHER_MIN_HEIGHT = SERVER_BUILDER.comment("Minimal height for Gobber Lucky Block Nether pocket generation, [0-255, default: 1]").defineInRange("gobberLuckyBlockNetherMinHeight", 1, 0, 255);
         GOBBER2_LUCKY_BLOCK_NETHER_MAX_HEIGHT = SERVER_BUILDER.comment("Maximal height for Gobber Lucky Block Nether pocket generation [0-255, default: 255]").defineInRange("gobberLuckyBlockNetherMaxHeight", 255, 0, 255);
@@ -210,7 +210,7 @@ public class GobberConfigBuilder
 
         SERVER_BUILDER.comment("Gobber Ore Generation").push("gobber2_ore");
         GOBBER2_ORE_GENERATION = SERVER_BUILDER.comment("Generate Gobber Ore in the world [true / false]").define("gobberOreGeneration", true);
-        GOBBER2_ORE_SIZE = SERVER_BUILDER.comment("Size of Gobber Ore pockets [0-100, default: 4]").defineInRange("gobberOreSize", 4, 0, 100);
+        GOBBER2_ORE_SIZE = SERVER_BUILDER.comment("Size of Gobber Ore pockets [3-100, default: 4]").defineInRange("gobberOreSize", 4, 3, 100);
         GOBBER2_ORE_CHANCE = SERVER_BUILDER.comment("Chances of Gobber Ore pocket being generated [0-30, default: 15]").defineInRange("gobberOreChance", 15, 0, 30);
         GOBBER2_ORE_MIN_HEIGHT = SERVER_BUILDER.comment("Minimal height for Gobber Ore pocket generation, [0-255, default: 20]").defineInRange("gobberOreMinHeight", 0, 0, 384);
         GOBBER2_ORE_MAX_HEIGHT = SERVER_BUILDER.comment("Maximal height for Gobber Ore pocket generation [0-255, default: 30]").defineInRange("gobberOreMaxHeight", 30, 0, 384);
@@ -219,7 +219,7 @@ public class GobberConfigBuilder
 
         SERVER_BUILDER.comment("Gobber Ore Deepslate Generation").push("gobber2_ore_deepslate");
         GOBBER2_ORE_DEEPSLATE_GENERATION = SERVER_BUILDER.comment("Generate Gobber Ore Deepslate in the world [true / false]").define("gobberOreDeepslateGeneration", true);
-        GOBBER2_ORE_DEEPSLATE_SIZE = SERVER_BUILDER.comment("Size of Gobber Ore Deepslate pockets [0-100, default: 4]").defineInRange("gobberOreDeepslateSize", 4, 0, 100);
+        GOBBER2_ORE_DEEPSLATE_SIZE = SERVER_BUILDER.comment("Size of Gobber Ore Deepslate pockets [3-100, default: 4]").defineInRange("gobberOreDeepslateSize", 4, 3, 100);
         GOBBER2_ORE_DEEPSLATE_CHANCE = SERVER_BUILDER.comment("Chances of Gobber Ore Deepslate pocket being generated [0-30, default: 20]").defineInRange("gobberOreDeepslateChance", 20, 0, 30);
         GOBBER2_ORE_DEEPSLATE_MIN_HEIGHT = SERVER_BUILDER.comment("Minimal height for Gobber Ore Deepslate pocket generation, [-64 to 0, default: -64]").defineInRange("gobberOreDeepslateMinHeight", -64, -64, 0);
         GOBBER2_ORE_DEEPSLATE_MAX_HEIGHT = SERVER_BUILDER.comment("Maximal height for Gobber Ore Deepslate pocket generation [-64 to 0, default: 0]").defineInRange("gobberOreDeepslateMaxHeight", 0, -64, 0);
@@ -228,7 +228,7 @@ public class GobberConfigBuilder
 
         SERVER_BUILDER.comment("Gobber Nether Ore Generation").push("gobber2_ore_nether");
         GOBBER2_ORE_NETHER_GENERATION = SERVER_BUILDER.comment("Generate Gobber Nether Ore in the world [true / false]").define("gobberOreNetherGeneration", true);
-        GOBBER2_ORE_NETHER_SIZE = SERVER_BUILDER.comment("Size of Gobber Nether Ore pockets [0-100, default: 3]").defineInRange("gobberOreNetherSize", 4, 0, 100);
+        GOBBER2_ORE_NETHER_SIZE = SERVER_BUILDER.comment("Size of Gobber Nether Ore pockets [3-100, default: 3]").defineInRange("gobberOreNetherSize", 4, 3, 100);
         GOBBER2_ORE_NETHER_CHANCE = SERVER_BUILDER.comment("Chances of Gobber Nether Ore pocket being generated [0-30, default: 15]").defineInRange("gobberOreNetherChance", 15, 0, 30);
         GOBBER2_ORE_NETHER_MIN_HEIGHT = SERVER_BUILDER.comment("Minimal height for Gobber Nether Ore pocket generation, [0-255, default: 5]").defineInRange("gobberOreNetherMinHeight", 5, 0, 255);
         GOBBER2_ORE_NETHER_MAX_HEIGHT = SERVER_BUILDER.comment("Maximal height for Gobber Nether Ore pocket generation [0-255, default: 255]").defineInRange("gobberOreNetherMaxHeight", 255, 0, 255);
